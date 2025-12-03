@@ -1590,9 +1590,22 @@ body {
     position: relative;
 }
 
+.product-detail-image.portrait .detail-img {
+    object-fit: contain;
+}
+
+.product-detail-image.landscape .detail-img {
+    object-fit: contain;
+}
+
+.product-detail-image.square .detail-img {
+    object-fit: contain;
+}
+
 .detail-img {
     width: 100%;
-    height: 250px;
+    height: auto;
+    max-height: 360px;
     object-fit: contain;
     object-position: center;
     border-radius: 15px;
@@ -1875,7 +1888,10 @@ body {
         width: 100%;
     }
     
-    .detail-img,
+    .detail-img {
+        height: auto;
+        max-height: 250px;
+    }
     .detail-emoji {
         height: 200px;
     }
