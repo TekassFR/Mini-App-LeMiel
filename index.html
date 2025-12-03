@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📦 Peaky Menu - Telegram</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="banner-container">
+                <div class="banner-background"></div>
+                <div class="banner-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">💎</div>
+                        <h1 class="brand-name">CHEZ PEAKY</h1>
+                        <div class="brand-tagline">Notre Menus 2025</div>
+                    </div>
+                    <div class="user-section">
+                        <p id="user-info" class="user-welcome">Chargement...</p>
+                    </div>
+                </div>
+                <div class="banner-overlay"></div>
+
+            </div>
+        </header>
+        
+        <!-- Panier -->
+        <div class="cart-summary" id="cart-summary" style="display: none;">
+            <div class="cart-header">
+                <h3>🛒 Votre commande</h3>
+                <span class="cart-total" id="cart-total">0.00€</span>
+            </div>
+            <div class="cart-items" id="cart-items"></div>
+            <div class="cart-actions">
+                <button class="btn btn-clear" id="clear-cart-btn" onclick="clearCart()">🗑️ Vider</button>
+                <button class="btn btn-success" id="checkout-btn">📤 Commander</button>
+            </div>
+        </div>
+        
+        <!-- Navigation des catégories -->
+        <nav class="category-nav">
+            <button class="category-btn active" data-category="all">🍽️ Tout</button>
+            <button class="category-btn" data-category="pizza">🍫 Hash</button>
+            <button class="category-btn" data-category="pasta">🌿 Weed</button>
+            <button class="category-btn" data-category="dessert">💉 Brun</button>
+            <button class="category-btn" data-category="boisson">🎉 Festif</button>
+        </nav>
+        
+        <main>
+            
+            <!-- Menu des produits -->
+            <div class="menu-grid" id="menu-grid">
+                <!-- Les produits seront générés dynamiquement -->
+            </div>
+        </main>
+        
+        <!-- Page de détail produit -->
+        <div class="product-detail-page" id="product-detail-page" style="display: none;">
+            <div class="product-detail-content">
+                <button class="back-btn" onclick="closeProductDetail()">← Retour</button>
+                <div class="product-detail-header">
+                    <div class="product-detail-image">
+                        <img id="detail-product-img" src="" alt="" class="detail-img">
+                        <div id="detail-product-emoji" class="detail-emoji" style="display: none;"></div>
+                    </div>
+                    <div class="product-detail-info">
+                        <h2 id="detail-product-name"></h2>
+                        <p id="detail-product-description"></p>
+                        <div class="detail-price-section">
+                            <div class="quantity-selector">
+                                <h4>Choisissez votre quantité :</h4>
+                                <div class="quantity-bubbles">
+                                    <div class="quantity-bubble" data-qty="1" onclick="addToCartWithQuantity(currentProductId, 1)">
+                                        <span class="bubble-qty">1g</span>
+                                        <span class="bubble-price" id="price-1"></span>
+                                    </div>
+                                    <div class="quantity-bubble" data-qty="2" onclick="addToCartWithQuantity(currentProductId, 2)">
+                                        <span class="bubble-qty">2g</span>
+                                        <span class="bubble-price" id="price-2"></span>
+                                    </div>
+                                    <div class="quantity-bubble" data-qty="5" onclick="addToCartWithQuantity(currentProductId, 5)">
+                                        <span class="bubble-qty">5g</span>
+                                        <span class="bubble-price" id="price-5"></span>
+                                    </div>
+                                    <div class="quantity-bubble" data-qty="10" onclick="addToCartWithQuantity(currentProductId, 10)">
+                                        <span class="bubble-qty">10g</span>
+                                        <span class="bubble-price" id="price-10"></span>
+                                    </div>
+                                    <div class="quantity-bubble" data-qty="25" onclick="addToCartWithQuantity(currentProductId, 25)">
+                                        <span class="bubble-qty">25g</span>
+                                        <span class="bubble-price" id="price-25"></span>
+                                    </div>
+                                    <div class="quantity-bubble" data-qty="50" onclick="addToCartWithQuantity(currentProductId, 50)">
+                                        <span class="bubble-qty">50g</span>
+                                        <span class="bubble-price" id="price-50"></span>
+                                    </div>
+                                    <div class="quantity-bubble" data-qty="100" onclick="addToCartWithQuantity(currentProductId, 100)">
+                                        <span class="bubble-qty">100g</span>
+                                        <span class="bubble-price" id="price-100"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-video-section">
+                    <h3>🎥 Présentation du produit</h3>
+                    <div class="video-container">
+                        <video id="product-video" controls preload="metadata" poster="">
+                            <source id="video-source" src="" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page d'informations -->
+        <div class="info-page" id="info-page" style="display: none;">
+            <div class="info-content">
+                <h2>📋 Informations</h2>
+                
+                <div class="info-section">
+                    <h3>🚚 Livraison</h3>
+                    <p><strong>Horaires :</strong> 12H - 2H (Lundi à Mercredi) | 12H - 5H (Jeudi à Dimanche)</p>
+                    <p><strong>Délai :</strong> 30-45 minutes</p>
+                    <p><strong>Minimum :</strong> à partir de 50€</p>
+                    <p><strong>Zone :</strong> 54,57,88,67,68 GRAND EST</p>
+                </div>
+                
+                <div class="info-section">
+                    <h3>📞 Contact</h3>
+                    <p><strong>Snapchat :</strong> coffeenancy5400</p>
+                    <p><strong>Telegram :</strong> @peakyblinders540</p>
+                </div>
+                
+                <div class="info-section">
+                    <h3>💳 Paiement</h3>
+                    <p><strong>Modes acceptés :</strong> Espèces uniquement</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Barre de navigation en bas -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="menu">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Menu</span>
+            </button>
+            <button class="nav-item" data-page="info">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-label">Infos</span>
+            </button>
+            <button class="nav-item" data-page="canal">
+                <span class="nav-icon">✈️</span>
+                <span class="nav-label">Canal</span>
+            </button>
+            <button class="nav-item" data-page="contact">
+                <span class="nav-icon">✉️</span>
+                <span class="nav-label">Contact</span>
+            </button>
+        </nav>
+    </div>
+    
+    <script src="script.js"></script>
+    <!-- Ajouter cette modal avant la fermeture du body -->
+    <div id="address-modal" class="address-modal">
+        <div class="address-modal-content">
+            <div class="address-modal-header">
+                <h3>📍 Adresse de livraison</h3>
+            </div>
+            <div class="address-modal-body">
+                <div class="address-input-group">
+                    <label for="address-input">Où souhaitez-vous être livré ?</label>
+                    <textarea id="address-input" placeholder="Entrez votre adresse complète...&#10;Ex: 123 Rue de la Paix, 75001 Paris" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="address-modal-footer">
+                <button id="cancel-address" class="btn-cancel">❌ Annuler</button>
+                <button id="confirm-address" class="btn-confirm">✅ Confirmer</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
