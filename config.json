@@ -91,7 +91,7 @@
         "image": "https://i.imgur.com/mIwuKCB.jpeg",
         "category": "pizza",
         "isNew": true,
-        "isPromo": false,
+        "isPromo": true,
         "video": "https://i.imgur.com/0Kid5k8.mp4",
         "customPrices": {
           "5": 40.00,
