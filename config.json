@@ -1,0 +1,215 @@
+{
+  "restaurant": {
+    "name": "Restaurant Menu",
+    "description": "Mini-App Telegram pour commandes en ligne",
+    "currency": "€",
+    "delivery_fee": 2.50,
+    "min_order": 15.00
+  },
+  "categories": {
+    "pizza": {
+      "name": "Hash",
+      "emoji": "🍫",
+      "description": "Nos produits en Hash"
+    },
+    "pasta": {
+      "name": "Weed",
+      "emoji": "🌿",
+      "description": "Nos produits en Weed"
+    },
+    "dessert": {
+      "name": "Brun",
+      "emoji": "💉",
+      "description": "Nos produits en brun"
+    },
+    "boisson": {
+      "name": "Festif",
+      "emoji": "🎉",
+      "description": "Nos produits festifs"
+    }
+  },
+  "products": {
+    "pizza": [
+      {
+        "id": 1,
+        "name": "RS x Sour",
+        "description": "RS11 x Sour Face Cette variété offre une expérience unique en réunissant les profils de saveurs et les effets caractéristiques de ses parents.",
+        "price": 10,
+        "emoji": "🍫",
+        "image": "https://i.ibb.co/cXZWmF36/photo-5944882891634887167-y.jpg",
+        "category": "pizza",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/pi0Wbrj.mp4",
+        "customPrices": {
+          "5": 50.00,
+          "10": 100.00,
+          "25": 230.00
+        }
+      },
+      {
+        "id": 2,
+        "name": "Static Skittlez",
+        "description": "La Zkittlez, parfois aussi appelé Skittlez ou simplement Skittles, est un hybride à dominance indica qui regorge de saveurs fruitées.",
+        "price": 10.00,
+        "emoji": "🍫",
+        "image": "https://i.ibb.co/hFSx3x07/photo-5944882891634887197-y.jpg",
+        "category": "pizza",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/ZQYvS0G.mp4",
+        "customPrices": {
+          "5": 40.00,
+          "10": 80.00
+        }
+      }
+    ],
+    "pasta": [
+      {
+        "id": 4,
+        "name": "The Bird",
+        "description": "La The Bird Féminisée est une plante 70 % indica 30 % sativa créée dans le cadre du projet unique de Breeding Grounds.",
+        "price": 15.00,
+        "emoji": "🌿",
+        "image": "https://i.ibb.co/dJjzNLJ6/photo-5944882891634887170-y.jpg",
+        "category": "pasta",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/iqwmLgx.mp4",
+        "customPrices": {
+          "2": 30.00,
+          "5": 60.00,
+          "10": 120.00,
+          "50": 450.00
+        }
+      },
+      {
+        "id": 5,
+        "name": "Pineapple Express",
+        "description": "Tous les fumeurs du monde entier ont entendu parler de Pineapple Express, grâce au film comique de 2008 du même nom (Délire Express en VF).",
+        "price": 15.00,
+        "emoji": "🌿",
+        "image": "https://i.ibb.co/0Rjn8XPg/photo-5944882891634887171-y.jpg",
+        "category": "pasta",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/5YqXJFG.mp4",
+        "customPrices": {
+          "2": 30.00,
+          "5": 60.00,
+          "10": 120.00,
+          "50": 450.00
+        }
+      },
+      {
+        "id": 6,
+        "name": "Vanilla",
+        "description": "Vanilla Kush dégage des parfums multidimensionnels de vanille/lavande et les nombreuses têtes denses avec des trichomes rouge/doré sont impressionnantes.",
+        "price": 15.00,
+        "emoji": "🌿",
+        "image": "https://i.ibb.co/5WcwkW0w/photo-5944882891634887220-y.jpg",
+        "category": "pasta",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/0yNju6o.mp4",
+        "customPrices": {
+          "2": 30.00,
+          "5": 60.00,
+          "10": 120.00,
+          "50": 450.00
+        }
+      },
+      {
+        "id": 7,
+        "name": "Zkittlez",
+        "description": "La Zkittlez a un goût extravagant qui va stupéfier tous vos sens. Profondes, riches et incroyablement délectables, les saveurs de la Zkittlez vous donneront envie d'y revenir.",
+        "price": 15.00,
+        "emoji": "🌿",
+        "image": "https://i.ibb.co/8g5D0f3k/photo-5944882891634887172-y.jpg",
+        "category": "pasta",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/gCIhAc5.mp4",
+        "customPrices": {
+          "2": 30.00,
+          "5": 60.00,
+          "10": 120.00,
+          "50": 450.00
+        }
+      }
+    ],
+    "dessert": [
+      {
+        "id": 8,
+        "name": "Brun 10",
+        "description": "L’héroïne est un opiacé synthétisé à partir de la morphine extraite du pavot.",
+        "price": 10.00,
+        "emoji": "💉",
+        "image": "",
+        "category": "dessert",
+        "isNew": true,
+        "isPromo": false,
+        "video": "",
+        "customPrices": {
+          "2": 20.00,
+          "5": 50.00,
+          "10": 90.00
+        }
+      },
+      {
+        "id": 9,
+        "name": "Brun 20",
+        "description": "L’héroïne est un opiacé synthétisé à partir de la morphine extraite du pavot.",
+        "price": 10.00,
+        "emoji": "💉",
+        "image": "",
+        "category": "dessert",
+        "isNew": true,
+        "isPromo": false,
+        "video": "",
+        "customPrices": {
+          "2": 20.00,
+          "5": 90.00,
+          "10": 160.00
+        }
+      }
+    ],
+    "boisson": [
+      {
+        "id": 10,
+        "name": "Pop Smoke 300MG",
+        "description": "Le nom chimique de l’ecstasy est 3,4-méthylènedioxyméthamphétamine, abrégé en MDMA.",
+        "price": 10.00,
+        "emoji": "🎉",
+        "image": "https://i.ibb.co/HLpzq5hp/photo-5944882891634887213-y.jpg",
+        "category": "boisson",
+        "isNew": true,
+        "isPromo": false,
+        "video": "https://i.imgur.com/vmfXyNT.mp4",
+        "customPrices": {
+          "3": 20.00,
+          "10": 50.00,
+          "25": 100.00
+        }
+      },
+      {
+        "id": 11,
+        "name": "Coke",
+        "description": "La cocaïne est un alcaloïde tropanique extrait de la feuille de coca",
+        "price": 70.00,
+        "emoji": "❄",
+        "image": "",
+        "category": "boisson",
+        "isNew": true,
+        "isPromo": false,
+        "video": "",
+        "customPrices": {
+          "1": 70.00,
+          "2": 120.00,
+          "5": 300.00,
+          "10": 450.00
+        }
+      }
+    ]
+  }
+}
