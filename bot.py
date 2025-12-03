@@ -9,7 +9,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 
 # Configuration sécurisée
 BOT_TOKEN = "8085521442:AAF4NTocF5npu4wAZdfEmK69IhBhsL12fso"
-WEB_APP_URL = "https://mini-app-french.vercel.app"
+WEB_APP_URL = "https://mini-app-peaky-3ehb.vercel.app"
 
 # Variables de sécurité intégrées
 SECURITY_CONFIG = {
