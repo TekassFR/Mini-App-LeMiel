@@ -1175,7 +1175,7 @@ function formatOrderMessage(orderData) {
         return null;
     }
     
-    const orderText = `🍕 NOUVELLE COMMANDE\n\n` +
+    const orderText = `🛒 NOUVELLE COMMANDE\n\n` +
         `📍 Adresse de livraison: ${safeAddress}\n\n` +
         `📋 Détails de la commande:\n` +
         orderData.items.map(item => {
