@@ -1592,7 +1592,7 @@ function initBottomNavigation() {
                     if (window.Telegram && window.Telegram.WebApp) {
                         window.Telegram.WebApp.openTelegramLink('https://dympt.org/joinchat/JuLVf6_RWUB23gDjNMd44Q');
                     } else {
-                        window.open('https://t.me/+1ucagzAd9_YxZDE0', '_blank');
+                        window.open('https://dympt.org/joinchat/JuLVf6_RWUB23gDjNMd44Q', '_blank');
                     }
                     break;
                     
