@@ -1588,11 +1588,12 @@ function initBottomNavigation() {
                     break;
                     
                 case 'canal':
-                    // Ouvrir le canal Telegram
-                    if (window.Telegram && window.Telegram.WebApp) {
-                        window.Telegram.WebApp.openTelegramLink('https://dympt.org/joinchat/JuLVf6_RWUB23gDjNMd44Q');
+                    // Ouvrir le canal Potato (lien externe)
+                    const potatoUrl = 'https://dympt.org/joinchat/JuLVf6_RWUB23gDjNMd44Q';
+                    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openLink) {
+                        window.Telegram.WebApp.openLink(potatoUrl);
                     } else {
-                        window.open('https://dympt.org/joinchat/JuLVf6_RWUB23gDjNMd44Q', '_blank');
+                        window.open(potatoUrl, '_blank');
                     }
                     break;
                     
