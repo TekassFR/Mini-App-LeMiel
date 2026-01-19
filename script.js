@@ -146,8 +146,10 @@ function showPlugDetail(plugId) {
     const deptDiv = document.getElementById('detail-department');
     deptDiv.innerHTML = `<strong>Localisation:</strong> ${appConfig.departments[plug.department]?.emoji || ''} ${deptName}`;
     
-    // Stocker l'URL Telegram pour le bouton de contact
-    document.getElementById('contact-btn').dataset.telegramUrl = plug.telegram;
+    // Afficher le lien Telegram
+    const telegramLinkDiv = document.getElementById('plug-telegram-link');
+    const telegramUsername = plug.telegram.replace('https://t.me/', '').replace('http://t.me/', '');
+    telegramLinkDiv.innerHTML = `<strong>📱 Telegram:</strong> <a href="javascript:void(0)" onclick="openTelegram('${telegramUsername}')">${telegramUsername}</a>`;
     
     detailPage.style.display = 'flex';
     window.scrollTo(0, 0);
@@ -160,20 +162,16 @@ function closePlugDetail() {
     currentPlugId = null;
 }
 
-// Contact du plug (ouverture de Telegram)
-function contactPlug() {
-    const telegramUrl = document.getElementById('contact-btn').dataset.telegramUrl;
-    if (telegramUrl) {
+// Ouverture du lien Telegram
+function openTelegram(username) {
+    const telegramUrl = `https://t.me/${username}`;
+    
+    // Essayer d'ouvrir via Telegram WebApp d'abord
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.openTelegramLink(telegramUrl);
+    } else {
+        // Sinon ouvrir dans un nouvel onglet
         window.open(telegramUrl, '_blank');
-        
-        // Analytics optionnel
-        if (tg.sendData) {
-            tg.sendData(JSON.stringify({
-                action: 'plug_contacted',
-                plugId: currentPlugId,
-                timestamp: new Date().toISOString()
-            }));
-        }
     }
 }
 
