@@ -26,16 +26,18 @@
             </div>
         </header>
         
-        <!-- Navigation des départements -->
-        <nav class="category-nav">
-            <button class="category-btn active" data-department="all">🌍 Tous</button>
-            <button class="category-btn" data-department="57">🏭 Moselle</button>
-            <button class="category-btn" data-department="54">🌳 M&M</button>
-            <button class="category-btn" data-department="55">🏞️ Meuse</button>
-            <button class="category-btn" data-department="88">⛰️ Vosges</button>
-            <button class="category-btn" data-department="67">🍷 Bas-Rhin</button>
-            <button class="category-btn" data-department="68">🏔️ Haut-Rhin</button>
-        </nav>
+        <!-- Sélection des départements -->
+        <div class="department-selector">
+            <select id="department-select" class="department-select">
+                <option value="all">🌍 Tous les Plugs</option>
+                <option value="57">🏭 Moselle (57)</option>
+                <option value="54">🌳 Meurthe-et-Moselle (54)</option>
+                <option value="55">🏞️ Meuse (55)</option>
+                <option value="88">⛰️ Vosges (88)</option>
+                <option value="67">🍷 Bas-Rhin (67)</option>
+                <option value="68">🏔️ Haut-Rhin (68)</option>
+            </select>
+        </div>
         
         <main>
             <!-- Grille des Plugs -->
