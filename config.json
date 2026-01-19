@@ -59,8 +59,8 @@
     "54": [
       {
         "id": 3,
-        "name": "HLUXOR ",
-        "departments": ["54"],
+        "name": "HLUXOR",
+        "departments": ["54", "55", "88", "52"],
         "description": "Service rapide et efficace",
         "telegram": "https://t.me/+_Ur2tIF0Yj1mMDc0",
         "emoji": "🚀",
