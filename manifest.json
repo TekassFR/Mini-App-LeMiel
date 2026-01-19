@@ -2,7 +2,7 @@
     "name": "Ma Mini-App Telegram",
     "short_name": "MiniApp",
     "description": "Une Mini-App de démonstration pour Telegram",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#000000",
