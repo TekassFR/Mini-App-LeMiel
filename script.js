@@ -111,8 +111,43 @@ function openTelegram(telegramUrl) {
 
 // ===== PANEL ADMIN =====
 
+function isAdmin() {
+    try {
+        const user = tg?.initDataUnsafe?.user;
+        if (!user) {
+            console.log('❌ Pas de données utilisateur');
+            return false;
+        }
+        
+        const username = user.username?.toLowerCase();
+        if (!username) {
+            console.log('❌ Pas de username');
+            return false;
+        }
+        
+        const whitelist = appConfig?.admins?.whitelist || [];
+        const isWhitelisted = whitelist.some(admin => admin.toLowerCase() === username);
+        
+        console.log('✅ Username:', username);
+        console.log('✅ Whitelist:', whitelist);
+        console.log('✅ Accès admin:', isWhitelisted);
+        
+        return isWhitelisted;
+    } catch (error) {
+        console.error('❌ Erreur isAdmin:', error);
+        return false;
+    }
+}
+
 function openAdminPanel() {
     console.log('openAdminPanel() appelé');
+    
+    // Vérifier l'accès admin
+    if (!isAdmin()) {
+        alert('❌ Accès refusé - vous n\'êtes pas administrateur.');
+        console.warn('Accès refusé');
+        return;
+    }
     
     const overlay = document.getElementById('adminPanelOverlay');
     if (!overlay) {
@@ -123,7 +158,7 @@ function openAdminPanel() {
     
     // Afficher le panel
     overlay.style.display = 'block';
-    console.log('Panel admin affiché');
+    console.log('✅ Panel admin affiché');
     
     setTimeout(() => {
         switchAdminTab('plugs');
