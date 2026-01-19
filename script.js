@@ -97,7 +97,7 @@ function createPlugCard(plug) {
             <img src="${plug.image}" alt="${plug.name}" class="product-img">
             <div class="product-emoji">${plug.emoji}</div>
             <div class="product-badge">
-                ${deptInfo?.emoji || ''} ${deptInfo?.name || plug.department}
+                ${deptInfo?.emoji || ''} ${plug.department}
             </div>
         </div>
         <div class="menu-item-content">
