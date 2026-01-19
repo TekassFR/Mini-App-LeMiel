@@ -597,6 +597,51 @@ main {
     margin-bottom: 30px;
 }
 
+/* Carte des Plugs */
+.menu-item {
+    background: 
+        linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.6) 100%);
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(40, 40, 40, 0.5);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 2px 10px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(60, 60, 60, 0.2);
+    animation: fadeInUp 0.6s ease-out;
+    cursor: pointer;
+}
+
+.menu-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(40, 40, 40, 0.08), transparent);
+    transform: translateX(-100%) skewX(-15deg);
+    transition: transform 0.6s;
+    z-index: 1;
+}
+
+.menu-item:hover::before {
+    transform: translateX(100%) skewX(-15deg);
+}
+
+.menu-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(60, 60, 60, 0.3);
+    border-color: rgba(60, 60, 60, 0.6);
+}
+
 .product-card {
     background: 
         linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.6) 100%);
@@ -844,37 +889,6 @@ main {
     font-weight: bold;
     color: #4CAF50;
     text-shadow: 0 0 3px rgba(76, 175, 80, 0.5);
-}
-
-/* Bouton "Voir" minimaliste */
-.view-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(60, 60, 60, 0.8) 0%, rgba(40, 40, 40, 0.9) 100%);
-    border: 2px solid rgba(100, 100, 100, 0.6);
-    color: #ffffff;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    padding: 0;
-}
-
-.view-btn:hover {
-    transform: scale(1.15) translateX(3px);
-    background: linear-gradient(135deg, rgba(100, 100, 100, 0.9) 0%, rgba(80, 80, 80, 1) 100%);
-    border-color: rgba(150, 150, 150, 0.8);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-}
-
-.view-btn:active {
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .add-to-cart-btn {
