@@ -18,7 +18,7 @@
                         <h1 class="brand-name">PLUGS GRAND-EST</h1>
                         <div class="brand-tagline">Répertoire des Fournisseurs</div>
                     </div>
-                    <button class="admin-btn" onclick="openAdminPanel()">Administration</button>
+                    <button class="admin-btn" onclick="openAdminPanel()" style="display: none;">🔐 Admin</button>
                 </div>
                 <div class="banner-overlay"></div>
                 <div class="user-section">
@@ -69,22 +69,20 @@
             </div>
         </div>
         
-        <!-- Admin Panel Modal -->
-        <div id="adminPanelOverlay" class="admin-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
-            <div class="admin-container" style="background: #1a1a1a; color: #fff; margin: 20px auto; border-radius: 12px; max-width: 500px; padding: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">
-                    <h2 style="margin: 0; font-size: 20px;">🔐 Panel Admin</h2>
-                    <button onclick="closeAdminPanel()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0;">✕</button>
+        <!-- Panel Admin -->
+        <div id="adminPanel" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 9999; overflow-y: auto; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background: #111; border-radius: 12px; padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 15px;">
+                    <h2 style="margin: 0; color: #4caf50;">🔐 Panel Admin</h2>
+                    <button onclick="closeAdminPanel()" style="background: #f44336; border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 18px;">✕</button>
                 </div>
                 
-                <div id="adminMessage" style="display: none; margin-bottom: 15px; padding: 10px; border-radius: 6px; font-weight: bold;"></div>
-                
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">
-                    <button onclick="switchAdminTab('plugs')" class="admin-tab-btn-plugs" style="flex: 1; padding: 10px; background: #4a90e2; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">📍 Plugs</button>
-                    <button onclick="switchAdminTab('departments')" class="admin-tab-btn-depts" style="flex: 1; padding: 10px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">🗺️ Depts</button>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')" style="flex: 1; padding: 12px; background: #4caf50; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">📍 Plugs</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('depts')" style="flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">🗺️ Départements</button>
                 </div>
                 
-                <div id="adminContent" style="max-height: 500px; overflow-y: auto;"></div>
+                <div id="adminContent" style="color: #fff;"></div>
             </div>
         </div>
     </div>
