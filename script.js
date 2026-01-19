@@ -44,17 +44,13 @@ function displayUserInfo() {
     }
 }
 
-// Configuration des boutons de catégories (départements)
+// Configuration du sélecteur de départements
 function setupCategoryButtons() {
-    const buttons = document.querySelectorAll('.category-btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const dept = this.getAttribute('data-department');
-            currentDepartmentFilter = dept;
-            displayPlugsGrid(dept);
-        });
+    const select = document.getElementById('department-select');
+    select.addEventListener('change', function() {
+        const dept = this.value;
+        currentDepartmentFilter = dept;
+        displayPlugsGrid(dept);
     });
 }
 
