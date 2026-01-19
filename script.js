@@ -6,6 +6,7 @@ tg.expand();
 // Variables globales
 let appConfig = {};
 let plugsData = {};
+let adminConfig = {};
 let currentPlugId = null;
 let currentDepartmentFilter = 'all';
 
@@ -16,6 +17,7 @@ async function loadConfig() {
         if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
         appConfig = await response.json();
         plugsData = appConfig.plugs;
+        adminConfig = appConfig.admins || {};
         console.log('Configuration chargée');
         initializeApp();
     } catch (error) {
@@ -27,6 +29,14 @@ function initializeApp() {
     displayPlugsGrid('all');
     setupCategoryButtons();
     displayUserInfo();
+    
+    // Vérifier si l'utilisateur est admin et afficher le bouton
+    if (isAdmin()) {
+        const adminBtn = document.querySelector('.admin-btn');
+        if (adminBtn) {
+            adminBtn.style.display = 'block';
+        }
+    }
 }
 
 function displayUserInfo() {
@@ -109,125 +119,85 @@ function openTelegram(telegramUrl) {
     }
 }
 
-// ===== PANEL ADMIN =====
+// ===== SYSTÈME ADMIN =====
 
 function isAdmin() {
     try {
         const user = tg?.initDataUnsafe?.user;
-        if (!user) {
-            console.log('❌ Pas de données utilisateur');
-            return false;
-        }
+        if (!user) return false;
         
         const username = user.username?.toLowerCase();
-        if (!username) {
-            console.log('❌ Pas de username');
-            return false;
-        }
+        if (!username) return false;
         
-        const whitelist = appConfig?.admins?.whitelist || [];
-        const isWhitelisted = whitelist.some(admin => admin.toLowerCase() === username);
-        
-        console.log('✅ Username:', username);
-        console.log('✅ Whitelist:', whitelist);
-        console.log('✅ Accès admin:', isWhitelisted);
-        
-        return isWhitelisted;
+        const whitelist = adminConfig?.whitelist || [];
+        return whitelist.some(admin => admin.toLowerCase() === username);
     } catch (error) {
-        console.error('❌ Erreur isAdmin:', error);
         return false;
     }
 }
 
 function openAdminPanel() {
-    console.log('openAdminPanel() appelé');
+    console.log('🔓 openAdminPanel appelé');
     
-    // Vérifier l'accès admin
     if (!isAdmin()) {
-        alert('❌ Accès refusé - vous n\'êtes pas administrateur.');
-        console.warn('Accès refusé');
+        alert('❌ Accès refusé');
         return;
     }
     
-    const overlay = document.getElementById('adminPanelOverlay');
-    if (!overlay) {
-        console.error('Overlay non trouvé');
-        alert('Erreur: Panel admin non trouvé');
+    const panel = document.getElementById('adminPanel');
+    if (!panel) {
+        console.error('❌ Panel non trouvé');
         return;
     }
     
-    // Afficher le panel
-    overlay.style.display = 'block';
-    console.log('✅ Panel admin affiché');
-    
-    setTimeout(() => {
-        switchAdminTab('plugs');
-    }, 50);
+    panel.style.display = 'block';
+    console.log('✅ Panel affiché');
+    loadAdminPlugsList();
 }
 
 function closeAdminPanel() {
-    const overlay = document.getElementById('adminPanelOverlay');
-    if (overlay) {
-        overlay.style.display = 'none';
+    const panel = document.getElementById('adminPanel');
+    if (panel) {
+        panel.style.display = 'none';
     }
-}
-
-function showAdminMessage(text, type = 'success') {
-    const msgDiv = document.getElementById('adminMessage');
-    if (!msgDiv) return;
-    
-    msgDiv.textContent = text;
-    msgDiv.style.display = 'block';
-    msgDiv.style.background = type === 'success' ? '#4caf50' : '#f44336';
-    
-    setTimeout(() => {
-        msgDiv.style.display = 'none';
-    }, 3000);
 }
 
 function switchAdminTab(tab) {
-    console.log('switchAdminTab:', tab);
+    // Changer les boutons
+    document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
     
-    const btnPlugs = document.querySelector('.admin-tab-btn-plugs');
-    const btnDepts = document.querySelector('.admin-tab-btn-depts');
-    
+    // Afficher le bon contenu
     if (tab === 'plugs') {
-        if (btnPlugs) btnPlugs.style.background = '#4a90e2';
-        if (btnDepts) btnDepts.style.background = '#333';
-        loadAdminPlugs();
-    } else {
-        if (btnPlugs) btnPlugs.style.background = '#333';
-        if (btnDepts) btnDepts.style.background = '#4a90e2';
-        loadAdminDepts();
+        loadAdminPlugsList();
+    } else if (tab === 'depts') {
+        loadAdminDeptsList();
     }
 }
 
-function loadAdminPlugs() {
+function loadAdminPlugsList() {
     const content = document.getElementById('adminContent');
+    
     let html = `
-        <div style="margin-bottom: 20px;">
-            <h3>➕ Ajouter un Plug</h3>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" id="plugName" placeholder="Nom" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="plugDepts" placeholder="Départements (54,57)" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="plugDesc" placeholder="Description" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="plugTg" placeholder="https://t.me/username" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="plugEmoji" placeholder="Emoji" maxlength="2" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="number" id="plugRating" placeholder="Note" min="0" max="5" step="0.1" value="4.5" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <button onclick="addNewPlug()" style="padding: 10px; background: #4caf50; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">Ajouter Plug</button>
-            </div>
+        <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0;">➕ Ajouter un Plug</h3>
+            <input type="text" id="newPlugName" placeholder="Nom" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="text" id="newPlugDepts" placeholder="Départements (54,57)" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="text" id="newPlugDesc" placeholder="Description" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="text" id="newPlugTg" placeholder="https://t.me/username" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="text" id="newPlugEmoji" placeholder="Emoji" maxlength="2" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="number" id="newPlugRating" placeholder="Note (0-5)" min="0" max="5" step="0.1" value="4.5" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <button onclick="addPlug()" style="width: 100%; padding: 12px; margin-top: 10px; background: #4caf50; border: none; border-radius: 4px; color: #fff; font-weight: bold; cursor: pointer;">Ajouter</button>
         </div>
         
-        <div>
-            <h3>📋 Plugs Existants</h3>
-            <div id="plugsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
-        </div>
+        <h3>📋 Plugs Existants</h3>
     `;
-    content.innerHTML = html;
     
-    const plugsList = document.getElementById('plugsList');
+    // Liste des plugs
     const allPlugs = new Map();
-    Object.values(appConfig.plugs || {}).forEach(deptPlugs => {
+    Object.values(plugsData).forEach(deptPlugs => {
         deptPlugs?.forEach(plug => {
             if (!allPlugs.has(plug.id)) {
                 allPlugs.set(plug.id, plug);
@@ -236,127 +206,133 @@ function loadAdminPlugs() {
     });
     
     allPlugs.forEach(plug => {
-        const plugItem = document.createElement('div');
-        plugItem.style.cssText = 'background: #222; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;';
-        plugItem.innerHTML = `
-            <div>
-                <strong>${plug.emoji} ${plug.name}</strong>
-                <div style="font-size: 12px; color: #aaa;">Depts: ${(plug.departments || [plug.department]).join(', ')}</div>
+        const depts = (plug.departments || [plug.department]).join(', ');
+        html += `
+            <div style="background: #1a1a1a; padding: 15px; margin: 10px 0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 16px;">${plug.emoji} ${plug.name}</strong>
+                    <div style="color: #888; font-size: 13px; margin-top: 5px;">Depts: ${depts} | Note: ${plug.rating}</div>
+                </div>
+                <button onclick="deletePlug(${plug.id})" style="padding: 8px 16px; background: #f44336; border: none; border-radius: 4px; color: #fff; cursor: pointer;">🗑️</button>
             </div>
-            <button onclick="deletePlugAdmin(${plug.id})" style="padding: 6px 12px; background: #f44336; border: none; color: #fff; border-radius: 4px; cursor: pointer;">Supprimer</button>
         `;
-        plugsList.appendChild(plugItem);
     });
+    
+    content.innerHTML = html;
 }
 
-function loadAdminDepts() {
+function loadAdminDeptsList() {
     const content = document.getElementById('adminContent');
+    
     let html = `
-        <div style="margin-bottom: 20px;">
-            <h3>➕ Ajouter un Département</h3>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <input type="text" id="deptNumber" placeholder="Numéro (57)" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="deptName" placeholder="Nom (Moselle)" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="deptEmoji" placeholder="Emoji" maxlength="2" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <button onclick="addNewDept()" style="padding: 10px; background: #4caf50; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">Ajouter Département</button>
-            </div>
+        <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0;">➕ Ajouter un Département</h3>
+            <input type="text" id="newDeptNum" placeholder="Numéro (57)" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="text" id="newDeptName" placeholder="Nom (Moselle)" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <input type="text" id="newDeptEmoji" placeholder="Emoji" maxlength="2" style="width: 100%; padding: 10px; margin: 5px 0; background: #222; border: 1px solid #444; border-radius: 4px; color: #fff;">
+            <button onclick="addDept()" style="width: 100%; padding: 12px; margin-top: 10px; background: #4caf50; border: none; border-radius: 4px; color: #fff; font-weight: bold; cursor: pointer;">Ajouter</button>
         </div>
         
-        <div>
-            <h3>📋 Départements</h3>
-            <div id="deptsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
-        </div>
+        <h3>📋 Départements</h3>
     `;
-    content.innerHTML = html;
     
-    const deptsList = document.getElementById('deptsList');
     Object.entries(appConfig.departments || {}).forEach(([num, dept]) => {
-        const deptItem = document.createElement('div');
-        deptItem.style.cssText = 'background: #222; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;';
-        deptItem.innerHTML = `
-            <div>
-                <strong>${dept.emoji} ${dept.name} (${num})</strong>
-                <div style="font-size: 12px; color: #aaa;">Plugs: ${(appConfig.plugs?.[num] || []).length}</div>
+        const plugCount = (plugsData[num] || []).length;
+        html += `
+            <div style="background: #1a1a1a; padding: 15px; margin: 10px 0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 16px;">${dept.emoji} ${dept.name} (${num})</strong>
+                    <div style="color: #888; font-size: 13px; margin-top: 5px;">Plugs: ${plugCount}</div>
+                </div>
+                <button onclick="deleteDept('${num}')" style="padding: 8px 16px; background: #f44336; border: none; border-radius: 4px; color: #fff; cursor: pointer;">🗑️</button>
             </div>
-            <button onclick="deleteDeptAdmin('${num}')" style="padding: 6px 12px; background: #f44336; border: none; color: #fff; border-radius: 4px; cursor: pointer;">Supprimer</button>
         `;
-        deptsList.appendChild(deptItem);
     });
+    
+    content.innerHTML = html;
 }
 
-function addNewPlug() {
-    const name = document.getElementById('plugName')?.value;
-    const depts = document.getElementById('plugDepts')?.value;
-    const desc = document.getElementById('plugDesc')?.value;
-    const tg = document.getElementById('plugTg')?.value;
-    const emoji = document.getElementById('plugEmoji')?.value || '📍';
-    const rating = parseFloat(document.getElementById('plugRating')?.value) || 4.5;
+function addPlug() {
+    const name = document.getElementById('newPlugName')?.value.trim();
+    const depts = document.getElementById('newPlugDepts')?.value.trim();
+    const desc = document.getElementById('newPlugDesc')?.value.trim();
+    const tg = document.getElementById('newPlugTg')?.value.trim();
+    const emoji = document.getElementById('newPlugEmoji')?.value.trim() || '📍';
+    const rating = parseFloat(document.getElementById('newPlugRating')?.value) || 4.5;
     
     if (!name || !depts || !desc || !tg) {
-        showAdminMessage('⚠️ Veuillez remplir tous les champs', 'error');
+        alert('⚠️ Veuillez remplir tous les champs');
         return;
     }
     
     const departments = depts.split(',').map(d => d.trim());
     let maxId = 0;
-    Object.values(appConfig.plugs || {}).forEach(deptPlugs => {
+    Object.values(plugsData).forEach(deptPlugs => {
         deptPlugs?.forEach(p => { if (p.id > maxId) maxId = p.id; });
     });
     
     const newPlug = {
         id: maxId + 1,
-        name, departments, description: desc, telegram: tg, emoji,
+        name,
+        departments,
+        description: desc,
+        telegram: tg,
+        emoji,
         image: 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png',
-        rating, active: true
+        rating,
+        active: true
     };
     
     departments.forEach(dept => {
-        if (!appConfig.plugs[dept]) appConfig.plugs[dept] = [];
-        appConfig.plugs[dept].push(newPlug);
+        if (!plugsData[dept]) plugsData[dept] = [];
+        plugsData[dept].push(newPlug);
     });
     
-    showAdminMessage('✅ Plug ajouté!');
-    loadAdminPlugs();
+    alert('✅ Plug ajouté!');
+    loadAdminPlugsList();
+    displayPlugsGrid(currentDepartmentFilter);
 }
 
-function deletePlugAdmin(plugId) {
-    if (confirm('Supprimer ce plug ?')) {
-        Object.keys(appConfig.plugs || {}).forEach(dept => {
-            appConfig.plugs[dept] = appConfig.plugs[dept].filter(p => p.id !== plugId);
-        });
-        showAdminMessage('✅ Plug supprimé!');
-        loadAdminPlugs();
-    }
+function deletePlug(plugId) {
+    if (!confirm('Supprimer ce plug ?')) return;
+    
+    Object.keys(plugsData).forEach(dept => {
+        plugsData[dept] = plugsData[dept].filter(p => p.id !== plugId);
+    });
+    
+    alert('✅ Plug supprimé!');
+    loadAdminPlugsList();
+    displayPlugsGrid(currentDepartmentFilter);
 }
 
-function addNewDept() {
-    const num = document.getElementById('deptNumber')?.value;
-    const name = document.getElementById('deptName')?.value;
-    const emoji = document.getElementById('deptEmoji')?.value || '📍';
+function addDept() {
+    const num = document.getElementById('newDeptNum')?.value.trim();
+    const name = document.getElementById('newDeptName')?.value.trim();
+    const emoji = document.getElementById('newDeptEmoji')?.value.trim() || '📍';
     
     if (!num || !name) {
-        showAdminMessage('⚠️ Veuillez remplir tous les champs', 'error');
+        alert('⚠️ Veuillez remplir tous les champs');
         return;
     }
     
-    if (appConfig.departments?.[num]) {
-        showAdminMessage('⚠️ Ce département existe déjà', 'error');
+    if (appConfig.departments[num]) {
+        alert('⚠️ Ce département existe déjà');
         return;
     }
     
     appConfig.departments[num] = { name, emoji };
-    if (!appConfig.plugs[num]) appConfig.plugs[num] = [];
+    if (!plugsData[num]) plugsData[num] = [];
     
-    showAdminMessage('✅ Département ajouté!');
-    loadAdminDepts();
+    alert('✅ Département ajouté!');
+    loadAdminDeptsList();
 }
 
-function deleteDeptAdmin(num) {
-    if (confirm('Supprimer ce département ?')) {
-        delete appConfig.departments[num];
-        showAdminMessage('✅ Département supprimé!');
-        loadAdminDepts();
-    }
+function deleteDept(num) {
+    if (!confirm('Supprimer ce département ?')) return;
+    
+    delete appConfig.departments[num];
+    alert('✅ Département supprimé!');
+    loadAdminDeptsList();
 }
 
 // Thème Telegram
