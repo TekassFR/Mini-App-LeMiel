@@ -1743,6 +1743,7 @@ body {
 }
 
 .product-video-section {
+    display: none;
     margin-top: 30px;
 }
 
