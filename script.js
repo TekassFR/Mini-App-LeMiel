@@ -87,7 +87,7 @@ function createPlugCard(plug) {
     const card = document.createElement('div');
     card.className = 'menu-item';
     card.style.cursor = 'pointer';
-    card.onclick = () => openTelegram(plug.telegram);
+    card.onclick = () => showPlugDetail(plug.id);
     
     const ratingStars = '⭐'.repeat(Math.floor(plug.rating)) + (plug.rating % 1 !== 0 ? '✨' : '');
     
