@@ -36,7 +36,7 @@
       {
         "id": 1,
         "name": "Plug Master 57",
-        "department": "57",
+        "departments": ["57"],
         "description": "Les meilleurs produits de Moselle",
         "telegram": "https://t.me/PlugMaster57",
         "emoji": "🔥",
@@ -47,7 +47,7 @@
       {
         "id": 2,
         "name": "Quality Plugs 57",
-        "department": "57",
+        "departments": ["57"],
         "description": "Produits de qualité supérieure",
         "telegram": "https://t.me/QualityPlugs57",
         "emoji": "⭐",
@@ -59,10 +59,10 @@
     "54": [
       {
         "id": 3,
-        "name": "Plug Nancy",
-        "department": "54",
+        "name": "HLUXOR ",
+        "departments": ["54"],
         "description": "Service rapide et efficace",
-        "telegram": "https://t.me/PlugNancy54",
+        "telegram": "https://t.me/+_Ur2tIF0Yj1mMDc0",
         "emoji": "🚀",
         "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
         "rating": 4.7,
@@ -71,7 +71,7 @@
       {
         "id": 4,
         "name": "Central Plugs 54",
-        "department": "54",
+        "departments": ["54"],
         "description": "Central référencé",
         "telegram": "https://t.me/CentralPlugs54",
         "emoji": "💎",
@@ -84,7 +84,7 @@
       {
         "id": 5,
         "name": "Plug Meuse",
-        "department": "55",
+        "departments": ["55"],
         "description": "Spécialiste local",
         "telegram": "https://t.me/PlugMeuse55",
         "emoji": "🌟",
@@ -97,7 +97,7 @@
       {
         "id": 6,
         "name": "Plug Vosges",
-        "department": "88",
+        "departments": ["88"],
         "description": "Expert des Vosges",
         "telegram": "https://t.me/PlugVosges88",
         "emoji": "🎯",
@@ -110,7 +110,7 @@
       {
         "id": 7,
         "name": "Alsace Plugs",
-        "department": "67",
+        "departments": ["67"],
         "description": "Leader en Alsace",
         "telegram": "https://t.me/AlsacePlugs67",
         "emoji": "👑",
@@ -121,7 +121,7 @@
       {
         "id": 8,
         "name": "Strasbourg Plug",
-        "department": "67",
+        "departments": ["67"],
         "description": "Cœur de Strasbourg",
         "telegram": "https://t.me/StrasbourgPlug67",
         "emoji": "🏰",
@@ -134,7 +134,7 @@
       {
         "id": 9,
         "name": "Mulhouse Plugs",
-        "department": "68",
+        "departments": ["68"],
         "description": "Spécialiste Mulhouse",
         "telegram": "https://t.me/MulhousePlugs68",
         "emoji": "🎭",
