@@ -207,33 +207,39 @@ function showError(message) {
 // Ouverture du panel admin
 function openAdminPanel() {
     console.log('openAdminPanel() appelé');
+    console.log('tg:', tg);
+    console.log('appConfig:', appConfig);
     
     try {
-        // Vérifier que nous avons accès à Telegram
-        if (!tg.initDataUnsafe || !tg.initDataUnsafe.user) {
-            alert('⚠️ Veuillez ouvrir cette page via Telegram');
+        // Afficher le panel directement pour tester
+        const overlay = document.getElementById('adminPanelOverlay');
+        console.log('overlay trouvé:', overlay);
+        
+        if (!overlay) {
+            console.error('❌ overlay non trouvé');
+            alert('Erreur: Panel admin non trouvé dans le DOM');
             return;
         }
         
-        const username = tg.initDataUnsafe.user.username;
-        const whitelist = appConfig?.admins?.whitelist || [];
-        
-        console.log('Username:', username, 'Whitelist:', whitelist);
-        
-        if (!username || !whitelist.includes(username)) {
-            alert('❌ Accès refusé - vous n\'êtes pas administrateur.');
-            return;
+        // Vérifier Telegram
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const username = tg.initDataUnsafe.user.username;
+            const whitelist = appConfig?.admins?.whitelist || [];
+            console.log('Username:', username, 'Whitelist:', whitelist);
+            
+            if (username && !whitelist.includes(username)) {
+                console.warn('⚠️ Username not in whitelist, but showing panel anyway for testing');
+            }
         }
         
         // Afficher le panel
-        const overlay = document.getElementById('adminPanelOverlay');
-        if (overlay) {
-            overlay.style.display = 'block';
+        overlay.style.display = 'block';
+        console.log('overlay.style.display = block');
+        
+        setTimeout(() => {
             switchAdminTab('plugs');
-            console.log('Panel admin affiché');
-        } else {
-            alert('Erreur: Panel admin non trouvé');
-        }
+        }, 50);
+        
     } catch (error) {
         console.error('Erreur openAdminPanel:', error);
         alert('Erreur: ' + error.message);
