@@ -68,6 +68,22 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Panel Admin Modal -->
+        <div class="admin-modal" id="admin-modal" style="display: none;">
+            <div class="admin-modal-content" id="admin-modal-content">
+                <div class="admin-modal-header">
+                    <h2>🔐 Panel Administration</h2>
+                    <button onclick="closeAdminPanel()" class="close-btn">✕</button>
+                </div>
+                <div id="admin-message-container"></div>
+                <div class="admin-tabs-container">
+                    <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')">📍 Plugs</button>
+                    <button class="admin-tab-btn" onclick="switchAdminTab('departments')">🗺️ Départements</button>
+                </div>
+                <div class="admin-tabs-content" id="admin-tabs-content"></div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
