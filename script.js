@@ -204,6 +204,15 @@ function showError(message) {
     grid.innerHTML = `<div class="error-message">${message}</div>`;
 }
 
+// Ouverture du panel admin
+function openAdminPanel() {
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.openLink('./admin.html');
+    } else {
+        window.open('./admin.html', '_blank');
+    }
+}
+
 // Changement de thème selon le thème du système Telegram
 if (tg.setBackgroundColor) {
     tg.setBackgroundColor('#000000');
