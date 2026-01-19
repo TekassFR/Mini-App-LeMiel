@@ -93,10 +93,7 @@ function createPlugCard(plug) {
     
     // Gérer plusieurs départements
     const departments = plug.departments || [plug.department];
-    const deptBadges = departments.map(dept => {
-        const deptInfo = appConfig.departments[dept];
-        return `${deptInfo?.emoji || ''} ${dept}`;
-    }).join(' ');
+    const deptBadges = departments.join(' ');
     
     card.innerHTML = `
         <div class="menu-item-image">
