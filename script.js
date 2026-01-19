@@ -181,17 +181,15 @@ function closePlugDetail() {
 // Ouverture du lien Telegram
 function openTelegram(telegramUrl) {
     try {
-        // Dans Telegram WebApp, utiliser openLink pour les liens externes
-        if (window.Telegram && window.Telegram.WebApp) {
-            // Utiliser openLink au lieu de openTelegramLink
-            window.Telegram.WebApp.openLink(telegramUrl);
+        // Dans Telegram WebApp, utiliser openTelegramLink pour rester dans l'app
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+            window.Telegram.WebApp.openTelegramLink(telegramUrl);
         } else {
             // Fallback pour navigateur web normal
             window.open(telegramUrl, '_blank');
         }
     } catch (error) {
         console.error('Erreur ouverture Telegram:', error);
-        // Dernier recours
         window.location.href = telegramUrl;
     }
 }
