@@ -206,10 +206,14 @@ function showError(message) {
 
 // Ouverture du panel admin
 function openAdminPanel() {
+    // Récupérer l'URL de base
+    const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+    const adminUrl = baseUrl + 'admin.html';
+    
     if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.openLink('./admin.html');
+        window.Telegram.WebApp.openLink(adminUrl);
     } else {
-        window.open('./admin.html', '_blank');
+        window.open(adminUrl, '_blank');
     }
 }
 
