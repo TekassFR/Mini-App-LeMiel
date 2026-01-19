@@ -216,7 +216,8 @@ header {
     font-size: 0.9rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-    z-index: 10;
+    z-index: 100;
+    pointer-events: all;
 }
 
 .admin-btn:hover {
