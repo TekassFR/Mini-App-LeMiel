@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐝 Le Miel - Menus</title>
+    <title>🌍 Plugs Grand-Est</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
@@ -15,173 +15,58 @@
                 <div class="banner-content">
                     <div class="logo-section">
                         <div class="logo-icon"><img src="https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png" alt="Logo" class="logo-img" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/56x56.png?text=Logo'" /></div>
-                        <h1 class="brand-name">CHEZ LEMIEL</h1>
-                        <div class="brand-tagline">Notre Menus 2025</div>
+                        <h1 class="brand-name">PLUGS GRAND-EST</h1>
+                        <div class="brand-tagline">Répertoire des Fournisseurs</div>
                     </div>
                     <div class="user-section">
-                        <p id="user-info" class="user-welcome">Chargement...</p>
+                        <p id="user-info" class="user-welcome">Bienvenue 👋</p>
                     </div>
                 </div>
                 <div class="banner-overlay"></div>
-
             </div>
         </header>
         
-        <!-- Panier -->
-        <div class="cart-summary" id="cart-summary" style="display: none;">
-            <div class="cart-header">
-                <h3>🛒 Votre commande</h3>
-                <span class="cart-total" id="cart-total">0.00€</span>
-            </div>
-            <div class="cart-items" id="cart-items"></div>
-            <div class="cart-actions">
-                <button class="btn btn-clear" id="clear-cart-btn" onclick="clearCart()">🗑️ Vider</button>
-                <button class="btn btn-success" id="checkout-btn">📤 Commander</button>
-            </div>
-        </div>
-        
-        <!-- Navigation des catégories -->
+        <!-- Navigation des départements -->
         <nav class="category-nav">
-            <button class="category-btn active" data-category="all">🍽️ Tout</button>
-            <button class="category-btn" data-category="pizza">🍫 Hash</button>
-            <button class="category-btn" data-category="pasta">🌿 Weed</button>
-            <button class="category-btn" data-category="boisson">🎉 Festif</button>
+            <button class="category-btn active" data-department="all">🌍 Tous</button>
+            <button class="category-btn" data-department="57">🏭 Moselle</button>
+            <button class="category-btn" data-department="54">🌳 M&M</button>
+            <button class="category-btn" data-department="55">🏞️ Meuse</button>
+            <button class="category-btn" data-department="88">⛰️ Vosges</button>
+            <button class="category-btn" data-department="67">🍷 Bas-Rhin</button>
+            <button class="category-btn" data-department="68">🏔️ Haut-Rhin</button>
         </nav>
         
         <main>
-            
-            <!-- Menu des produits -->
+            <!-- Grille des Plugs -->
             <div class="menu-grid" id="menu-grid">
-                <!-- Les produits seront générés dynamiquement -->
+                <!-- Les plugs seront générés dynamiquement -->
             </div>
         </main>
         
-        <!-- Page de détail produit -->
+        <!-- Page de détail du Plug -->
         <div class="product-detail-page" id="product-detail-page" style="display: none;">
             <div class="product-detail-content">
-                <button class="back-btn" onclick="closeProductDetail()">← Retour</button>
+                <button class="back-btn" onclick="closePlugDetail()">← Retour</button>
                 <div class="product-detail-header">
                     <div class="product-detail-image">
                         <img id="detail-product-img" src="" alt="" class="detail-img">
-                        <div id="detail-product-emoji" class="detail-emoji" style="display: none;"></div>
+                        <div id="detail-product-emoji" class="detail-emoji"></div>
                     </div>
                     <div class="product-detail-info">
                         <h2 id="detail-product-name"></h2>
                         <p id="detail-product-description"></p>
                         <div class="detail-price-section">
-                            <div class="quantity-selector">
-                                <h4>Choisissez votre quantité :</h4>
-                                <div class="quantity-bubbles">
-                                    <div class="quantity-bubble" data-qty="1" onclick="addToCartWithQuantity(currentProductId, 1)">
-                                        <span class="bubble-qty">1g</span>
-                                        <span class="bubble-price" id="price-1"></span>
-                                    </div>
-                                    <div class="quantity-bubble" data-qty="2" onclick="addToCartWithQuantity(currentProductId, 2)">
-                                        <span class="bubble-qty">2g</span>
-                                        <span class="bubble-price" id="price-2"></span>
-                                    </div>
-                                    <div class="quantity-bubble" data-qty="5" onclick="addToCartWithQuantity(currentProductId, 5)">
-                                        <span class="bubble-qty">5g</span>
-                                        <span class="bubble-price" id="price-5"></span>
-                                    </div>
-                                    <div class="quantity-bubble" data-qty="10" onclick="addToCartWithQuantity(currentProductId, 10)">
-                                        <span class="bubble-qty">10g</span>
-                                        <span class="bubble-price" id="price-10"></span>
-                                    </div>
-                                    <div class="quantity-bubble" data-qty="25" onclick="addToCartWithQuantity(currentProductId, 25)">
-                                        <span class="bubble-qty">25g</span>
-                                        <span class="bubble-price" id="price-25"></span>
-                                    </div>
-                                    <div class="quantity-bubble" data-qty="50" onclick="addToCartWithQuantity(currentProductId, 50)">
-                                        <span class="bubble-qty">50g</span>
-                                        <span class="bubble-price" id="price-50"></span>
-                                    </div>
-                                    <div class="quantity-bubble" data-qty="100" onclick="addToCartWithQuantity(currentProductId, 100)">
-                                        <span class="bubble-qty">100g</span>
-                                        <span class="bubble-price" id="price-100"></span>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="plug-rating" id="detail-rating"></div>
+                            <div class="plug-department" id="detail-department"></div>
+                            <button class="btn btn-success" id="contact-btn" onclick="contactPlug()">💬 Contacter</button>
                         </div>
                     </div>
                 </div>
-                <div class="product-video-section">
-                    <h3>🎥 Présentation du produit</h3>
-                    <div class="video-container">
-                        <video id="product-video" controls preload="metadata" poster="">
-                            <source id="video-source" src="" type="video/mp4">
-                            Votre navigateur ne supporte pas la lecture de vidéos.
-                        </video>
-                    </div>
-                </div>
             </div>
         </div>
+    </div>
 
-        <!-- Page d'informations -->
-        <div class="info-page" id="info-page" style="display: none;">
-            <div class="info-content">
-                <h2>📋 Informations</h2>
-                
-                <div class="info-section">
-                    <h3>🚚 Livraison</h3>
-                    <p><strong>Horaires :</strong> 10H - 23H (SEMAINE) | 12H - 00H (Samedi/Dimanche)</p>
-                    <p><strong>Délai :</strong> 30-45 minutes</p>
-                    <p><strong>Minimum :</strong> à partir de 50€</p>
-                    <p><strong>Zone :</strong> 54 (Grand Est SELON COMMANDE)</p>
-                </div>
-                
-                <div class="info-section">
-                    <h3>📞 Contact</h3>
-                    <p><strong>Snapchat :</strong> PAS DISPONIBLE</p>
-                    <p><strong>Telegram :</strong> @LEMIEL54</p>
-                </div>
-                
-                <div class="info-section">
-                    <h3>💳 Paiement</h3>
-                    <p><strong>Modes acceptés :</strong> Espèces uniquement</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Barre de navigation en bas -->
-        <nav class="bottom-nav">
-            <button class="nav-item active" data-page="menu">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">Menu</span>
-            </button>
-            <button class="nav-item" data-page="info">
-                <span class="nav-icon">ℹ️</span>
-                <span class="nav-label">Infos</span>
-            </button>
-            <button class="nav-item" data-page="canal">
-                <span class="nav-icon">✈️</span>
-                <span class="nav-label">Canal</span>
-            </button>
-            <button class="nav-item" data-page="contact">
-                <span class="nav-icon">✉️</span>
-                <span class="nav-label">Contact</span>
-            </button>
-        </nav>
-    </div>
-    
     <script src="script.js"></script>
-    <!-- Ajouter cette modal avant la fermeture du body -->
-    <div id="address-modal" class="address-modal">
-        <div class="address-modal-content">
-            <div class="address-modal-header">
-                <h3>📍 Adresse de livraison</h3>
-            </div>
-            <div class="address-modal-body">
-                <div class="address-input-group">
-                    <label for="address-input">Où souhaitez-vous être livré ?</label>
-                    <textarea id="address-input" placeholder="Entrez votre adresse complète...&#10;Ex: 123 Rue de la Paix, 75001 Paris" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="address-modal-footer">
-                <button id="cancel-address" class="btn-cancel">❌ Annuler</button>
-                <button id="confirm-address" class="btn-confirm">✅ Confirmer</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
