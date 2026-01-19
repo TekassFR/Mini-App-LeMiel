@@ -2,7 +2,7 @@
     "name": "Ma Mini-App Telegram",
     "short_name": "MiniApp",
     "description": "Une Mini-App de démonstration pour Telegram",
-    "version": "1.0.0",
+    "version": "2.0.1",
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#000000",
@@ -21,7 +21,7 @@
       }
     ],
     "telegram": {
-      "bot_username": "miniapplemieltest_bot",
-      "web_app_url": "https://mini-app-peaky-3ehb.vercel.app"
+      "bot_username": "APPGrandEst_Bot",
+      "web_app_url": "https://lemiel-coffeeshop.vercel.app"
     }
   }
