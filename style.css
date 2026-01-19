@@ -216,14 +216,26 @@ header {
     font-size: 0.9rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-    z-index: 100;
-    pointer-events: all;
+    z-index: 999999 !important;
+    pointer-events: all !important;
 }
 
 .admin-btn:hover {
     background: linear-gradient(145deg, #66BB6A, #43A047);
     box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
     transform: translateY(-2px);
+}
+
+.admin-tab-btn {
+    transition: all 0.3s ease;
+}
+
+.admin-tab-btn.active {
+    background: #4caf50 !important;
+}
+
+.admin-tab-btn:hover {
+    opacity: 0.8;
 }
 
 .user-welcome {
