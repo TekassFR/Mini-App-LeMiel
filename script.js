@@ -1,7 +1,5 @@
 // Telegram WebApp initialization
 const tg = window.Telegram.WebApp;
-
-// Configuration
 tg.ready();
 tg.expand();
 
@@ -15,27 +13,22 @@ let currentDepartmentFilter = 'all';
 async function loadConfig() {
     try {
         const response = await fetch('./config.json');
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
         appConfig = await response.json();
         plugsData = appConfig.plugs;
-        console.log('Configuration chargée avec succès');
+        console.log('Configuration chargée');
         initializeApp();
     } catch (error) {
-        console.error('Erreur lors du chargement de la configuration:', error);
-        showError('Impossible de charger les données. Veuillez rafraîchir.');
+        console.error('Erreur chargement config:', error);
     }
 }
 
-// Initialisation de l'app
 function initializeApp() {
     displayPlugsGrid('all');
     setupCategoryButtons();
     displayUserInfo();
 }
 
-// Affichage des informations utilisateur
 function displayUserInfo() {
     const userInfo = document.getElementById('user-info');
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -44,45 +37,38 @@ function displayUserInfo() {
     }
 }
 
-// Configuration du sélecteur de départements
 function setupCategoryButtons() {
     const select = document.getElementById('department-select');
     select.addEventListener('change', function() {
-        const dept = this.value;
-        currentDepartmentFilter = dept;
-        displayPlugsGrid(dept);
+        currentDepartmentFilter = this.value;
+        displayPlugsGrid(this.value);
     });
 }
 
-// Affichage de la grille des plugs
 function displayPlugsGrid(department) {
     const grid = document.getElementById('menu-grid');
     grid.innerHTML = '';
-
     let plugsToDisplay = [];
 
     if (department === 'all') {
-        // Tous les plugs
-        Object.values(plugsData).forEach(departmentPlugs => {
-            plugsToDisplay = plugsToDisplay.concat(departmentPlugs);
+        Object.values(plugsData).forEach(deptPlugs => {
+            plugsToDisplay = plugsToDisplay.concat(deptPlugs);
         });
     } else {
-        // Plugs d'un département spécifique
         plugsToDisplay = plugsData[department] || [];
     }
 
     if (plugsToDisplay.length === 0) {
-        grid.innerHTML = '<div class="no-results">Aucun plug trouvé dans cette région.</div>';
+        grid.innerHTML = '<div class="no-results">Aucun plug trouvé</div>';
         return;
     }
 
     plugsToDisplay.forEach(plug => {
-        const plugCard = createPlugCard(plug);
-        grid.appendChild(plugCard);
+        const card = createPlugCard(plug);
+        grid.appendChild(card);
     });
 }
 
-// Création d'une carte de plug
 function createPlugCard(plug) {
     const card = document.createElement('div');
     card.className = 'menu-item';
@@ -90,8 +76,6 @@ function createPlugCard(plug) {
     card.onclick = () => openTelegram(plug.telegram);
     
     const ratingStars = '⭐'.repeat(Math.floor(plug.rating)) + (plug.rating % 1 !== 0 ? '✨' : '');
-    
-    // Gérer plusieurs départements
     const departments = plug.departments || [plug.department];
     const deptBadges = departments.join(' ');
     
@@ -99,154 +83,53 @@ function createPlugCard(plug) {
         <div class="menu-item-image">
             <img src="${plug.image}" alt="${plug.name}" class="product-img">
             <div class="product-emoji">${plug.emoji}</div>
-            <div class="product-badge">
-                ${deptBadges}
-            </div>
+            <div class="product-badge">${deptBadges}</div>
         </div>
         <div class="menu-item-content">
             <h3 class="product-name">${plug.name}</h3>
             <p class="product-description">${plug.description}</p>
             <div class="product-footer">
-                <div class="product-price">
-                    <span class="rating">${ratingStars} ${plug.rating}</span>
-                </div>
+                <span class="rating">${ratingStars} ${plug.rating}</span>
             </div>
         </div>
     `;
-    
     return card;
 }
 
-// Affichage du détail d'un plug
-function showPlugDetail(plugId) {
-    // Rechercher le plug dans tous les départements
-    let plug = null;
-    for (let dept in plugsData) {
-        const found = plugsData[dept].find(p => p.id === plugId);
-        if (found) {
-            plug = found;
-            break;
-        }
-    }
-
-    if (!plug) return;
-
-    currentPlugId = plug.id;
-    const detailPage = document.getElementById('product-detail-page');
-    
-    // Remplir les informations
-    document.getElementById('detail-product-name').textContent = plug.name;
-    document.getElementById('detail-product-description').textContent = plug.description;
-    document.getElementById('detail-product-img').src = plug.image;
-    document.getElementById('detail-product-emoji').textContent = plug.emoji;
-    
-    // Afficher la note
-    const ratingStars = '⭐'.repeat(Math.floor(plug.rating)) + (plug.rating % 1 !== 0 ? '✨' : '');
-    const ratingDiv = document.getElementById('detail-rating');
-    ratingDiv.innerHTML = `<strong>Note:</strong> ${ratingStars} ${plug.rating}/5`;
-    
-    // Afficher le département
-    const deptName = appConfig.departments[plug.department]?.name || 'Inconnu';
-    const deptDiv = document.getElementById('detail-department');
-    deptDiv.innerHTML = `<strong>Localisation:</strong> ${appConfig.departments[plug.department]?.emoji || ''} ${deptName}`;
-    
-    // Afficher le lien Telegram
-    const telegramLinkDiv = document.getElementById('plug-telegram-link');
-    const telegramUsername = plug.telegram.replace('https://t.me/', '').replace('http://t.me/', '');
-    const telegramLink = document.createElement('a');
-    telegramLink.href = '#';
-    telegramLink.textContent = telegramUsername;
-    telegramLink.style.color = '#4a90e2';
-    telegramLink.style.textDecoration = 'none';
-    telegramLink.style.fontWeight = '600';
-    telegramLink.style.borderBottom = '2px solid transparent';
-    telegramLink.style.transition = 'all 0.3s ease';
-    telegramLink.dataset.telegram = plug.telegram;
-    telegramLink.onclick = (e) => {
-        e.preventDefault();
-        openTelegram(plug.telegram);
-    };
-    
-    telegramLinkDiv.innerHTML = '<strong>📱 Telegram:</strong> ';
-    telegramLinkDiv.appendChild(telegramLink);
-    
-    detailPage.style.display = 'flex';
-    window.scrollTo(0, 0);
-}
-
-// Fermeture du détail du plug
-function closePlugDetail() {
-    const detailPage = document.getElementById('product-detail-page');
-    detailPage.style.display = 'none';
-    currentPlugId = null;
-}
-
-// Ouverture du lien Telegram
 function openTelegram(telegramUrl) {
     try {
-        // Dans Telegram WebApp, utiliser openTelegramLink pour rester dans l'app
         if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
             window.Telegram.WebApp.openTelegramLink(telegramUrl);
         } else {
-            // Fallback pour navigateur web normal
             window.open(telegramUrl, '_blank');
         }
     } catch (error) {
-        console.error('Erreur ouverture Telegram:', error);
+        console.error('Erreur Telegram:', error);
         window.location.href = telegramUrl;
     }
 }
 
-// Gestion des erreurs
-function showError(message) {
-    console.error(message);
-    const grid = document.getElementById('menu-grid');
-    grid.innerHTML = `<div class="error-message">${message}</div>`;
-}
+// ===== PANEL ADMIN =====
 
-// Ouverture du panel admin
 function openAdminPanel() {
     console.log('openAdminPanel() appelé');
-    console.log('tg:', tg);
-    console.log('appConfig:', appConfig);
     
-    try {
-        // Afficher le panel directement pour tester
-        const overlay = document.getElementById('adminPanelOverlay');
-        console.log('overlay trouvé:', overlay);
-        
-        if (!overlay) {
-            console.error('❌ overlay non trouvé');
-            alert('Erreur: Panel admin non trouvé dans le DOM');
-            return;
-        }
-        
-        // Vérifier Telegram
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const username = tg.initDataUnsafe.user.username;
-            const whitelist = appConfig?.admins?.whitelist || [];
-            console.log('Username:', username, 'Whitelist:', whitelist);
-            
-            if (username && !whitelist.includes(username)) {
-                console.warn('⚠️ Username not in whitelist, but showing panel anyway for testing');
-            }
-        }
-        
-        // Afficher le panel
-        overlay.style.display = 'block';
-        console.log('overlay.style.display = block');
-        
-        setTimeout(() => {
-            switchAdminTab('plugs');
-        }, 50);
-        
-    } catch (error) {
-        console.error('Erreur openAdminPanel:', error);
-        alert('Erreur: ' + error.message);
+    const overlay = document.getElementById('adminPanelOverlay');
+    if (!overlay) {
+        console.error('Overlay non trouvé');
+        alert('Erreur: Panel admin non trouvé');
+        return;
     }
+    
+    // Afficher le panel
+    overlay.style.display = 'block';
+    console.log('Panel admin affiché');
+    
+    setTimeout(() => {
+        switchAdminTab('plugs');
+    }, 50);
 }
 
-// Fermeture du panel admin
 function closeAdminPanel() {
     const overlay = document.getElementById('adminPanelOverlay');
     if (overlay) {
@@ -254,24 +137,24 @@ function closeAdminPanel() {
     }
 }
 
-// Affichage d'un message admin
 function showAdminMessage(text, type = 'success') {
     const msgDiv = document.getElementById('adminMessage');
-    if (msgDiv) {
-        msgDiv.textContent = text;
-        msgDiv.style.display = 'block';
-        msgDiv.style.background = type === 'success' ? '#4caf50' : '#f44336';
-        setTimeout(() => { msgDiv.style.display = 'none'; }, 3000);
-    }
+    if (!msgDiv) return;
+    
+    msgDiv.textContent = text;
+    msgDiv.style.display = 'block';
+    msgDiv.style.background = type === 'success' ? '#4caf50' : '#f44336';
+    
+    setTimeout(() => {
+        msgDiv.style.display = 'none';
+    }, 3000);
 }
 
-// Changement d'onglet
 function switchAdminTab(tab) {
-    console.log('Switching to tab:', tab);
+    console.log('switchAdminTab:', tab);
     
     const btnPlugs = document.querySelector('.admin-tab-btn-plugs');
     const btnDepts = document.querySelector('.admin-tab-btn-depts');
-    const content = document.getElementById('adminContent');
     
     if (tab === 'plugs') {
         if (btnPlugs) btnPlugs.style.background = '#4a90e2';
@@ -284,7 +167,6 @@ function switchAdminTab(tab) {
     }
 }
 
-// Charger les plugs en admin
 function loadAdminPlugs() {
     const content = document.getElementById('adminContent');
     let html = `
@@ -292,7 +174,7 @@ function loadAdminPlugs() {
             <h3>➕ Ajouter un Plug</h3>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <input type="text" id="plugName" placeholder="Nom" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
-                <input type="text" id="plugDepts" placeholder="Départements (54,57,55)" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
+                <input type="text" id="plugDepts" placeholder="Départements (54,57)" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
                 <input type="text" id="plugDesc" placeholder="Description" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
                 <input type="text" id="plugTg" placeholder="https://t.me/username" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
                 <input type="text" id="plugEmoji" placeholder="Emoji" maxlength="2" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
@@ -308,10 +190,9 @@ function loadAdminPlugs() {
     `;
     content.innerHTML = html;
     
-    // Remplir la liste
     const plugsList = document.getElementById('plugsList');
     const allPlugs = new Map();
-    Object.values(appConfig.plugs).forEach(deptPlugs => {
+    Object.values(appConfig.plugs || {}).forEach(deptPlugs => {
         deptPlugs?.forEach(plug => {
             if (!allPlugs.has(plug.id)) {
                 allPlugs.set(plug.id, plug);
@@ -333,7 +214,6 @@ function loadAdminPlugs() {
     });
 }
 
-// Charger les départements en admin
 function loadAdminDepts() {
     const content = document.getElementById('adminContent');
     let html = `
@@ -354,15 +234,14 @@ function loadAdminDepts() {
     `;
     content.innerHTML = html;
     
-    // Remplir la liste
     const deptsList = document.getElementById('deptsList');
-    Object.entries(appConfig.departments).forEach(([num, dept]) => {
+    Object.entries(appConfig.departments || {}).forEach(([num, dept]) => {
         const deptItem = document.createElement('div');
         deptItem.style.cssText = 'background: #222; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;';
         deptItem.innerHTML = `
             <div>
                 <strong>${dept.emoji} ${dept.name} (${num})</strong>
-                <div style="font-size: 12px; color: #aaa;">Plugs: ${(appConfig.plugs[num] || []).length}</div>
+                <div style="font-size: 12px; color: #aaa;">Plugs: ${(appConfig.plugs?.[num] || []).length}</div>
             </div>
             <button onclick="deleteDeptAdmin('${num}')" style="padding: 6px 12px; background: #f44336; border: none; color: #fff; border-radius: 4px; cursor: pointer;">Supprimer</button>
         `;
@@ -370,7 +249,6 @@ function loadAdminDepts() {
     });
 }
 
-// Ajouter un plug
 function addNewPlug() {
     const name = document.getElementById('plugName')?.value;
     const depts = document.getElementById('plugDepts')?.value;
@@ -386,7 +264,7 @@ function addNewPlug() {
     
     const departments = depts.split(',').map(d => d.trim());
     let maxId = 0;
-    Object.values(appConfig.plugs).forEach(deptPlugs => {
+    Object.values(appConfig.plugs || {}).forEach(deptPlugs => {
         deptPlugs?.forEach(p => { if (p.id > maxId) maxId = p.id; });
     });
     
@@ -406,10 +284,9 @@ function addNewPlug() {
     loadAdminPlugs();
 }
 
-// Supprimer un plug
 function deletePlugAdmin(plugId) {
     if (confirm('Supprimer ce plug ?')) {
-        Object.keys(appConfig.plugs).forEach(dept => {
+        Object.keys(appConfig.plugs || {}).forEach(dept => {
             appConfig.plugs[dept] = appConfig.plugs[dept].filter(p => p.id !== plugId);
         });
         showAdminMessage('✅ Plug supprimé!');
@@ -417,7 +294,6 @@ function deletePlugAdmin(plugId) {
     }
 }
 
-// Ajouter un département
 function addNewDept() {
     const num = document.getElementById('deptNumber')?.value;
     const name = document.getElementById('deptName')?.value;
@@ -428,7 +304,7 @@ function addNewDept() {
         return;
     }
     
-    if (appConfig.departments[num]) {
+    if (appConfig.departments?.[num]) {
         showAdminMessage('⚠️ Ce département existe déjà', 'error');
         return;
     }
@@ -440,7 +316,6 @@ function addNewDept() {
     loadAdminDepts();
 }
 
-// Supprimer un département
 function deleteDeptAdmin(num) {
     if (confirm('Supprimer ce département ?')) {
         delete appConfig.departments[num];
@@ -449,14 +324,9 @@ function deleteDeptAdmin(num) {
     }
 }
 
-// Changement de thème selon le thème du système Telegram
-if (tg.setBackgroundColor) {
-    tg.setBackgroundColor('#000000');
-}
+// Thème Telegram
+if (tg.setBackgroundColor) tg.setBackgroundColor('#000000');
+if (tg.setHeaderColor) tg.setHeaderColor('#1a1a1a');
 
-if (tg.setHeaderColor) {
-    tg.setHeaderColor('#1a1a1a');
-}
-
-// Chargement initial
+// Démarrage
 document.addEventListener('DOMContentLoaded', loadConfig);
