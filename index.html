@@ -69,19 +69,22 @@
             </div>
         </div>
         
-        <!-- Panel Admin Modal -->
-        <div class="admin-modal" id="admin-modal" style="display: none;">
-            <div class="admin-modal-content" id="admin-modal-content">
-                <div class="admin-modal-header">
-                    <h2>🔐 Panel Administration</h2>
-                    <button onclick="closeAdminPanel()" class="close-btn">✕</button>
+        <!-- Admin Panel Modal -->
+        <div id="adminPanelOverlay" class="admin-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
+            <div class="admin-container" style="background: #1a1a1a; color: #fff; margin: 20px auto; border-radius: 12px; max-width: 500px; padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">
+                    <h2 style="margin: 0; font-size: 20px;">🔐 Panel Admin</h2>
+                    <button onclick="closeAdminPanel()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 0;">✕</button>
                 </div>
-                <div id="admin-message-container"></div>
-                <div class="admin-tabs-container">
-                    <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')">📍 Plugs</button>
-                    <button class="admin-tab-btn" onclick="switchAdminTab('departments')">🗺️ Départements</button>
+                
+                <div id="adminMessage" style="display: none; margin-bottom: 15px; padding: 10px; border-radius: 6px; font-weight: bold;"></div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px;">
+                    <button onclick="switchAdminTab('plugs')" class="admin-tab-btn-plugs" style="flex: 1; padding: 10px; background: #4a90e2; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">📍 Plugs</button>
+                    <button onclick="switchAdminTab('departments')" class="admin-tab-btn-depts" style="flex: 1; padding: 10px; background: #333; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: bold;">🗺️ Depts</button>
                 </div>
-                <div class="admin-tabs-content" id="admin-tabs-content"></div>
+                
+                <div id="adminContent" style="max-height: 500px; overflow-y: auto;"></div>
             </div>
         </div>
     </div>
