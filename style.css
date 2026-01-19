@@ -193,31 +193,36 @@ header {
 }
 
 .user-section {
-    margin-top: 6px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
     display: flex;
-    gap: 10px;
-    align-items: center;
+    justify-content: center;
 }
 
 .admin-btn {
-    font-size: 1.5rem;
-    background: linear-gradient(145deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.1));
-    border: 1px solid rgba(76, 175, 80, 0.4);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, #4CAF50, #2E7D32);
+    border: 1px solid rgba(76, 175, 80, 0.6);
+    border-radius: 10px;
+    color: white;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    z-index: 10;
 }
 
 .admin-btn:hover {
-    background: linear-gradient(145deg, rgba(76, 175, 80, 0.4), rgba(76, 175, 80, 0.2));
-    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
-    transform: scale(1.1);
+    background: linear-gradient(145deg, #66BB6A, #43A047);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+    transform: translateY(-2px);
 }
 
 .user-welcome {
