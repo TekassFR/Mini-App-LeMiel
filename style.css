@@ -950,6 +950,7 @@ main {
 }
 
 .btn-success {
+    display: none;
     background: linear-gradient(145deg, #333333, #111111);
     color: white;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5),
@@ -1681,8 +1682,38 @@ body {
 
 .detail-price-section {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 20px;
+    margin-top: 20px;
+}
+
+.plug-rating {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+}
+
+.plug-department {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+}
+
+.plug-telegram-link {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+}
+
+.plug-telegram-link a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.plug-telegram-link a:hover {
+    color: #5aa3ff;
+    border-bottom-color: #4a90e2;
 }
 
 .detail-price {
