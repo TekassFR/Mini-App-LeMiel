@@ -206,20 +206,21 @@ function showError(message) {
 
 // Ouverture du panel admin
 function openAdminPanel() {
+    const modal = document.getElementById('admin-modal');
+    
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const username = tg.initDataUnsafe.user.username;
-        const whitelist = appConfig.admins?.whitelist || [];
+        const username = tg.initDataUnsafe.user.username || 'user';
+        const whitelist = appConfig?.admins?.whitelist || [];
         
         if (!whitelist.includes(username)) {
-            showAdminMessage('❌ Accès refusé. Vous n\'êtes pas administrateur.', 'error');
+            alert('❌ Accès refusé. Vous n\'êtes pas administrateur.');
             return;
         }
         
-        // Afficher le modal
-        document.getElementById('admin-modal').style.display = 'flex';
+        modal.style.display = 'flex';
         loadAdminPlugsList();
     } else {
-        showAdminMessage('⚠️ Impossible de vérifier votre identité.', 'error');
+        alert('⚠️ Veuillez ouvrir cette page via Telegram');
     }
 }
 
