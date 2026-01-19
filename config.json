@@ -1,191 +1,146 @@
 {
-  "restaurant": {
-    "name": "Restaurant Menu",
-    "description": "Mini-App Telegram pour commandes en ligne",
-    "currency": "€",
-    "delivery_fee": 2.50,
-    "min_order": 15.00
+  "app": {
+    "name": "Plugs Grand-Est",
+    "description": "Répertoire des Plugs du Grand-Est",
+    "region": "Grand-Est",
+    "version": "2.0"
   },
-  "categories": {
-    "pizza": {
-      "name": "Hash",
-      "emoji": "🍫",
-      "description": "Nos produits en Hash"
+  "departments": {
+    "57": {
+      "name": "Moselle",
+      "emoji": "🏭"
     },
-    "pasta": {
-      "name": "Weed",
-      "emoji": "🌿",
-      "description": "Nos produits en Weed"
+    "54": {
+      "name": "Meurthe-et-Moselle",
+      "emoji": "🌳"
     },
-    "boisson": {
-      "name": "Festif",
-      "emoji": "🎉",
-      "description": "Nos produits festifs"
+    "55": {
+      "name": "Meuse",
+      "emoji": "🏞️"
+    },
+    "88": {
+      "name": "Vosges",
+      "emoji": "⛰️"
+    },
+    "67": {
+      "name": "Bas-Rhin",
+      "emoji": "🍷"
+    },
+    "68": {
+      "name": "Haut-Rhin",
+      "emoji": "🏔️"
     }
   },
-  "products": {
-    "pizza": [
+  "plugs": {
+    "57": [
       {
         "id": 1,
-        "name": "RS4 MOUSSE",
-        "description": "Réel jaune mousse RS4 pas de goût, odeur bizarre tout frais.",
-        "price": 10,
-        "emoji": "🍫",
-        "image": "https://i.imgur.com/aSQv6w9.jpeg",
-        "category": "pizza",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/RYYAaxW.mp4",
-        "customPrices": {
-          "4": 20.00,
-          "10": 40.00,
-          "25": 90.00,
-          "50": 140.00,
-          "100": 260.00,
-          "200": 500.00
-        }
+        "name": "Plug Master 57",
+        "department": "57",
+        "description": "Les meilleurs produits de Moselle",
+        "telegram": "https://t.me/PlugMaster57",
+        "emoji": "🔥",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.8,
+        "active": true
       },
       {
         "id": 2,
-        "name": "Static NO FARM",
-        "description": "Static Smoke Weed Everyday, un Static NO FARM avec de réels terps, odeurs/goût magique.",
-        "price": 10.00,
-        "emoji": "🍫",
-        "image": "https://i.imgur.com/b2nuu63.jpeg",
-        "category": "pizza",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/9mYahNY.mp4",
-        "customPrices": {
-          "3": 20.00,
-          "4.5": 30.00,
-          "10": 60.00,
-          "20": 110.00,
-          "50": 220.00,
-          "100": 380.00
-        }
-      },
+        "name": "Quality Plugs 57",
+        "department": "57",
+        "description": "Produits de qualité supérieure",
+        "telegram": "https://t.me/QualityPlugs57",
+        "emoji": "⭐",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.6,
+        "active": true
+      }
+    ],
+    "54": [
       {
         "id": 3,
-        "name": "Fresh Frozen",
-        "description": "Fresh Frozen NO FARM, un réel Frozen avec de bonne terps comme les gens aiment.",
-        "price": 10.00,
-        "emoji": "🍫",
-        "image": "https://i.imgur.com/QJ4ZWVo.jpeg",
-        "category": "pizza",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/brZ8x7m.mp4",
-        "customPrices": {
-          "2,5": 20.00,
-          "5": 40.00,
-          "10": 70.00,
-          "20": 130.00,
-          "50": 250.00,
-          "100": 480.00
-        }
+        "name": "Plug Nancy",
+        "department": "54",
+        "description": "Service rapide et efficace",
+        "telegram": "https://t.me/PlugNancy54",
+        "emoji": "🚀",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.7,
+        "active": true
       },
       {
         "id": 4,
-        "name": "JAUNE GRAS",
-        "description": "Jaune Gras top com pour vendre en Hash.",
-        "price": 10.00,
-        "emoji": "🍫",
-        "image": "https://i.imgur.com/mIwuKCB.jpeg",
-        "category": "pizza",
-        "isNew": false,
-        "isPromo": true,
-        "video": "https://i.imgur.com/0Kid5k8.mp4",
-        "customPrices": {
-          "5": 20.00,
-          "10": 30.00,
-          "25": 70.00,
-          "50": 120.00,
-          "100": 220.00,
-          "200": 440.00
-        }
+        "name": "Central Plugs 54",
+        "department": "54",
+        "description": "Central référencé",
+        "telegram": "https://t.me/CentralPlugs54",
+        "emoji": "💎",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.5,
+        "active": true
       }
     ],
-    "pasta": [
+    "55": [
       {
         "id": 5,
-        "name": "Cali - The Bird",
-        "description": "La The Bird Féminisée est une plante 70 % indica 30 % sativa créée dans le cadre du projet unique de Breeding Grounds.",
-        "price": 15.00,
-        "emoji": "🌿",
-        "image": "https://i.imgur.com/ZUXyjr1.jpeg",
-        "category": "pasta",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/f3Tz9xg.mp4",
-        "customPrices": {
-          "2": 20.00,
-          "5": 50.00,
-          "10": 80.00,
-          "20": 150.00,
-          "50": 330.00,
-          "100": 580.00
-        }
-      },
-      {
-        "id": 6,
-        "name": "Amnesia Coffee",
-        "description": "Amnesia Coffee à ne pas comparer au Amnesia locale qui tourne, c'est de la vraie tout droit du CoffeeShop.",
-        "price": 15.00,
-        "emoji": "🌿",
-        "image": "https://i.imgur.com/x2kIcpK.jpeg",
-        "category": "pasta",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/tYaFwR0.mp4",
-        "customPrices": {
-          "3": 20.00,
-          "5": 40.00,
-          "10": 60.00,
-          "20": 110.00,
-          "50": 250.00,
-          "100": 480.00
-        }
+        "name": "Plug Meuse",
+        "department": "55",
+        "description": "Spécialiste local",
+        "telegram": "https://t.me/PlugMeuse55",
+        "emoji": "🌟",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.4,
+        "active": true
       }
     ],
-    "boisson": [
+    "88": [
       {
-        "id": 11,
-        "name": "Blanc Ecaille",
-        "description": "Blanc écaille top du top la réel C comme les gens aiment.",
-        "price": 10.00,
-        "emoji": "❄",
-        "image": "https://i.imgur.com/7JFrkVX.jpeg",
-        "category": "boisson",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/ricNHc4.mp4",
-        "customPrices": {
-          "0.5": 30.00,
-          "1": 60.00,
-          "2": 100.00,
-          "5": 160.00,
-          "10": 300.00,
-          "20": 580.00
-        }
+        "id": 6,
+        "name": "Plug Vosges",
+        "department": "88",
+        "description": "Expert des Vosges",
+        "telegram": "https://t.me/PlugVosges88",
+        "emoji": "🎯",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.9,
+        "active": true
+      }
+    ],
+    "67": [
+      {
+        "id": 7,
+        "name": "Alsace Plugs",
+        "department": "67",
+        "description": "Leader en Alsace",
+        "telegram": "https://t.me/AlsacePlugs67",
+        "emoji": "👑",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.8,
+        "active": true
       },
       {
-        "id": 12,
-        "name": "Kétamine",
-        "description": "La kétamine est utilisée pour ses effets stimulants à faible dose, hallucinogènes et dissociatifs à dose plus élevée.",
-        "price": 70.00,
-        "emoji": "🎉",
-        "image": "",
-        "category": "boisson",
-        "isNew": true,
-        "isPromo": false,
-        "video": "https://i.imgur.com/ajH0cwE.mp4",
-        "customPrices": {
-          "1": 70.00,
-          "2": 120.00,
-          "5": 300.00,
-          "10": 450.00
-        }
+        "id": 8,
+        "name": "Strasbourg Plug",
+        "department": "67",
+        "description": "Cœur de Strasbourg",
+        "telegram": "https://t.me/StrasbourgPlug67",
+        "emoji": "🏰",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.7,
+        "active": true
+      }
+    ],
+    "68": [
+      {
+        "id": 9,
+        "name": "Mulhouse Plugs",
+        "department": "68",
+        "description": "Spécialiste Mulhouse",
+        "telegram": "https://t.me/MulhousePlugs68",
+        "emoji": "🎭",
+        "image": "https://i.ibb.co/DfTMMGFx/5b4f8816-d91e-4866-9523-0a8dab2208ba-2-removebg-preview.png",
+        "rating": 4.6,
+        "active": true
       }
     ]
   }
