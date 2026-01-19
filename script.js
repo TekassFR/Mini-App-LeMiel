@@ -90,13 +90,14 @@ function createPlugCard(plug) {
     card.onclick = () => openTelegram(plug.telegram);
     
     const ratingStars = '⭐'.repeat(Math.floor(plug.rating)) + (plug.rating % 1 !== 0 ? '✨' : '');
+    const deptInfo = appConfig.departments[plug.department];
     
     card.innerHTML = `
         <div class="menu-item-image">
             <img src="${plug.image}" alt="${plug.name}" class="product-img">
             <div class="product-emoji">${plug.emoji}</div>
-            <div class="product-badge ${plug.active ? 'active' : 'inactive'}">
-                ${plug.active ? '🟢 Actif' : '🔴 Inactif'}
+            <div class="product-badge">
+                ${deptInfo?.emoji || ''} ${deptInfo?.name || plug.department}
             </div>
         </div>
         <div class="menu-item-content">
