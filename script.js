@@ -207,32 +207,36 @@ function showError(message) {
 // Ouverture du panel admin
 function openAdminPanel() {
     try {
-        const modal = document.getElementById('admin-modal');
-        if (!modal) {
-            console.error('Modal non trouvé');
-            alert('Erreur: Modal non trouvé');
-            return;
-        }
-        
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const userId = tg.initDataUnsafe.user.id;
-            const username = tg.initDataUnsafe.user.username;
-            const whitelist = appConfig?.admins?.whitelist || [];
-            
-            console.log('User ID:', userId, 'Username:', username, 'Whitelist:', whitelist);
-            
-            // Vérifier dans le whitelist par username
-            if (username && whitelist.includes(username)) {
-                modal.style.display = 'flex';
-                setTimeout(() => loadAdminPlugsList(), 100);
-            } else {
-                alert('❌ Accès refusé.\n\nVotre username: ' + (username || 'N/A') + '\n\nVeuillez contacter un administrateur.');
-                console.warn('Accès refusé pour:', username, 'ID:', userId);
+        // Attendre que le DOM soit prêt
+        setTimeout(() => {
+            const modal = document.getElementById('admin-modal');
+            if (!modal) {
+                console.error('Modal non trouvé dans le DOM');
+                alert('Erreur: Panel admin non disponible');
+                return;
             }
-        } else {
-            alert('⚠️ Veuillez ouvrir cette page via Telegram');
-            console.warn('Données Telegram non disponibles');
-        }
+            
+            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                const userId = tg.initDataUnsafe.user.id;
+                const username = tg.initDataUnsafe.user.username;
+                const whitelist = appConfig?.admins?.whitelist || [];
+                
+                console.log('User ID:', userId, 'Username:', username, 'Whitelist:', whitelist);
+                
+                // Vérifier dans le whitelist par username
+                if (username && whitelist.includes(username)) {
+                    modal.style.display = 'flex';
+                    setTimeout(() => loadAdminPlugsList(), 100);
+                    console.log('Panel admin ouvert pour:', username);
+                } else {
+                    alert('❌ Accès refusé.\n\nVotre username: ' + (username || 'N/A') + '\n\nVeuillez contacter un administrateur.');
+                    console.warn('Accès refusé pour:', username, 'ID:', userId);
+                }
+            } else {
+                alert('⚠️ Veuillez ouvrir cette page via Telegram');
+                console.warn('Données Telegram non disponibles');
+            }
+        }, 50);
     } catch (error) {
         console.error('Erreur dans openAdminPanel:', error);
         alert('Erreur: ' + error.message);
