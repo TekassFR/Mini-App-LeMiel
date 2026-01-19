@@ -149,7 +149,22 @@ function showPlugDetail(plugId) {
     // Afficher le lien Telegram
     const telegramLinkDiv = document.getElementById('plug-telegram-link');
     const telegramUsername = plug.telegram.replace('https://t.me/', '').replace('http://t.me/', '');
-    telegramLinkDiv.innerHTML = `<strong>📱 Telegram:</strong> <a href="javascript:void(0)" onclick="openTelegram('${telegramUsername}')">${telegramUsername}</a>`;
+    const telegramLink = document.createElement('a');
+    telegramLink.href = '#';
+    telegramLink.textContent = telegramUsername;
+    telegramLink.style.color = '#4a90e2';
+    telegramLink.style.textDecoration = 'none';
+    telegramLink.style.fontWeight = '600';
+    telegramLink.style.borderBottom = '2px solid transparent';
+    telegramLink.style.transition = 'all 0.3s ease';
+    telegramLink.dataset.telegram = plug.telegram;
+    telegramLink.onclick = (e) => {
+        e.preventDefault();
+        openTelegram(plug.telegram);
+    };
+    
+    telegramLinkDiv.innerHTML = '<strong>📱 Telegram:</strong> ';
+    telegramLinkDiv.appendChild(telegramLink);
     
     detailPage.style.display = 'flex';
     window.scrollTo(0, 0);
@@ -163,11 +178,9 @@ function closePlugDetail() {
 }
 
 // Ouverture du lien Telegram
-function openTelegram(username) {
-    const telegramUrl = `https://t.me/${username}`;
-    
+function openTelegram(telegramUrl) {
     // Essayer d'ouvrir via Telegram WebApp d'abord
-    if (window.Telegram && window.Telegram.WebApp) {
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
         window.Telegram.WebApp.openTelegramLink(telegramUrl);
     } else {
         // Sinon ouvrir dans un nouvel onglet
