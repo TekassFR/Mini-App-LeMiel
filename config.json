@@ -5,6 +5,9 @@
     "region": "Grand-Est",
     "version": "2.0"
   },
+  "admins": {
+    "whitelist": ["lamentale57", "pausesvl"]
+  },
   "departments": {
     "57": {
       "name": "Moselle",
