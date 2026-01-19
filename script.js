@@ -86,6 +86,8 @@ function displayPlugsGrid(department) {
 function createPlugCard(plug) {
     const card = document.createElement('div');
     card.className = 'menu-item';
+    card.style.cursor = 'pointer';
+    card.onclick = () => showPlugDetail(plug.id);
     
     const ratingStars = '⭐'.repeat(Math.floor(plug.rating)) + (plug.rating % 1 !== 0 ? '✨' : '');
     
@@ -104,9 +106,6 @@ function createPlugCard(plug) {
                 <div class="product-price">
                     <span class="rating">${ratingStars} ${plug.rating}</span>
                 </div>
-                <button class="view-btn" onclick="showPlugDetail(${plug.id})" title="Voir les détails">
-                    →
-                </button>
             </div>
         </div>
     `;
