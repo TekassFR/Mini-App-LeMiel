@@ -206,21 +206,29 @@ function showError(message) {
 
 // Ouverture du panel admin
 function openAdminPanel() {
-    const modal = document.getElementById('admin-modal');
-    
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const username = tg.initDataUnsafe.user.username || 'user';
-        const whitelist = appConfig?.admins?.whitelist || [];
-        
-        if (!whitelist.includes(username)) {
-            alert('❌ Accès refusé. Vous n\'êtes pas administrateur.');
+    try {
+        const modal = document.getElementById('admin-modal');
+        if (!modal) {
+            alert('Erreur: Modal non trouvé');
             return;
         }
         
-        modal.style.display = 'flex';
-        loadAdminPlugsList();
-    } else {
-        alert('⚠️ Veuillez ouvrir cette page via Telegram');
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const username = tg.initDataUnsafe.user.username || 'user';
+            const whitelist = appConfig?.admins?.whitelist || [];
+            
+            if (!whitelist.includes(username)) {
+                alert('❌ Accès refusé. Vous n\'êtes pas administrateur.');
+                return;
+            }
+            
+            modal.style.display = 'flex';
+            setTimeout(() => loadAdminPlugsList(), 100);
+        } else {
+            alert('⚠️ Veuillez ouvrir cette page via Telegram');
+        }
+    } catch (error) {
+        alert('Erreur: ' + error.message);
     }
 }
 
@@ -260,63 +268,73 @@ function switchAdminTab(tabName) {
 
 // Charger la liste des plugs en admin
 function loadAdminPlugsList() {
-    const content = document.getElementById('admin-tabs-content');
-    let html = '<div class="admin-form"><h3>➕ Ajouter un Plug</h3>';
-    html += `
-        <div class="admin-form-group">
-            <label>Nom</label>
-            <input type="text" id="admin-plug-name" placeholder="Nom du plug">
-        </div>
-        <div class="admin-form-group">
-            <label>Départements (ex: 54,57,55)</label>
-            <input type="text" id="admin-plug-depts" placeholder="54,57">
-        </div>
-        <div class="admin-form-group">
-            <label>Description</label>
-            <textarea id="admin-plug-desc" placeholder="Description"></textarea>
-        </div>
-        <div class="admin-form-group">
-            <label>Lien Telegram</label>
-            <input type="text" id="admin-plug-tg" placeholder="https://t.me/username">
-        </div>
-        <div class="admin-form-group">
-            <label>Emoji</label>
-            <input type="text" id="admin-plug-emoji" placeholder="🔥" maxlength="2">
-        </div>
-        <div class="admin-form-group">
-            <label>Note (0-5)</label>
-            <input type="number" id="admin-plug-rating" min="0" max="5" step="0.1" value="4.5">
-        </div>
-        <button class="admin-btn-primary" onclick="addAdminPlug()">Ajouter</button>
-    </div>`;
-    
-    html += '<h3 style="margin-top: 30px;">📋 Plugs Existants</h3>';
-    html += '<div class="admin-plugs-list">';
-    
-    // Afficher tous les plugs uniques
-    const plugsMap = new Map();
-    Object.values(appConfig.plugs).forEach(deptPlugs => {
-        deptPlugs.forEach(plug => {
-            if (!plugsMap.has(plug.id)) {
-                plugsMap.set(plug.id, plug);
-            }
-        });
-    });
-    
-    plugsMap.forEach(plug => {
+    try {
+        const content = document.getElementById('admin-tabs-content');
+        if (!content) {
+            alert('Erreur: Conteneur admin non trouvé');
+            return;
+        }
+        
+        let html = '<div class="admin-form"><h3>➕ Ajouter un Plug</h3>';
         html += `
-            <div class="admin-plug-item">
-                <div>
-                    <strong>${plug.emoji} ${plug.name}</strong>
-                    <p>Depts: ${(plug.departments || [plug.department]).join(', ')}</p>
-                </div>
-                <button class="admin-btn-danger" onclick="deleteAdminPlug(${plug.id})">Supprimer</button>
+            <div class="admin-form-group">
+                <label>Nom</label>
+                <input type="text" id="admin-plug-name" placeholder="Nom du plug">
             </div>
-        `;
-    });
-    
-    html += '</div>';
-    content.innerHTML = html;
+            <div class="admin-form-group">
+                <label>Départements (ex: 54,57,55)</label>
+                <input type="text" id="admin-plug-depts" placeholder="54,57">
+            </div>
+            <div class="admin-form-group">
+                <label>Description</label>
+                <textarea id="admin-plug-desc" placeholder="Description"></textarea>
+            </div>
+            <div class="admin-form-group">
+                <label>Lien Telegram</label>
+                <input type="text" id="admin-plug-tg" placeholder="https://t.me/username">
+            </div>
+            <div class="admin-form-group">
+                <label>Emoji</label>
+                <input type="text" id="admin-plug-emoji" placeholder="🔥" maxlength="2">
+            </div>
+            <div class="admin-form-group">
+                <label>Note (0-5)</label>
+                <input type="number" id="admin-plug-rating" min="0" max="5" step="0.1" value="4.5">
+            </div>
+            <button class="admin-btn-primary" onclick="addAdminPlug()">Ajouter</button>
+        </div>`;
+        
+        html += '<h3 style="margin-top: 30px;">📋 Plugs Existants</h3>';
+        html += '<div class="admin-plugs-list">';
+        
+        const plugsMap = new Map();
+        if (appConfig?.plugs) {
+            Object.values(appConfig.plugs).forEach(deptPlugs => {
+                deptPlugs?.forEach(plug => {
+                    if (!plugsMap.has(plug.id)) {
+                        plugsMap.set(plug.id, plug);
+                    }
+                });
+            });
+        }
+        
+        plugsMap.forEach(plug => {
+            html += `
+                <div class="admin-plug-item">
+                    <div>
+                        <strong>${plug.emoji} ${plug.name}</strong>
+                        <p>Depts: ${(plug.departments || [plug.department]).join(', ')}</p>
+                    </div>
+                    <button class="admin-btn-danger" onclick="deleteAdminPlug(${plug.id})">Supprimer</button>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        content.innerHTML = html;
+    } catch (error) {
+        alert('Erreur chargement plugs: ' + error.message);
+    }
 }
 
 // Ajouter un plug via admin
