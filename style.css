@@ -1759,6 +1759,7 @@ body {
 }
 
 .video-container {
+    display: none;
     position: relative;
     border-radius: 15px;
     overflow: hidden;
@@ -1776,6 +1777,7 @@ body {
 }
 
 #product-video {
+    display: none;
     width: 100%;
     height: auto;
     min-height: 300px;
