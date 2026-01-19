@@ -104,8 +104,8 @@ function createPlugCard(plug) {
                 <div class="product-price">
                     <span class="rating">${ratingStars} ${plug.rating}</span>
                 </div>
-                <button class="btn btn-small" onclick="showPlugDetail(${plug.id})">
-                    👁️ Voir
+                <button class="view-btn" onclick="showPlugDetail(${plug.id})" title="Voir les détails">
+                    →
                 </button>
             </div>
         </div>
