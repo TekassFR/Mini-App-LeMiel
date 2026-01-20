@@ -36,7 +36,10 @@ function displayUserInfo() {
     const userInfo = document.getElementById('user-info');
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
-        userInfo.textContent = `Bienvenue, ${user.first_name || 'Ami'} 👋`;
+        const name = user.first_name || user.username || 'Ami';
+        userInfo.textContent = `Bienvenue, ${name} 👋`;
+    } else {
+        userInfo.textContent = `Bienvenue 👋`;
     }
 }
 
