@@ -165,7 +165,7 @@ function loadAdminPlugs() {
     const content = document.getElementById('admin-content');
     let html = `
         <div>
-            <h3 style="color: #4CAF50; margin-top: 0;">➕ Ajouter un Plug</h3>
+            <h3 style="color: #ffffff; margin-top: 0;">➕ Ajouter un Plug</h3>
             <div class="admin-form-group">
                 <label>Nom</label>
                 <input type="text" id="newPlugName" placeholder="Nom du plug">
@@ -173,6 +173,10 @@ function loadAdminPlugs() {
             <div class="admin-form-group">
                 <label>Emoji</label>
                 <input type="text" id="newPlugEmoji" placeholder="Emoji" maxlength="2" value="📍">
+            </div>
+            <div class="admin-form-group">
+                <label>Image URL</label>
+                <input type="text" id="newPlugImage" placeholder="https://i.ibb.co/..." value="https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png">
             </div>
             <div class="admin-form-group">
                 <label>Départements (ex: 54,57,88)</label>
@@ -194,7 +198,7 @@ function loadAdminPlugs() {
         </div>
         <div class="admin-divider"></div>
         <div>
-            <h3 style="color: #4CAF50;">📋 Plugs Existants</h3>
+            <h3 style="color: #ffffff;">📋 Plugs Existants</h3>
             <div id="plugs-list"></div>
         </div>
     `;
@@ -234,6 +238,7 @@ function displayExistingPlugs() {
 function addNewPlug() {
     const name = document.getElementById('newPlugName')?.value.trim();
     const emoji = document.getElementById('newPlugEmoji')?.value.trim() || '📍';
+    const image = document.getElementById('newPlugImage')?.value.trim() || 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png';
     const depts = document.getElementById('newPlugDepts')?.value.trim();
     const desc = document.getElementById('newPlugDesc')?.value.trim();
     const tg = document.getElementById('newPlugTg')?.value.trim();
@@ -257,7 +262,7 @@ function addNewPlug() {
         departments,
         description: desc,
         telegram: tg,
-        image: 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png',
+        image,
         rating,
         active: true
     };
@@ -269,6 +274,7 @@ function addNewPlug() {
     
     alert('✅ Plug ajouté avec succès!');
     document.getElementById('newPlugName').value = '';
+    document.getElementById('newPlugImage').value = 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png';
     document.getElementById('newPlugDepts').value = '';
     document.getElementById('newPlugDesc').value = '';
     document.getElementById('newPlugTg').value = '';
@@ -292,7 +298,7 @@ function loadAdminDepts() {
     const content = document.getElementById('admin-content');
     let html = `
         <div>
-            <h3 style="color: #4CAF50; margin-top: 0;">➕ Ajouter un Département</h3>
+            <h3 style="color: #ffffff; margin-top: 0;">➕ Ajouter un Département</h3>
             <div class="admin-form-group">
                 <label>Numéro</label>
                 <input type="text" id="newDeptNum" placeholder="57">
@@ -309,7 +315,7 @@ function loadAdminDepts() {
         </div>
         <div class="admin-divider"></div>
         <div>
-            <h3 style="color: #4CAF50;">📋 Départements Existants</h3>
+            <h3 style="color: #ffffff;">📋 Départements Existants</h3>
             <div id="depts-list"></div>
         </div>
     `;
