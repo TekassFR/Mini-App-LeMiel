@@ -754,7 +754,7 @@ main {
     max-width: 600px;
     max-height: 90vh;
     overflow-y: auto;
-    border: 1px solid rgba(76, 175, 80, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -763,12 +763,12 @@ main {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .admin-panel-header h2 {
     margin: 0;
-    color: #4CAF50;
+    color: #ffffff;
     font-size: 22px;
 }
 
@@ -790,16 +790,16 @@ main {
     display: flex;
     gap: 0;
     padding: 0;
-    border-bottom: 1px solid rgba(76, 175, 80, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .admin-tab-btn {
     flex: 1;
     padding: 15px 20px;
-    background: rgba(76, 175, 80, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border: none;
     border-bottom: 3px solid transparent;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
@@ -807,9 +807,9 @@ main {
 }
 
 .admin-tab-btn.active {
-    background: rgba(76, 175, 80, 0.2);
-    color: #4CAF50;
-    border-bottom-color: #4CAF50;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-bottom-color: #ffffff;
 }
 
 #admin-content {
@@ -822,7 +822,7 @@ main {
 
 .admin-form-group label {
     display: block;
-    color: #4CAF50;
+    color: #ffffff;
     margin-bottom: 8px;
     font-weight: 600;
     font-size: 13px;
@@ -832,13 +832,20 @@ main {
 .admin-form-group textarea {
     width: 100%;
     padding: 12px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(76, 175, 80, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     color: white;
     font-size: 14px;
     box-sizing: border-box;
     font-family: inherit;
+}
+
+.admin-form-group input:focus,
+.admin-form-group textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .admin-form-group textarea {
@@ -849,8 +856,8 @@ main {
 .admin-btn-primary {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(145deg, #4CAF50, #2E7D32);
-    border: none;
+    background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     color: white;
     font-weight: 600;
@@ -862,7 +869,8 @@ main {
 
 .admin-btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+    background: linear-gradient(145deg, #5a5a5a, #3a3a3a);
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
 }
 
 .admin-btn-danger {
@@ -883,11 +891,11 @@ main {
 }
 
 .admin-item {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.05);
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 8px;
-    border: 1px solid rgba(76, 175, 80, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -898,18 +906,18 @@ main {
 }
 
 .admin-item-info strong {
-    color: #4CAF50;
+    color: #ffffff;
     display: block;
     margin-bottom: 5px;
 }
 
 .admin-item-info small {
-    color: rgba(200, 200, 200, 0.6);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .admin-divider {
     height: 1px;
-    background: rgba(76, 175, 80, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     margin: 20px 0;
 }
 
