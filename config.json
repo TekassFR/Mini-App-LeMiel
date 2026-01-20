@@ -163,5 +163,9 @@
         "active": true
       }
     ]
+  },
+  "reviews": {
+    "pending": [],
+    "approved": []
   }
 }
