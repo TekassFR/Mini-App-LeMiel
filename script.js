@@ -76,7 +76,7 @@ function displayPlugsGrid(department = 'all') {
         const departments = plug.departments || [plug.department];
         const deptBadges = departments.map(dept => {
             const deptInfo = appConfig.departments[dept];
-            return deptInfo ? `<span style="background: rgba(76, 175, 80, 0.2); color: #4caf50; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px;">${deptInfo.emoji} ${dept}</span>` : '';
+            return deptInfo ? `<span style="background: rgba(76, 175, 80, 0.2); color: #4caf50; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px;">${dept}</span>` : '';
         }).join(' ');
         
         // Générer les étoiles
