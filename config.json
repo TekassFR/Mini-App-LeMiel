@@ -9,6 +9,10 @@
     "whitelist": ["lamentale57", "pausesvl"]
   },
   "departments": {
+    "FR": {
+      "name": "Envoie FR",
+      "emoji": "📦"
+    },
     "57": {
       "name": "Moselle",
       "emoji": "🏭"
@@ -35,6 +39,19 @@
     }
   },
   "plugs": {
+    "FR": [
+      {
+        "id": 100,
+        "name": "Express Colis FR",
+        "departments": ["FR"],
+        "description": "Envoi rapide dans toute la France - Livraison 24/48h garantie",
+        "telegram": "https://t.me/ExpressColisFR",
+        "emoji": "📦",
+        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
+        "rating": 4.9,
+        "active": true
+      }
+    ],
     "57": [
       {
         "id": 1,
