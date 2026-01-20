@@ -18,6 +18,7 @@
                         <h1 class="brand-name">PLUGS GRAND-EST</h1>
                         <div class="brand-tagline">Répertoire des Fournisseurs</div>
                     </div>
+                    <button id="admin-btn" class="admin-btn" onclick="openAdminPanel()" style="display: none;">🔐 Admin</button>
                 </div>
                 <div class="banner-overlay"></div>
                 <div class="user-section">
@@ -66,6 +67,21 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Panel Admin -->
+    <div id="admin-panel" class="admin-panel" style="display: none;">
+        <div class="admin-panel-content">
+            <div class="admin-panel-header">
+                <h2>🔐 Panel Administration</h2>
+                <button class="admin-close-btn" onclick="closeAdminPanel()">✕</button>
+            </div>
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')">📍 Plugs</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('depts')">🗺️ Départements</button>
+            </div>
+            <div id="admin-content"></div>
         </div>
     </div>
 
