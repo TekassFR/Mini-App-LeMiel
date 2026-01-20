@@ -660,8 +660,8 @@ main {
 }
 
 .plug-dept-badge span {
-    background: rgba(76, 175, 80, 0.9) !important;
-    color: #fff !important;
+    background: transparent !important;
+    color: #4caf50 !important;
     padding: 4px 10px !important;
     border-radius: 12px !important;
     font-size: 11px !important;
@@ -701,7 +701,6 @@ main {
 }
 
 .plug-rating {
-    background: rgba(76, 175, 80, 0.2);
     color: #fff;
     padding: 8px 12px;
     border-radius: 8px;
