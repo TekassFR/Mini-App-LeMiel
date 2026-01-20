@@ -71,6 +71,34 @@
         </div>
     </div>
 
+    <!-- Modal Avis -->
+    <div id="review-modal" class="admin-panel" style="display: none;">
+        <div class="admin-panel-content">
+            <div class="admin-panel-header">
+                <h2>⭐ Laisser un Avis</h2>
+                <button class="admin-close-btn" onclick="closeReviewModal()">✕</button>
+            </div>
+            <div style="padding: 20px;">
+                <div class="admin-form-group">
+                    <label>Note (1-5 étoiles)</label>
+                    <div style="display: flex; gap: 10px; font-size: 28px; margin: 10px 0;">
+                        <span class="star-rating" data-rating="1" onclick="selectRating(1)">☆</span>
+                        <span class="star-rating" data-rating="2" onclick="selectRating(2)">☆</span>
+                        <span class="star-rating" data-rating="3" onclick="selectRating(3)">☆</span>
+                        <span class="star-rating" data-rating="4" onclick="selectRating(4)">☆</span>
+                        <span class="star-rating" data-rating="5" onclick="selectRating(5)">☆</span>
+                    </div>
+                </div>
+                <div class="admin-form-group">
+                    <label>Votre commentaire</label>
+                    <textarea id="review-comment" placeholder="Partagez votre expérience..." rows="4"></textarea>
+                </div>
+                <button class="admin-btn-primary" onclick="submitReview()">📨 Envoyer l'Avis</button>
+                <p style="color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 10px; text-align: center;">Votre avis sera examiné par un administrateur avant publication</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Panel Admin -->
     <div id="admin-panel" class="admin-panel" style="display: none;">
         <div class="admin-panel-content">
@@ -82,6 +110,7 @@
                 <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')">📍 Plugs</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('depts')">🗺️ Départements</button>
                 <button class="admin-tab-btn" onclick="switchAdminTab('admins')">👤 Administrateurs</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('reviews')">⭐ Avis</button>
             </div>
             <div id="admin-content"></div>
         </div>
