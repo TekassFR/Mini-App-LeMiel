@@ -158,6 +158,8 @@ function switchAdminTab(tab) {
         loadAdminPlugs();
     } else if (tab === 'depts') {
         loadAdminDepts();
+    } else if (tab === 'admins') {
+        loadAdminAdmins();
     }
 }
 
@@ -375,6 +377,86 @@ function deleteDeptAdmin(num) {
     
     alert('✅ Département supprimé!');
     displayExistingDepts();
+}
+
+function loadAdminAdmins() {
+    const content = document.getElementById('admin-content');
+    let html = `
+        <div>
+            <h3 style="color: #ffffff; margin-top: 0;">➕ Ajouter un Administrateur</h3>
+            <div class="admin-form-group">
+                <label>Username Telegram (sans @)</label>
+                <input type="text" id="newAdminUsername" placeholder="lemiel54">
+            </div>
+            <button class="admin-btn-primary" onclick="addNewAdmin()">✅ Ajouter Admin</button>
+        </div>
+        <div class="admin-divider"></div>
+        <div>
+            <h3 style="color: #ffffff;">📋 Administrateurs Existants</h3>
+            <div id="admins-list"></div>
+        </div>
+    `;
+    content.innerHTML = html;
+    displayExistingAdmins();
+}
+
+function displayExistingAdmins() {
+    const adminsList = document.getElementById('admins-list');
+    const currentUser = tg.initDataUnsafe?.user?.username || '';
+    let html = '';
+    
+    if (!adminConfig.whitelist || adminConfig.whitelist.length === 0) {
+        adminsList.innerHTML = '<p style="color: #888;">Aucun administrateur</p>';
+        return;
+    }
+    
+    adminConfig.whitelist.forEach(username => {
+        const isCurrent = username.toLowerCase() === currentUser.toLowerCase();
+        html += `
+            <div class="admin-item">
+                <div class="admin-item-info">
+                    <strong>@${username}</strong>
+                    <small>${isCurrent ? '(Vous)' : ''}</small>
+                </div>
+                ${!isCurrent ? `<button class="admin-btn-danger" onclick="deleteAdminUser('${username}')">🗑️ Supprimer</button>` : '<span style="color: #888; font-size: 12px;">Actuellement connecté</span>'}
+            </div>
+        `;
+    });
+    
+    adminsList.innerHTML = html;
+}
+
+function addNewAdmin() {
+    const username = document.getElementById('newAdminUsername')?.value.trim();
+    
+    if (!username) {
+        alert('⚠️ Veuillez entrer un username');
+        return;
+    }
+    
+    if (!adminConfig.whitelist) {
+        adminConfig.whitelist = [];
+    }
+    
+    if (adminConfig.whitelist.map(u => u.toLowerCase()).includes(username.toLowerCase())) {
+        alert('⚠️ Cet utilisateur est déjà administrateur');
+        return;
+    }
+    
+    adminConfig.whitelist.push(username);
+    
+    alert('✅ Administrateur ajouté!');
+    document.getElementById('newAdminUsername').value = '';
+    displayExistingAdmins();
+}
+
+function deleteAdminUser(username) {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer @${username} comme administrateur?`)) return;
+    
+    adminConfig.whitelist = adminConfig.whitelist.filter(u => u.toLowerCase() !== username.toLowerCase());
+    
+    alert('✅ Administrateur supprimé!');
+    displayExistingAdmins();
 }
 
 // Thème Telegram
