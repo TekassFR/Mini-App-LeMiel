@@ -22,6 +22,6 @@
     ],
     "telegram": {
       "bot_username": "APPGrandEst_Bot",
-      "web_app_url": "https://miniapp-appge.netlify.app"
+      "web_app_url": "https://miniapp-appge.vercel.app"
     }
   }
