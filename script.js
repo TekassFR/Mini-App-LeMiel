@@ -38,26 +38,17 @@ function displayUserInfo() {
 }
 
 function setupCategoryButtons() {
-    const departmentFilter = document.getElementById('department-filter');
-    if (!appConfig.departments) return;
-
-    let options = '<option value="all">Tous les départements</option>';
-    Object.entries(appConfig.departments).forEach(([num, dept]) => {
-        options += `<option value="${num}">${dept.emoji} ${dept.name} (${num})</option>`;
+    const departmentSelect = document.getElementById('department-select');
+    if (!departmentSelect) return;
+    
+    departmentSelect.addEventListener('change', function() {
+        currentDepartmentFilter = this.value;
+        displayPlugsGrid(this.value);
     });
-    departmentFilter.innerHTML = options;
-}
-
-function filterByDepartment() {
-    const select = document.getElementById('department-filter');
-    const department = select.value;
-    currentDepartmentFilter = department;
-    displayPlugsGrid(department);
 }
 
 function displayPlugsGrid(department = 'all') {
-    const grid = document.getElementById('plugs-grid');
-    const counter = document.getElementById('plug-counter');
+    const grid = document.getElementById('menu-grid');
     
     let plugsToDisplay = [];
     
@@ -75,8 +66,6 @@ function displayPlugsGrid(department = 'all') {
     } else {
         plugsToDisplay = plugsData[department] || [];
     }
-    
-    counter.textContent = `${plugsToDisplay.length} plug${plugsToDisplay.length > 1 ? 's' : ''} disponible${plugsToDisplay.length > 1 ? 's' : ''}`;
     
     if (plugsToDisplay.length === 0) {
         grid.innerHTML = '<div style="padding: 60px 20px; text-align: center; color: #666; font-size: 16px;">Aucun plug pour le moment 🤷‍♂️</div>';
