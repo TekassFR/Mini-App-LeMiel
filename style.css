@@ -795,7 +795,7 @@ main {
 
 .admin-tab-btn {
     flex: 1;
-    padding: 15px 10px;
+    padding: 15px 20px;
     background: rgba(255, 255, 255, 0.05);
     border: none;
     border-bottom: 3px solid transparent;
@@ -804,12 +804,6 @@ main {
     font-weight: 600;
     font-size: 14px;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    text-align: center;
-    white-space: nowrap;
 }
 
 .admin-tab-btn.active {
