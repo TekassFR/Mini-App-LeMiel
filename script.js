@@ -79,16 +79,22 @@ function displayPlugsGrid(department = 'all') {
             return deptInfo ? `<span style="background: rgba(76, 175, 80, 0.2); color: #4caf50; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px;">${deptInfo.emoji} ${dept}</span>` : '';
         }).join(' ');
         
+        // Générer les étoiles
+        const fullStars = Math.floor(plug.rating);
+        const hasHalfStar = plug.rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        let starsHTML = '⭐'.repeat(fullStars);
+        if (hasHalfStar) starsHTML += '✨';
+        starsHTML += '☆'.repeat(emptyStars);
+        
         return `
             <div class="plug-card" onclick="openTelegramProfile('${plug.telegram}')">
+                <div class="plug-dept-badge">${deptBadges}</div>
                 <div class="plug-image" style="background-image: url('${plug.image}'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
                 <div class="plug-content">
-                    <div class="plug-header">
-                        <h3 class="plug-name">${plug.emoji} ${plug.name}</h3>
-                        <div class="plug-rating">⭐ ${plug.rating}</div>
-                    </div>
-                    <div style="text-align: center; margin: 8px 0;">${deptBadges}</div>
+                    <h3 class="plug-name">${plug.emoji} ${plug.name}</h3>
                     <p class="plug-description">${plug.description}</p>
+                    <div class="plug-rating">${starsHTML} ${plug.rating}</div>
                 </div>
             </div>
         `;
