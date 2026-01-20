@@ -18,6 +18,7 @@ async function loadConfig() {
         appConfig = await response.json();
         plugsData = appConfig.plugs;
         adminConfig = appConfig.admins || {};
+        reviewsConfig = appConfig.reviews || { pending: [], approved: [] };
         console.log('Configuration chargée');
         initializeApp();
     } catch (error) {
@@ -94,13 +95,14 @@ function displayPlugsGrid(department = 'all') {
         starsHTML += '☆'.repeat(emptyStars);
         
         return `
-            <div class="plug-card" onclick="openTelegramProfile('${plug.telegram}')">
+            <div class="plug-card">
                 <div class="plug-dept-badge">${deptBadges}</div>
-                <div class="plug-image" style="background-image: url('${plug.image}'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+                <div class="plug-image" style="background-image: url('${plug.image}'); background-size: contain; background-repeat: no-repeat; background-position: center;" onclick="openTelegramProfile('${plug.telegram}')"></div>
                 <div class="plug-content">
-                    <h3 class="plug-name">${plug.emoji} ${plug.name}</h3>
-                    <p class="plug-description">${plug.description}</p>
-                    <div class="plug-rating">${starsHTML} ${plug.rating}</div>
+                    <h3 class="plug-name" onclick="openTelegramProfile('${plug.telegram}')">${plug.emoji} ${plug.name}</h3>
+                    <p class="plug-description" onclick="openTelegramProfile('${plug.telegram}')">${plug.description}</p>
+                    <div class="plug-rating" onclick="openTelegramProfile('${plug.telegram}')">${starsHTML} ${plug.rating}</div>
+                    <button class="review-btn" onclick="event.stopPropagation(); openReviewModal(${plug.id})">⭐ Laisser un avis</button>
                 </div>
             </div>
         `;
@@ -163,6 +165,8 @@ function switchAdminTab(tab) {
         loadAdminDepts();
     } else if (tab === 'admins') {
         loadAdminAdmins();
+    } else if (tab === 'reviews') {
+        loadAdminReviews();
     }
 }
 
@@ -389,7 +393,7 @@ function loadAdminAdmins() {
             <h3 style="color: #ffffff; margin-top: 0;">➕ Ajouter un Administrateur</h3>
             <div class="admin-form-group">
                 <label>Username Telegram (sans @)</label>
-                <input type="text" id="newAdminUsername" placeholder="lemiel54">
+                <input type="text" id="newAdminUsername" placeholder="lamentale57">
             </div>
             <button class="admin-btn-primary" onclick="addNewAdmin()">✅ Ajouter Admin</button>
         </div>
@@ -462,9 +466,233 @@ function deleteAdminUser(username) {
     displayExistingAdmins();
 }
 
+// ========== SYSTÈME D'AVIS ==========
+
+let currentReviewPlugId = null;
+let selectedRating = 0;
+let reviewsConfig = { pending: [], approved: [] };
+
+function openReviewModal(plugId) {
+    const plug = findPlugById(plugId);
+    if (!plug) return;
+    
+    currentReviewPlugId = plugId;
+    selectedRating = 0;
+    document.getElementById('review-comment').value = '';
+    
+    // Reset étoiles
+    document.querySelectorAll('.star-rating').forEach(star => {
+        star.textContent = '☆';
+        star.style.color = 'rgba(255,255,255,0.3)';
+    });
+    
+    document.getElementById('review-modal').style.display = 'flex';
+}
+
+function closeReviewModal() {
+    document.getElementById('review-modal').style.display = 'none';
+    currentReviewPlugId = null;
+    selectedRating = 0;
+}
+
+function selectRating(rating) {
+    selectedRating = rating;
+    
+    document.querySelectorAll('.star-rating').forEach((star, index) => {
+        if (index < rating) {
+            star.textContent = '★';
+            star.style.color = '#FFD700';
+        } else {
+            star.textContent = '☆';
+            star.style.color = 'rgba(255,255,255,0.3)';
+        }
+    });
+}
+
+function submitReview() {
+    if (!selectedRating) {
+        alert('⚠️ Veuillez sélectionner une note');
+        return;
+    }
+    
+    const comment = document.getElementById('review-comment').value.trim();
+    if (!comment) {
+        alert('⚠️ Veuillez écrire un commentaire');
+        return;
+    }
+    
+    const user = tg.initDataUnsafe?.user;
+    const username = user?.username || user?.first_name || 'Anonyme';
+    
+    const review = {
+        id: Date.now(),
+        plugId: currentReviewPlugId,
+        username: username,
+        rating: selectedRating,
+        comment: comment,
+        date: new Date().toISOString(),
+        status: 'pending'
+    };
+    
+    // Ajouter aux avis en attente
+    if (!reviewsConfig.pending) reviewsConfig.pending = [];
+    reviewsConfig.pending.push(review);
+    
+    alert('✅ Votre avis a été envoyé! Il sera publié après validation par un administrateur.');
+    closeReviewModal();
+}
+
+function findPlugById(plugId) {
+    for (const dept in plugsData) {
+        const plug = plugsData[dept]?.find(p => p.id === plugId);
+        if (plug) return plug;
+    }
+    return null;
+}
+
+function loadAdminReviews() {
+    const content = document.getElementById('admin-content');
+    
+    const pendingReviews = reviewsConfig.pending || [];
+    const approvedReviews = reviewsConfig.approved || [];
+    
+    let html = `
+        <div style="margin-bottom: 30px;">
+            <h3 style="color: #fff; margin-bottom: 15px;">⏳ Avis en Attente (${pendingReviews.length})</h3>
+            <div style="max-height: 300px; overflow-y: auto;">
+    `;
+    
+    if (pendingReviews.length === 0) {
+        html += '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Aucun avis en attente</p>';
+    } else {
+        pendingReviews.forEach(review => {
+            const plug = findPlugById(review.plugId);
+            const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+            const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            
+            html += `
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                        <div>
+                            <strong style="color: #fff;">${plugName}</strong>
+                            <div style="color: #FFD700; font-size: 16px; margin: 5px 0;">${stars}</div>
+                            <small style="color: rgba(255,255,255,0.6);">Par @${review.username}</small>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="approveReview(${review.id})" style="background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">✓ Approuver</button>
+                            <button onclick="rejectReview(${review.id})" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">✕ Rejeter</button>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.5;">${review.comment}</p>
+                </div>
+            `;
+        });
+    }
+    
+    html += `
+            </div>
+        </div>
+        <div>
+            <h3 style="color: #fff; margin-bottom: 15px;">✅ Avis Approuvés (${approvedReviews.length})</h3>
+            <div style="max-height: 300px; overflow-y: auto;">
+    `;
+    
+    if (approvedReviews.length === 0) {
+        html += '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Aucun avis approuvé</p>';
+    } else {
+        approvedReviews.forEach(review => {
+            const plug = findPlugById(review.plugId);
+            const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+            const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            
+            html += `
+                <div style="background: rgba(76, 175, 80, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(76, 175, 80, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                        <div>
+                            <strong style="color: #fff;">${plugName}</strong>
+                            <div style="color: #FFD700; font-size: 16px; margin: 5px 0;">${stars}</div>
+                            <small style="color: rgba(255,255,255,0.6);">Par @${review.username}</small>
+                        </div>
+                        <button onclick="deleteReview(${review.id})" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">🗑️ Supprimer</button>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.5;">${review.comment}</p>
+                </div>
+            `;
+        });
+    }
+    
+    html += '</div></div>';
+    content.innerHTML = html;
+}
+
+function approveReview(reviewId) {
+    const reviewIndex = reviewsConfig.pending.findIndex(r => r.id === reviewId);
+    if (reviewIndex === -1) return;
+    
+    const review = reviewsConfig.pending[reviewIndex];
+    review.status = 'approved';
+    
+    // Déplacer vers approuvés
+    reviewsConfig.pending.splice(reviewIndex, 1);
+    if (!reviewsConfig.approved) reviewsConfig.approved = [];
+    reviewsConfig.approved.push(review);
+    
+    // Recalculer la note du plug
+    updatePlugRating(review.plugId);
+    
+    alert('✅ Avis approuvé!');
+    loadAdminReviews();
+}
+
+function rejectReview(reviewId) {
+    if (!confirm('Êtes-vous sûr de vouloir rejeter cet avis?')) return;
+    
+    reviewsConfig.pending = reviewsConfig.pending.filter(r => r.id !== reviewId);
+    
+    alert('✅ Avis rejeté!');
+    loadAdminReviews();
+}
+
+function deleteReview(reviewId) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cet avis?')) return;
+    
+    const review = reviewsConfig.approved.find(r => r.id === reviewId);
+    reviewsConfig.approved = reviewsConfig.approved.filter(r => r.id !== reviewId);
+    
+    if (review) {
+        updatePlugRating(review.plugId);
+    }
+    
+    alert('✅ Avis supprimé!');
+    loadAdminReviews();
+}
+
+function updatePlugRating(plugId) {
+    // Calculer la moyenne des avis approuvés pour ce plug
+    const plugReviews = reviewsConfig.approved.filter(r => r.plugId === plugId);
+    
+    if (plugReviews.length === 0) return;
+    
+    const avgRating = plugReviews.reduce((sum, r) => sum + r.rating, 0) / plugReviews.length;
+    const roundedRating = Math.round(avgRating * 10) / 10; // Arrondi à 1 décimale
+    
+    // Mettre à jour la note du plug
+    for (const dept in plugsData) {
+        const plug = plugsData[dept]?.find(p => p.id === plugId);
+        if (plug) {
+            plug.rating = roundedRating;
+            break;
+        }
+    }
+    
+    // Rafraîchir l'affichage
+    displayPlugsGrid(currentDepartmentFilter);
+}
+
 // Thème Telegram
 if (tg.setBackgroundColor) tg.setBackgroundColor('#000000');
 if (tg.setHeaderColor) tg.setHeaderColor('#1a1a1a');
 
 // Démarrage
 document.addEventListener('DOMContentLoaded', loadConfig);
+
