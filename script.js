@@ -725,11 +725,64 @@ function switchPage(page) {
         displayReviews();
     }
     
+    // Charger les infos si c'est la page "infos"
+    if (page === 'infos') {
+        displayInfos();
+    }
+    
     // Mettre à jour les onglets actifs
     document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector(`[data-page="${page}"]`).classList.add('active');
+}
+
+// Fonction pour afficher les infos
+function displayInfos() {
+    const infosPage = document.getElementById('infos-page');
+    
+    infosPage.innerHTML = `
+        <div class="page-content">
+            <h2>ℹ️ Infos</h2>
+            <div class="infos-container">
+                <div class="info-card">
+                    <h3>📍 À propos</h3>
+                    <p>Nous sommes spécialisé dans tout le <strong>Grand-Est</strong>!</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>💬 Contacter</h3>
+                    <p>Rejoins notre canal :</p>
+                    <a href="https://t.me/+1h_HSbnz1hIyN2E0" class="info-link" onclick="openTelegramLink(event, 'https://t.me/+1h_HSbnz1hIyN2E0')">
+                        📱 Accéder au canal
+                    </a>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🚀 Rejoindre le réseau</h3>
+                    <p>Pour être affiché sur notre MiniApp, faut voir avec:</p>
+                    <a href="https://t.me/sousouwsofficiel" class="info-link" onclick="openTelegramLink(event, 'https://t.me/sousouwsofficiel')">
+                        👤 @sousouwsofficiel
+                    </a>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Fonction helper pour ouvrir les liens Telegram
+function openTelegramLink(event, url) {
+    event.preventDefault();
+    try {
+        if (tg.openTelegramLink) {
+            tg.openTelegramLink(url);
+        } else {
+            window.open(url, '_blank');
+        }
+    } catch (error) {
+        console.error('Erreur ouverture Telegram:', error);
+        window.open(url, '_blank');
+    }
 }
 
 // Fonction pour afficher les avis
