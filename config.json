@@ -36,6 +36,14 @@
     "68": {
       "name": "Haut-Rhin",
       "emoji": "🏔️"
+    },
+    "51": {
+      "name": "Marne",
+      "emoji": "🍾"
+    },
+    "10": {
+      "name": "Aube",
+      "emoji": "🌾"
     }
   },
   "plugs": {
@@ -100,7 +108,7 @@
         "active": true
       }
     ],
-    "55": [
+    "57": [
       {
         "id": 5,
         "name": "Oswald Cobblepot",
