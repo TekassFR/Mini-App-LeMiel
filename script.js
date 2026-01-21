@@ -255,8 +255,17 @@ function openTelegramProfile(telegramUrl) {
     if (!telegramUrl) return;
     
     try {
-        if (tg.openTelegramLink) {
+        const isTelegramLink = /^(tg:|https?:\/\/t\.me|https?:\/\/telegram\.me)/i.test(telegramUrl);
+        const canOpenTelegramLink = typeof tg.openTelegramLink === 'function';
+        const canOpenGenericLink = typeof tg.openLink === 'function';
+
+        // Utiliser openLink pour les liens Potato/externes, sinon openTelegramLink
+        if (!isTelegramLink && canOpenGenericLink) {
+            tg.openLink(telegramUrl);
+        } else if (isTelegramLink && canOpenTelegramLink) {
             tg.openTelegramLink(telegramUrl);
+        } else if (canOpenGenericLink) {
+            tg.openLink(telegramUrl);
         } else {
             window.open(telegramUrl, '_blank');
         }
