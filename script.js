@@ -16,6 +16,26 @@ const STORAGE_KEY_PLUGS = 'lemiel_plugs';
 const STORAGE_KEY_DEPARTMENTS = 'lemiel_departments';
 const STORAGE_KEY_LOGS = 'lemiel_admin_logs';
 
+// Utilitaires simples de sécurité côté client
+function escapeHTML(str = '') {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+const ALLOWED_LINK_HOSTS = ['t.me', 'telegram.me', 'ptdl159.org', 'dympt.org'];
+function isAllowedUrl(url) {
+    try {
+        const parsed = new URL(url);
+        return ALLOWED_LINK_HOSTS.some(host => parsed.host.endsWith(host));
+    } catch (e) {
+        return false;
+    }
+}
+
 // Chargement de la configuration
 async function loadConfig() {
     try {
@@ -225,7 +245,7 @@ function displayPlugsGrid(department = 'all') {
         const departments = plug.departments || [plug.department];
         const deptBadges = departments.map(dept => {
             const deptInfo = appConfig.departments[dept];
-            return deptInfo ? `<span style="color: #ffffff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px;">${dept}</span>` : '';
+            return deptInfo ? `<span style="color: #ffffff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px;">${escapeHTML(dept)}</span>` : '';
         }).join(' ');
         
         // Générer les étoiles
@@ -239,10 +259,10 @@ function displayPlugsGrid(department = 'all') {
         return `
             <div class="plug-card">
                 <div class="plug-dept-badge">${deptBadges}</div>
-                <div class="plug-image" style="background-image: url('${plug.image}'); background-size: contain; background-repeat: no-repeat; background-position: center;" onclick="openTelegramProfile('${plug.telegram}')"></div>
+                <div class="plug-image" style="background-image: url('${escapeHTML(plug.image)}'); background-size: contain; background-repeat: no-repeat; background-position: center;" onclick="openTelegramProfile('${plug.telegram}')"></div>
                 <div class="plug-content">
-                    <h3 class="plug-name" onclick="openTelegramProfile('${plug.telegram}')">${plug.emoji} ${plug.name}</h3>
-                    <p class="plug-description" onclick="openTelegramProfile('${plug.telegram}')">${plug.description}</p>
+                    <h3 class="plug-name" onclick="openTelegramProfile('${plug.telegram}')">${escapeHTML(plug.emoji)} ${escapeHTML(plug.name)}</h3>
+                    <p class="plug-description" onclick="openTelegramProfile('${plug.telegram}')">${escapeHTML(plug.description)}</p>
                     <div class="plug-rating" onclick="openTelegramProfile('${plug.telegram}')">${starsHTML} ${plug.rating}</div>
                     <button class="review-btn" onclick="event.stopPropagation(); openReviewModal(${plug.id})">⭐ Laisser un avis</button>
                 </div>
@@ -255,6 +275,12 @@ function openTelegramProfile(telegramUrl) {
     if (!telegramUrl) return;
     
     try {
+        // Filtrer les liens non autorisés
+        if (!isAllowedUrl(telegramUrl)) {
+            alert('Lien non autorisé.');
+            return;
+        }
+
         const isTelegramLink = /^(tg:|https?:\/\/t\.me|https?:\/\/telegram\.me)/i.test(telegramUrl);
         const canOpenTelegramLink = typeof tg.openTelegramLink === 'function';
         const canOpenGenericLink = typeof tg.openLink === 'function';
@@ -761,16 +787,16 @@ function loadAdminReviews() {
                 <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
                         <div>
-                            <strong style="color: #fff;">${plugName}</strong>
+                            <strong style="color: #fff;">${escapeHTML(plugName)}</strong>
                             <div style="color: #FFD700; font-size: 16px; margin: 5px 0;">${stars}</div>
-                            <small style="color: rgba(255,255,255,0.6);">Par @${review.username}</small>
+                            <small style="color: rgba(255,255,255,0.6);">Par @${escapeHTML(review.username)}</small>
                         </div>
                         <div style="display: flex; gap: 8px;">
                             <button onclick="approveReview(${review.id})" style="background: #4CAF50; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">✓ Approuver</button>
                             <button onclick="rejectReview(${review.id})" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">✕ Rejeter</button>
                         </div>
                     </div>
-                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.5;">${review.comment}</p>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.5;">${escapeHTML(review.comment)}</p>
                 </div>
             `;
         });
@@ -796,13 +822,13 @@ function loadAdminReviews() {
                 <div style="background: rgba(76, 175, 80, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(76, 175, 80, 0.3);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
                         <div>
-                            <strong style="color: #fff;">${plugName}</strong>
+                            <strong style="color: #fff;">${escapeHTML(plugName)}</strong>
                             <div style="color: #FFD700; font-size: 16px; margin: 5px 0;">${stars}</div>
-                            <small style="color: rgba(255,255,255,0.6);">Par @${review.username}</small>
+                            <small style="color: rgba(255,255,255,0.6);">Par @${escapeHTML(review.username)}</small>
                         </div>
                         <button onclick="deleteReview(${review.id})" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">🗑️ Supprimer</button>
                     </div>
-                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.5;">${review.comment}</p>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.5;">${escapeHTML(review.comment)}</p>
                 </div>
             `;
         });
@@ -941,9 +967,9 @@ function loadAdminLogs() {
                         <div>
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
                                 <span style="font-size: 18px;">${actionIcon}</span>
-                                <strong style="color: #fff; text-transform: uppercase; font-size: 13px;">${log.action.replace(/_/g, ' ')}</strong>
+                                <strong style="color: #fff; text-transform: uppercase; font-size: 13px;">${escapeHTML(log.action.replace(/_/g, ' '))}</strong>
                             </div>
-                            <div style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 5px;">${log.details}</div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 5px;">${escapeHTML(log.details)}</div>
                         </div>
                         <div style="text-align: right;">
                             <div style="color: rgba(255,255,255,0.5); font-size: 11px;">${dateStr}</div>
@@ -951,7 +977,7 @@ function loadAdminLogs() {
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
-                        <span style="color: rgba(255,255,255,0.6); font-size: 12px;">👤 <strong>@${log.admin}</strong></span>
+                        <span style="color: rgba(255,255,255,0.6); font-size: 12px;">👤 <strong>@${escapeHTML(log.admin)}</strong></span>
                     </div>
                 </div>
             `;
