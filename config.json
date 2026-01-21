@@ -84,7 +84,7 @@
         "description": "Service rapide et efficace",
         "telegram": "https://t.me/+_Ur2tIF0Yj1mMDc0",
         "emoji": "🚀",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
+        "image": "https://i.ibb.co/dsV8ynQt/f7ffe517-a965-48c5-908e-b89897c6b5ed.jpg",
         "rating": 5.0,
         "active": true
       },
@@ -103,13 +103,13 @@
     "55": [
       {
         "id": 5,
-        "name": "Plug Meuse",
-        "departments": ["55"],
+        "name": "Oswald Cobblepot",
+        "departments": ["57", "54"],
         "description": "Spécialiste local",
-        "telegram": "https://t.me/PlugMeuse55",
+        "telegram": "https://t.me/+MNwG6bNZWTllMmZk",
         "emoji": "🌟",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.4,
+        "image": "https://i.ibb.co/hF8Nsgc4/523b341e-6497-46f6-a4c4-7413fa2601e2.jpg",
+        "rating": 5.0,
         "active": true
       }
     ],
@@ -129,37 +129,37 @@
     "67": [
       {
         "id": 7,
-        "name": "Alsace Plugs",
-        "departments": ["67"],
+        "name": "Griselda Farm'z 67",
+        "departments": ["67", "68"],
         "description": "Leader en Alsace",
-        "telegram": "https://t.me/AlsacePlugs67",
+        "telegram": "https://t.me/+6XzQGb6d31JjM2M0",
         "emoji": "👑",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.8,
+        "image": "https://i.ibb.co/RGd44H7r/43a67c0f-67cd-4c0e-88ca-e92c3eb4bdaa.jpg",
+        "rating": 5.0,
         "active": true
       },
       {
         "id": 8,
-        "name": "Strasbourg Plug",
-        "departments": ["67"],
+        "name": "SmockyClub 67",
+        "departments": ["67", "68"],
         "description": "Cœur de Strasbourg",
-        "telegram": "https://t.me/StrasbourgPlug67",
+        "telegram": "https://t.me/+DR382U-lSdIzMzQ8",
         "emoji": "🏰",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.7,
+        "image": "https://i.ibb.co/Y4j3rLFg/5aedf512-9352-46c6-a65d-acc71ab22b7a.jpg",
+        "rating": 5.0,
         "active": true
       }
     ],
     "68": [
       {
         "id": 9,
-        "name": "Mulhouse Plugs",
-        "departments": ["68"],
+        "name": "L'USINE 68",
+        "departments": ["68", "67"],
         "description": "Spécialiste Mulhouse",
-        "telegram": "https://t.me/MulhousePlugs68",
+        "telegram": "https://t.me/+UJDFLIxqPFg1MmU0",
         "emoji": "🎭",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.6,
+        "image": "https://i.ibb.co/CpLJnG3S/5ae06428-b245-49d9-85b5-8c5b75604b80.jpg",
+        "rating": 5.0,
         "active": true
       }
     ]
