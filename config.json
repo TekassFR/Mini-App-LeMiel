@@ -55,24 +55,24 @@
     "57": [
       {
         "id": 1,
-        "name": "Plug Master 57",
+        "name": "Q.L.F",
         "departments": ["57"],
         "description": "Les meilleurs produits de Moselle",
-        "telegram": "https://t.me/PlugMaster57",
+        "telegram": "https://t.me/+6BF3lUJ2BoQ1YzFk",
         "emoji": "🔥",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.8,
+        "image": "https://i.ibb.co/5XYn1XGQ/2f658721-4c31-439d-a515-1949c64b0259.jpg",
+        "rating": 5.0,
         "active": true
       },
       {
         "id": 2,
-        "name": "Quality Plugs 57",
+        "name": "CALIBODRIVE57",
         "departments": ["57"],
-        "description": "Produits de qualité supérieure",
-        "telegram": "https://t.me/QualityPlugs57",
+        "description": "produits exclusifs, issus des 4 coins du monde 🌎",
+        "telegram": "https://t.me/+cvS-12BIUhRkYjQ0",
         "emoji": "⭐",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.6,
+        "image": "https://i.ibb.co/jZwDcRyP/27c5caa6-fdaa-4942-bf52-e1e69454173b.jpg",
+        "rating": 5.0,
         "active": true
       }
     ],
@@ -85,18 +85,18 @@
         "telegram": "https://t.me/+_Ur2tIF0Yj1mMDc0",
         "emoji": "🚀",
         "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.7,
+        "rating": 5.0,
         "active": true
       },
       {
         "id": 4,
-        "name": "Central Plugs 54",
+        "name": "French Connection 54",
         "departments": ["54"],
         "description": "Central référencé",
-        "telegram": "https://t.me/CentralPlugs54",
+        "telegram": "https://t.me/+mDZUE3dUDIEwYzM0",
         "emoji": "💎",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.5,
+        "image": "https://i.ibb.co/0pnKS51y/43d3c0c4-f512-4a9a-9965-e743dbfcfbec.jpg",
+        "rating": 5.0,
         "active": true
       }
     ],
