@@ -871,7 +871,15 @@ function displayInfos() {
                 </div>
                 
                 <div class="info-card">
-                    <h3>🚀 Rejoindre le réseau</h3>
+                    <h3>� Nos réseaux sociaux</h3>
+                    <p>Notre Instagram disponible :</p>
+                    <a href="https://www.instagram.com/appge_grandestfdlest?igsh=Y255Y2pocWRseWM4&utm_source=qr" class="info-link" onclick="event.preventDefault(); window.open('https://www.instagram.com/appge_grandestfdlest?igsh=Y255Y2pocWRseWM4&utm_source=qr', '_blank')">
+                        📷 @appge_grandestfdlest
+                    </a>
+                </div>
+                
+                <div class="info-card">
+                    <h3>�🚀 Rejoindre le réseau</h3>
                     <p>Pour être affiché sur notre MiniApp, faut voir avec:</p>
                     <a href="https://t.me/sousouwsofficiel" class="info-link" onclick="openTelegramLink(event, 'https://t.me/sousouwsofficiel')">
                         👤 @sousouwsofficiel
