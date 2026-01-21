@@ -38,13 +38,39 @@
                 <option value="88">⛰️ Vosges (88)</option>
                 <option value="67">🍷 Bas-Rhin (67)</option>
                 <option value="68">🏔️ Haut-Rhin (68)</option>
+                <option value="51">🍾 Marne (51)</option>
+                <option value="10">🌾 Aube (10)</option>
             </select>
         </div>
         
         <main>
-            <!-- Grille des Plugs -->
-            <div class="menu-grid" id="menu-grid">
-                <!-- Les plugs seront générés dynamiquement -->
+            <!-- Conteneur des pages/sections -->
+            <div id="plugs-page" class="page-container" style="display: block;">
+                <!-- Grille des Plugs -->
+                <div class="menu-grid" id="menu-grid">
+                    <!-- Les plugs seront générés dynamiquement -->
+                </div>
+            </div>
+            
+            <div id="avis-page" class="page-container" style="display: none;">
+                <div class="page-content">
+                    <h2>⭐ Avis</h2>
+                    <p style="text-align: center; color: rgba(255,255,255,0.6);">Les avis apparaîtront ici</p>
+                </div>
+            </div>
+            
+            <div id="infos-page" class="page-container" style="display: none;">
+                <div class="page-content">
+                    <h2>ℹ️ Infos</h2>
+                    <p style="text-align: center; color: rgba(255,255,255,0.6);">Informations générales</p>
+                </div>
+            </div>
+            
+            <div id="canal-page" class="page-container" style="display: none;">
+                <div class="page-content">
+                    <h2>📢 Canal</h2>
+                    <p style="text-align: center; color: rgba(255,255,255,0.6);">Canal de communication</p>
+                </div>
             </div>
         </main>
         
@@ -98,6 +124,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Navigation bas avec 4 onglets -->
+    <nav class="bottom-navigation">
+        <button class="nav-item active" onclick="switchPage('plugs')" data-page="plugs">
+            <span class="nav-icon">📍</span>
+            <span class="nav-label">Plugs</span>
+        </button>
+        <button class="nav-item" onclick="switchPage('avis')" data-page="avis">
+            <span class="nav-icon">⭐</span>
+            <span class="nav-label">Avis</span>
+        </button>
+        <button class="nav-item" onclick="switchPage('infos')" data-page="infos">
+            <span class="nav-icon">ℹ️</span>
+            <span class="nav-label">Infos</span>
+        </button>
+        <button class="nav-item" onclick="switchPage('canal')" data-page="canal">
+            <span class="nav-icon">📢</span>
+            <span class="nav-label">Canal</span>
+        </button>
+    </nav>
 
     <!-- Panel Admin -->
     <div id="admin-panel" class="admin-panel" style="display: none;">
