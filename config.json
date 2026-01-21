@@ -50,13 +50,13 @@
     "FR": [
       {
         "id": 100,
-        "name": "Express Colis FR",
+        "name": "HLUXOR FR",
         "departments": ["FR"],
         "description": "Envoi rapide dans toute la France - Livraison 24/48h garantie",
-        "telegram": "https://t.me/ExpressColisFR",
+        "telegram": "https://t.me/+_Ur2tIF0Yj1mMDc0",
         "emoji": "📦",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.9,
+        "image": "https://i.ibb.co/dsV8ynQt/f7ffe517-a965-48c5-908e-b89897c6b5ed.jpg",
+        "rating": 5.0,
         "active": true
       }
     ],
@@ -65,7 +65,7 @@
         "id": 1,
         "name": "Q.L.F",
         "departments": ["57"],
-        "description": "Les meilleurs produits de Moselle",
+        "description": "la référence en Moselle c'est nous🔥",
         "telegram": "https://t.me/+6BF3lUJ2BoQ1YzFk",
         "emoji": "🔥",
         "image": "https://i.ibb.co/5XYn1XGQ/2f658721-4c31-439d-a515-1949c64b0259.jpg",
@@ -82,17 +82,6 @@
         "image": "https://i.ibb.co/jZwDcRyP/27c5caa6-fdaa-4942-bf52-e1e69454173b.jpg",
         "rating": 5.0,
         "active": true
-      },
-      {
-        "id": 5,
-        "name": "Oswald Cobblepot",
-        "departments": ["57", "54"],
-        "description": "Spécialiste local",
-        "telegram": "https://t.me/+MNwG6bNZWTllMmZk",
-        "emoji": "🌟",
-        "image": "https://i.ibb.co/hF8Nsgc4/523b341e-6497-46f6-a4c4-7413fa2601e2.jpg",
-        "rating": 5.0,
-        "active": true
       }
     ],
     "54": [
@@ -100,7 +89,7 @@
         "id": 3,
         "name": "HLUXOR",
         "departments": ["54", "55", "88", "52"],
-        "description": "Service rapide et efficace",
+        "description": "produits de hautes qualités, livraison rapide 🚀",
         "telegram": "https://t.me/+_Ur2tIF0Yj1mMDc0",
         "emoji": "🚀",
         "image": "https://i.ibb.co/dsV8ynQt/f7ffe517-a965-48c5-908e-b89897c6b5ed.jpg",
@@ -111,24 +100,22 @@
         "id": 4,
         "name": "French Connection 54",
         "departments": ["54"],
-        "description": "Central référencé",
+        "description": "la référence dans le 54 💎",
         "telegram": "https://t.me/+mDZUE3dUDIEwYzM0",
         "emoji": "💎",
         "image": "https://i.ibb.co/0pnKS51y/43d3c0c4-f512-4a9a-9965-e743dbfcfbec.jpg",
         "rating": 5.0,
         "active": true
-      }
-    ],
-    "88": [
+      },
       {
-        "id": 6,
-        "name": "Plug Vosges",
-        "departments": ["88"],
-        "description": "Expert des Vosges",
-        "telegram": "https://t.me/PlugVosges88",
-        "emoji": "🎯",
-        "image": "https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png",
-        "rating": 4.9,
+        "id": 5,
+        "name": "Oswald Cobblepot",
+        "departments": ["54", "57"],
+        "description": "service discret et rapide 🦇",
+        "telegram": "https://t.me/+MNwG6bNZWTllMmZk",
+        "emoji": "🌟",
+        "image": "https://i.ibb.co/hF8Nsgc4/523b341e-6497-46f6-a4c4-7413fa2601e2.jpg",
+        "rating": 5.0,
         "active": true
       }
     ],
@@ -137,7 +124,7 @@
         "id": 7,
         "name": "Griselda Farm'z 67",
         "departments": ["67", "68"],
-        "description": "Leader en Alsace",
+        "description": "Leader en Alsace 👑",
         "telegram": "https://t.me/+6XzQGb6d31JjM2M0",
         "emoji": "👑",
         "image": "https://i.ibb.co/RGd44H7r/43a67c0f-67cd-4c0e-88ca-e92c3eb4bdaa.jpg",
@@ -148,7 +135,7 @@
         "id": 8,
         "name": "SmockyClub 67",
         "departments": ["67", "68"],
-        "description": "Cœur de Strasbourg",
+        "description": "la référence de Strasbourg/Mulhouse 🏰",
         "telegram": "https://t.me/+DR382U-lSdIzMzQ8",
         "emoji": "🏰",
         "image": "https://i.ibb.co/Y4j3rLFg/5aedf512-9352-46c6-a65d-acc71ab22b7a.jpg",
@@ -161,7 +148,7 @@
         "id": 9,
         "name": "L'USINE 68",
         "departments": ["68", "67"],
-        "description": "Spécialiste Mulhouse",
+        "description": "qualité toujours au rendez-vous 🔧",
         "telegram": "https://t.me/+UJDFLIxqPFg1MmU0",
         "emoji": "🎭",
         "image": "https://i.ibb.co/CpLJnG3S/5ae06428-b245-49d9-85b5-8c5b75604b80.jpg",
