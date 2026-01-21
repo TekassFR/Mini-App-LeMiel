@@ -799,25 +799,57 @@ main {
     gap: 0;
     padding: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.admin-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .admin-tab-btn {
     flex: 1;
-    padding: 15px 20px;
+    min-width: 100px;
+    padding: 15px 12px;
     background: rgba(255, 255, 255, 0.05);
     border: none;
     border-bottom: 3px solid transparent;
     color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .admin-tab-btn.active {
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff;
     border-bottom-color: #ffffff;
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+    .admin-tabs {
+        justify-content: flex-start;
+    }
+    
+    .admin-tab-btn {
+        flex: 0 0 auto;
+        min-width: 90px;
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-tab-btn {
+        min-width: 80px;
+        padding: 10px 8px;
+        font-size: 11px;
+    }
 }
 
 #admin-content {
