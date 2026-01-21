@@ -82,6 +82,17 @@
         "image": "https://i.ibb.co/jZwDcRyP/27c5caa6-fdaa-4942-bf52-e1e69454173b.jpg",
         "rating": 5.0,
         "active": true
+      },
+      {
+        "id": 5,
+        "name": "Oswald Cobblepot",
+        "departments": ["57", "54"],
+        "description": "Spécialiste local",
+        "telegram": "https://t.me/+MNwG6bNZWTllMmZk",
+        "emoji": "🌟",
+        "image": "https://i.ibb.co/hF8Nsgc4/523b341e-6497-46f6-a4c4-7413fa2601e2.jpg",
+        "rating": 5.0,
+        "active": true
       }
     ],
     "54": [
@@ -104,19 +115,6 @@
         "telegram": "https://t.me/+mDZUE3dUDIEwYzM0",
         "emoji": "💎",
         "image": "https://i.ibb.co/0pnKS51y/43d3c0c4-f512-4a9a-9965-e743dbfcfbec.jpg",
-        "rating": 5.0,
-        "active": true
-      }
-    ],
-    "57": [
-      {
-        "id": 5,
-        "name": "Oswald Cobblepot",
-        "departments": ["57", "54"],
-        "description": "Spécialiste local",
-        "telegram": "https://t.me/+MNwG6bNZWTllMmZk",
-        "emoji": "🌟",
-        "image": "https://i.ibb.co/hF8Nsgc4/523b341e-6497-46f6-a4c4-7413fa2601e2.jpg",
         "rating": 5.0,
         "active": true
       }
