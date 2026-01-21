@@ -691,6 +691,22 @@ function updatePlugRating(plugId) {
 
 // Navigation entre les pages
 function switchPage(page) {
+    // Redirection directe vers le canal Telegram
+    if (page === 'canal') {
+        const canalUrl = 'https://t.me/+1h_HSbnz1hIyN2E0';
+        try {
+            if (tg.openTelegramLink) {
+                tg.openTelegramLink(canalUrl);
+            } else {
+                window.open(canalUrl, '_blank');
+            }
+        } catch (error) {
+            console.error('Erreur ouverture canal:', error);
+            window.open(canalUrl, '_blank');
+        }
+        return;
+    }
+    
     // Masquer toutes les pages
     document.getElementById('plugs-page').style.display = 'none';
     document.getElementById('avis-page').style.display = 'none';
