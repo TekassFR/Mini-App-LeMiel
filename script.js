@@ -10,19 +10,107 @@ let currentPlugId = null;
 let currentDepartmentFilter = 'all';
 let adminConfig = {};
 
+// Constantes localStorage
+const STORAGE_KEY_REVIEWS = 'lemiel_reviews';
+const STORAGE_KEY_PLUGS = 'lemiel_plugs';
+const STORAGE_KEY_DEPARTMENTS = 'lemiel_departments';
+
 // Chargement de la configuration
 async function loadConfig() {
     try {
         const response = await fetch('./config.json');
         if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
         appConfig = await response.json();
-        plugsData = appConfig.plugs;
+        
+        // Charger les plugs et départements depuis localStorage ou config
+        loadPlugsFromStorage();
+        loadDepartmentsFromStorage();
+        
         adminConfig = appConfig.admins || {};
-        reviewsConfig = appConfig.reviews || { pending: [], approved: [] };
+        
+        // Charger les reviews depuis le localStorage ou depuis la config
+        loadReviewsFromStorage();
+        
         console.log('Configuration chargée');
         initializeApp();
     } catch (error) {
         console.error('Erreur chargement config:', error);
+    }
+}
+
+// Charger les plugs depuis localStorage
+function loadPlugsFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY_PLUGS);
+        if (stored) {
+            plugsData = JSON.parse(stored);
+            console.log('Plugs chargés depuis le stockage local');
+        } else {
+            plugsData = appConfig.plugs;
+        }
+    } catch (error) {
+        console.error('Erreur chargement plugs:', error);
+        plugsData = appConfig.plugs;
+    }
+}
+
+// Charger les départements depuis localStorage
+function loadDepartmentsFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY_DEPARTMENTS);
+        if (stored) {
+            appConfig.departments = JSON.parse(stored);
+            console.log('Départements chargés depuis le stockage local');
+        }
+    } catch (error) {
+        console.error('Erreur chargement départements:', error);
+    }
+}
+
+// Sauvegarder les plugs dans localStorage
+function savePlugsToStorage() {
+    try {
+        localStorage.setItem(STORAGE_KEY_PLUGS, JSON.stringify(plugsData));
+        console.log('Plugs sauvegardés');
+    } catch (error) {
+        console.error('Erreur sauvegarde plugs:', error);
+    }
+}
+
+// Sauvegarder les départements dans localStorage
+function saveDepartmentsToStorage() {
+    try {
+        localStorage.setItem(STORAGE_KEY_DEPARTMENTS, JSON.stringify(appConfig.departments));
+        console.log('Départements sauvegardés');
+    } catch (error) {
+        console.error('Erreur sauvegarde départements:', error);
+    }
+}
+
+// Charger les reviews depuis localStorage
+function loadReviewsFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY_REVIEWS);
+        if (stored) {
+            reviewsConfig = JSON.parse(stored);
+            console.log('Reviews chargées depuis le stockage local');
+        } else {
+            // Sinon, utiliser la config par défaut
+            reviewsConfig = appConfig.reviews || { pending: [], approved: [] };
+        }
+    } catch (error) {
+        console.error('Erreur chargement reviews:', error);
+        reviewsConfig = appConfig.reviews || { pending: [], approved: [] };
+    }
+}
+
+// Sauvegarder les reviews dans localStorage
+function saveReviewsToStorage() {
+    try {
+        localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(reviewsConfig));
+        console.log('Reviews sauvegardées');
+    } catch (error) {
+        console.error('Erreur sauvegarde reviews:', error);
     }
 }
 
@@ -281,6 +369,9 @@ function addNewPlug() {
         plugsData[dept].push(newPlug);
     });
     
+    // Sauvegarder
+    savePlugsToStorage();
+    
     alert('✅ Plug ajouté avec succès!');
     document.getElementById('newPlugName').value = '';
     document.getElementById('newPlugImage').value = 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png';
@@ -297,6 +388,9 @@ function deletePlugAdmin(plugId) {
     Object.keys(plugsData).forEach(dept => {
         plugsData[dept] = plugsData[dept].filter(p => p.id !== plugId);
     });
+    
+    // Sauvegarder
+    savePlugsToStorage();
     
     alert('✅ Plug supprimé!');
     displayExistingPlugs();
@@ -370,6 +464,9 @@ function addNewDept() {
     appConfig.departments[num] = { name, emoji };
     if (!plugsData[num]) plugsData[num] = [];
     
+    // Sauvegarder
+    saveDepartmentsToStorage();
+    
     alert('✅ Département ajouté!');
     document.getElementById('newDeptNum').value = '';
     document.getElementById('newDeptName').value = '';
@@ -381,6 +478,9 @@ function deleteDeptAdmin(num) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce département?')) return;
     
     delete appConfig.departments[num];
+    
+    // Sauvegarder
+    saveDepartmentsToStorage();
     
     alert('✅ Département supprimé!');
     displayExistingDepts();
@@ -538,6 +638,9 @@ function submitReview() {
     if (!reviewsConfig.pending) reviewsConfig.pending = [];
     reviewsConfig.pending.push(review);
     
+    // Sauvegarder
+    saveReviewsToStorage();
+    
     alert('✅ Votre avis a été envoyé! Il sera publié après validation par un administrateur.');
     closeReviewModal();
 }
@@ -637,6 +740,9 @@ function approveReview(reviewId) {
     if (!reviewsConfig.approved) reviewsConfig.approved = [];
     reviewsConfig.approved.push(review);
     
+    // Sauvegarder
+    saveReviewsToStorage();
+    
     // Recalculer la note du plug
     updatePlugRating(review.plugId);
     
@@ -649,6 +755,9 @@ function rejectReview(reviewId) {
     
     reviewsConfig.pending = reviewsConfig.pending.filter(r => r.id !== reviewId);
     
+    // Sauvegarder
+    saveReviewsToStorage();
+    
     alert('✅ Avis rejeté!');
     loadAdminReviews();
 }
@@ -658,6 +767,9 @@ function deleteReview(reviewId) {
     
     const review = reviewsConfig.approved.find(r => r.id === reviewId);
     reviewsConfig.approved = reviewsConfig.approved.filter(r => r.id !== reviewId);
+    
+    // Sauvegarder
+    saveReviewsToStorage();
     
     if (review) {
         updatePlugRating(review.plugId);
