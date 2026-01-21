@@ -14,6 +14,7 @@ let adminConfig = {};
 const STORAGE_KEY_REVIEWS = 'lemiel_reviews';
 const STORAGE_KEY_PLUGS = 'lemiel_plugs';
 const STORAGE_KEY_DEPARTMENTS = 'lemiel_departments';
+const STORAGE_KEY_LOGS = 'lemiel_admin_logs';
 
 // Chargement de la configuration
 async function loadConfig() {
@@ -84,6 +85,59 @@ function saveDepartmentsToStorage() {
         console.log('Départements sauvegardés');
     } catch (error) {
         console.error('Erreur sauvegarde départements:', error);
+    }
+}
+
+// ===== SYSTÈME DE LOGS ADMIN =====
+
+// Charger les logs depuis localStorage
+function loadLogsFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY_LOGS);
+        return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+        console.error('Erreur chargement logs:', error);
+        return [];
+    }
+}
+
+// Sauvegarder les logs dans localStorage
+function saveLogsToStorage(logs) {
+    try {
+        localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(logs));
+    } catch (error) {
+        console.error('Erreur sauvegarde logs:', error);
+    }
+}
+
+// Ajouter un log
+function logAdminAction(action, details, beforeData = null, afterData = null) {
+    try {
+        const user = tg.initDataUnsafe?.user;
+        const username = user?.username || user?.first_name || 'Admin inconnu';
+        
+        const log = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            admin: username,
+            action: action,
+            details: details,
+            before: beforeData,
+            after: afterData
+        };
+        
+        const logs = loadLogsFromStorage();
+        logs.unshift(log); // Ajouter au début (plus récent en premier)
+        
+        // Limiter à 200 logs maximum
+        if (logs.length > 200) {
+            logs.splice(200);
+        }
+        
+        saveLogsToStorage(logs);
+        console.log('Log enregistré:', action);
+    } catch (error) {
+        console.error('Erreur création log:', error);
     }
 }
 
@@ -255,6 +309,8 @@ function switchAdminTab(tab) {
         loadAdminAdmins();
     } else if (tab === 'reviews') {
         loadAdminReviews();
+    } else if (tab === 'logs') {
+        loadAdminLogs();
     }
 }
 
@@ -369,6 +425,9 @@ function addNewPlug() {
         plugsData[dept].push(newPlug);
     });
     
+    // Logger l'action
+    logAdminAction('ajout_plug', `Ajout du plug "${name}" (ID: ${newPlug.id}) dans les départements: ${departments.join(', ')}`, null, newPlug);
+    
     // Sauvegarder
     savePlugsToStorage();
     
@@ -385,9 +444,16 @@ function addNewPlug() {
 function deletePlugAdmin(plugId) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce plug?')) return;
     
+    // Récupérer les infos du plug avant suppression
+    const plugToDelete = findPlugById(plugId);
+    const plugName = plugToDelete ? plugToDelete.name : `Plug #${plugId}`;
+    
     Object.keys(plugsData).forEach(dept => {
         plugsData[dept] = plugsData[dept].filter(p => p.id !== plugId);
     });
+    
+    // Logger l'action
+    logAdminAction('suppression_plug', `Suppression du plug "${plugName}" (ID: ${plugId})`, plugToDelete, null);
     
     // Sauvegarder
     savePlugsToStorage();
@@ -464,6 +530,9 @@ function addNewDept() {
     appConfig.departments[num] = { name, emoji };
     if (!plugsData[num]) plugsData[num] = [];
     
+    // Logger l'action
+    logAdminAction('ajout_departement', `Ajout du département ${emoji} ${name} (${num})`, null, { num, name, emoji });
+    
     // Sauvegarder
     saveDepartmentsToStorage();
     
@@ -477,7 +546,13 @@ function addNewDept() {
 function deleteDeptAdmin(num) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce département?')) return;
     
+    const deptToDelete = appConfig.departments[num];
+    const deptName = deptToDelete ? `${deptToDelete.emoji} ${deptToDelete.name}` : `Département ${num}`;
+    
     delete appConfig.departments[num];
+    
+    // Logger l'action
+    logAdminAction('suppression_departement', `Suppression du département ${deptName} (${num})`, deptToDelete, null);
     
     // Sauvegarder
     saveDepartmentsToStorage();
@@ -740,6 +815,11 @@ function approveReview(reviewId) {
     if (!reviewsConfig.approved) reviewsConfig.approved = [];
     reviewsConfig.approved.push(review);
     
+    // Logger l'action
+    const plug = findPlugById(review.plugId);
+    const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+    logAdminAction('approbation_avis', `Approbation de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, null, review);
+    
     // Sauvegarder
     saveReviewsToStorage();
     
@@ -753,7 +833,16 @@ function approveReview(reviewId) {
 function rejectReview(reviewId) {
     if (!confirm('Êtes-vous sûr de vouloir rejeter cet avis?')) return;
     
+    const review = reviewsConfig.pending.find(r => r.id === reviewId);
+    if (!review) return;
+    
+    const plug = findPlugById(review.plugId);
+    const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+    
     reviewsConfig.pending = reviewsConfig.pending.filter(r => r.id !== reviewId);
+    
+    // Logger l'action
+    logAdminAction('rejet_avis', `Rejet de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
     
     // Sauvegarder
     saveReviewsToStorage();
@@ -766,7 +855,15 @@ function deleteReview(reviewId) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cet avis?')) return;
     
     const review = reviewsConfig.approved.find(r => r.id === reviewId);
+    if (!review) return;
+    
+    const plug = findPlugById(review.plugId);
+    const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+    
     reviewsConfig.approved = reviewsConfig.approved.filter(r => r.id !== reviewId);
+    
+    // Logger l'action
+    logAdminAction('suppression_avis', `Suppression de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
     
     // Sauvegarder
     saveReviewsToStorage();
@@ -777,6 +874,158 @@ function deleteReview(reviewId) {
     
     alert('✅ Avis supprimé!');
     loadAdminReviews();
+}
+
+// Fonction pour afficher les logs admin
+function loadAdminLogs() {
+    const content = document.getElementById('admin-content');
+    const logs = loadLogsFromStorage();
+    
+    let html = `
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #fff; margin-bottom: 10px;">📈 Historique des Actions Admin</h3>
+            <p style="color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 15px;">Total: ${logs.length} action(s) enregistrée(s)</p>
+            
+            <div style="display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;">
+                <button onclick="filterLogs('all')" class="filter-btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">Tout</button>
+                <button onclick="filterLogs('ajout_plug')" class="filter-btn" style="background: rgba(76, 175, 80, 0.2); color: white; border: 1px solid rgba(76, 175, 80, 0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">🟢 Plugs</button>
+                <button onclick="filterLogs('departement')" class="filter-btn" style="background: rgba(33, 150, 243, 0.2); color: white; border: 1px solid rgba(33, 150, 243, 0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">🔵 Dépts</button>
+                <button onclick="filterLogs('avis')" class="filter-btn" style="background: rgba(255, 193, 7, 0.2); color: white; border: 1px solid rgba(255, 193, 7, 0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;">🟡 Avis</button>
+                <button onclick="clearAllLogs()" style="background: rgba(244, 67, 54, 0.2); color: white; border: 1px solid rgba(244, 67, 54, 0.4); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; margin-left: auto;">🗑️ Effacer</button>
+            </div>
+        </div>
+        
+        <div id="logs-container" style="max-height: 550px; overflow-y: auto;">
+    `;
+    
+    if (logs.length === 0) {
+        html += '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">Aucune action enregistrée</p>';
+    } else {
+        logs.forEach(log => {
+            const date = new Date(log.timestamp);
+            const dateStr = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            
+            let actionColor = 'rgba(255,255,255,0.1)';
+            let actionIcon = '❓';
+            
+            if (log.action.includes('ajout')) {
+                actionColor = 'rgba(76, 175, 80, 0.15)';
+                actionIcon = '➕';
+            } else if (log.action.includes('suppression')) {
+                actionColor = 'rgba(244, 67, 54, 0.15)';
+                actionIcon = '🗑️';
+            } else if (log.action.includes('approbation')) {
+                actionColor = 'rgba(76, 175, 80, 0.15)';
+                actionIcon = '✓';
+            } else if (log.action.includes('rejet')) {
+                actionColor = 'rgba(255, 152, 0, 0.15)';
+                actionIcon = '⛔';
+            } else if (log.action.includes('modification')) {
+                actionColor = 'rgba(33, 150, 243, 0.15)';
+                actionIcon = '✏️';
+            }
+            
+            html += `
+                <div class="log-item" data-action="${log.action}" style="background: ${actionColor}; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid rgba(255,255,255,0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+                                <span style="font-size: 18px;">${actionIcon}</span>
+                                <strong style="color: #fff; text-transform: uppercase; font-size: 13px;">${log.action.replace(/_/g, ' ')}</strong>
+                            </div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 5px;">${log.details}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="color: rgba(255,255,255,0.5); font-size: 11px;">${dateStr}</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 11px;">${timeStr}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.6); font-size: 12px;">👤 <strong>@${log.admin}</strong></span>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    html += '</div>';
+    content.innerHTML = html;
+}
+
+// Filtrer les logs
+function filterLogs(type) {
+    const logs = loadLogsFromStorage();
+    const container = document.getElementById('logs-container');
+    
+    let filteredLogs = logs;
+    if (type === 'ajout_plug') {
+        filteredLogs = logs.filter(log => log.action.includes('plug'));
+    } else if (type === 'departement') {
+        filteredLogs = logs.filter(log => log.action.includes('departement'));
+    } else if (type === 'avis') {
+        filteredLogs = logs.filter(log => log.action.includes('avis'));
+    }
+    
+    let html = '';
+    if (filteredLogs.length === 0) {
+        html = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">Aucune action de ce type</p>';
+    } else {
+        filteredLogs.forEach(log => {
+            const date = new Date(log.timestamp);
+            const dateStr = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            
+            let actionColor = 'rgba(255,255,255,0.1)';
+            let actionIcon = '❓';
+            
+            if (log.action.includes('ajout')) {
+                actionColor = 'rgba(76, 175, 80, 0.15)';
+                actionIcon = '➕';
+            } else if (log.action.includes('suppression')) {
+                actionColor = 'rgba(244, 67, 54, 0.15)';
+                actionIcon = '🗑️';
+            } else if (log.action.includes('approbation')) {
+                actionColor = 'rgba(76, 175, 80, 0.15)';
+                actionIcon = '✓';
+            } else if (log.action.includes('rejet')) {
+                actionColor = 'rgba(255, 152, 0, 0.15)';
+                actionIcon = '⛔';
+            }
+            
+            html += `
+                <div style="background: ${actionColor}; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid rgba(255,255,255,0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+                                <span style="font-size: 18px;">${actionIcon}</span>
+                                <strong style="color: #fff; text-transform: uppercase; font-size: 13px;">${log.action.replace(/_/g, ' ')}</strong>
+                            </div>
+                            <div style="color: rgba(255,255,255,0.7); font-size: 14px; margin-top: 5px;">${log.details}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="color: rgba(255,255,255,0.5); font-size: 11px;">${dateStr}</div>
+                            <div style="color: rgba(255,255,255,0.5); font-size: 11px;">${timeStr}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: rgba(255,255,255,0.6); font-size: 12px;">👤 <strong>@${log.admin}</strong></span>
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    container.innerHTML = html;
+}
+
+// Effacer tous les logs
+function clearAllLogs() {
+    if (!confirm('⚠️ Êtes-vous sûr de vouloir effacer tout l\'historique des logs? Cette action est irréversible!')) return;
+    
+    localStorage.removeItem(STORAGE_KEY_LOGS);
+    alert('🗑️ Tous les logs ont été effacés!');
+    loadAdminLogs();
 }
 
 function updatePlugRating(plugId) {
