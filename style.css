@@ -2431,3 +2431,258 @@ body {
     background: rgba(255, 255, 255, 0.1);
     margin: 25px 0;
 }
+/* Barre de navigation en bas avec 4 onglets */
+.bottom-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(10, 10, 10, 0.98) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(60, 60, 60, 0.8);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 999;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.8);
+    gap: 5px;
+    height: 65px;
+}
+
+.nav-item {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: rgba(200, 200, 200, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    min-height: 50px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(60, 60, 60, 0.1), rgba(40, 40, 40, 0.08));
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.nav-item:hover::before {
+    opacity: 1;
+}
+
+.nav-item:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.nav-item.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(60, 60, 60, 0.3), rgba(40, 40, 40, 0.2));
+    box-shadow: 0 0 15px rgba(60, 60, 60, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-icon {
+    font-size: 1.4rem;
+    margin-bottom: 3px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+    display: block;
+}
+
+.nav-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(248, 250, 252, 0.85);
+    line-height: 1;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    display: block;
+}
+
+/* Page content container */
+.page-container {
+    padding: 20px;
+    padding-bottom: 100px;
+    min-height: calc(100vh - 200px);
+}
+
+.page-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-content h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Ajustement du conteneur principal pour la barre de navigation */
+.container {
+    padding-bottom: 80px;
+}
+
+main {
+    padding-bottom: 20px;
+}
+
+@media (max-width: 480px) {
+    .bottom-navigation {
+        height: 70px;
+        padding: 8px 0;
+        gap: 3px;
+    }
+    
+    .nav-item {
+        padding: 6px 8px;
+        min-height: 54px;
+    }
+    
+    .nav-icon {
+        font-size: 1.3rem;
+        margin-bottom: 2px;
+    }
+    
+    .nav-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .page-container {
+        padding: 15px;
+        padding-bottom: 90px;
+    }
+}
+
+/* Styles pour les cartes d'avis */
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.review-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.6) 100%);
+    border: 1px solid rgba(60, 60, 60, 0.6);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    animation: slideInUp 0.4s ease-out;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    border-color: rgba(80, 80, 80, 0.8);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(60, 60, 60, 0.4);
+}
+
+.review-plug-info {
+    flex: 1;
+}
+
+.review-plug-name {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.review-rating {
+    font-size: 1rem;
+    color: #FFD700;
+    text-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
+}
+
+.review-date {
+    color: rgba(200, 200, 200, 0.6);
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-left: 15px;
+}
+
+.review-author {
+    color: rgba(200, 200, 200, 0.8);
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.review-author strong {
+    color: #93c5fd;
+    font-weight: 600;
+}
+
+.review-comment {
+    color: rgba(248, 250, 252, 0.9);
+    font-size: 1rem;
+    line-height: 1.6;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border-left: 3px solid rgba(147, 197, 253, 0.5);
+}
+
+@media (max-width: 768px) {
+    .review-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .review-date {
+        margin-left: 0;
+        white-space: normal;
+    }
+    
+    .review-card {
+        padding: 16px;
+    }
+    
+    .review-plug-name {
+        font-size: 1.1rem;
+    }
+}
