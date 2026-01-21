@@ -108,6 +108,17 @@
         "active": true
       },
       {
+        "id": 12,
+        "name": "Rapido 54",
+        "departments": ["54", "57"],
+        "description": "la qualité c'est chez nous 💎",
+        "telegram": "https://t.me/rapido54",
+        "emoji": "💎",
+        "image": "https://i.ibb.co/7J8vCyB0/5aa9bff5-7f07-433d-b5ef-95bd7ee02bf0.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 5,
         "name": "Oswald Cobblepot",
         "departments": ["54", "57"],
@@ -139,6 +150,17 @@
         "telegram": "https://dympt.org/joinchat/bpwc_9XuQPiyNHKu2yIf0A",
         "emoji": "👑",
         "image": "https://i.ibb.co/zW8L1BsP/7f19fc0d-2843-4bf3-aef3-938276d39bc2.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
+        "id": 11,
+        "name": "TOPQALITYIDRY67",
+        "departments": ["67", "68"],
+        "description": "la qualité sur Strasbourg/Mhulouse c'est nous 🔥",
+        "telegram": "https://t.me/+F-O_Lg-37RllMDRk",
+        "emoji": "🔥",
+        "image": "https://i.ibb.co/Lz70NXfK/4c1d1521-d26e-424b-ba12-961443aace3d.jpg",
         "rating": 5.0,
         "active": true
       },
@@ -177,6 +199,19 @@
         "rating": 5.0,
         "active": true
       }
+    ],
+    "51": [
+      {
+        "id": 13,
+        "name": "Drugs Paradise",
+        "departments": ["51", "10"],
+        "description": "fait par des passionnés 🔥",
+        "telegram": "https://t.me/+OyiO9rjBNqg4NDg0",
+        "emoji": "🎭",
+        "image": "https://i.ibb.co/dxgSMLk/8ef8601b-40c7-4659-b747-bb3545017e53.jpg",
+        "rating": 5.0,
+        "active": true
+      },
     ]
   },
   "reviews": {
