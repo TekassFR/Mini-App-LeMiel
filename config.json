@@ -165,6 +165,17 @@
         "image": "https://i.ibb.co/CpLJnG3S/5ae06428-b245-49d9-85b5-8c5b75604b80.jpg",
         "rating": 5.0,
         "active": true
+      },
+      {
+        "id": 10,
+        "name": "VinSmoke's Coffee",
+        "departments": ["68", "67"],
+        "description": "la référence de Mulhouse/Strasbourg 🏘️",
+        "telegram": "https://t.me/+0tSDrL3Zs0E5ZTc0",
+        "emoji": "🏘️",
+        "image": "https://i.ibb.co/pjxXG5gj/40f4bb24-5399-4a2f-8b92-c3089544488b.jpg",
+        "rating": 5.0,
+        "active": true
       }
     ]
   },
