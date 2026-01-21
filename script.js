@@ -689,10 +689,100 @@ function updatePlugRating(plugId) {
     displayPlugsGrid(currentDepartmentFilter);
 }
 
+// Navigation entre les pages
+function switchPage(page) {
+    // Masquer toutes les pages
+    document.getElementById('plugs-page').style.display = 'none';
+    document.getElementById('avis-page').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'none';
+    document.getElementById('canal-page').style.display = 'none';
+    
+    // Afficher la page sélectionnée
+    const pageId = page + '-page';
+    const selectedPage = document.getElementById(pageId);
+    if (selectedPage) {
+        selectedPage.style.display = 'block';
+    }
+    
+    // Charger les avis si c'est la page "avis"
+    if (page === 'avis') {
+        displayReviews();
+    }
+    
+    // Mettre à jour les onglets actifs
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-page="${page}"]`).classList.add('active');
+}
+
+// Fonction pour afficher les avis
+function displayReviews() {
+    const avisPage = document.getElementById('avis-page');
+    
+    // Récupérer tous les avis approuvés
+    const approvedReviews = reviewsConfig.approved || [];
+    
+    if (approvedReviews.length === 0) {
+        avisPage.innerHTML = `
+            <div class="page-content">
+                <h2>⭐ Avis</h2>
+                <div style="padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.6);">
+                    <p>Aucun avis pour le moment 🤷‍♂️</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Soyez le premier à laisser un avis!</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    // Générer le HTML des avis
+    const reviewsHTML = approvedReviews.map(review => {
+        const plug = findPlugById(review.plugId);
+        const plugName = plug ? plug.name : 'Plug inconnu';
+        const plugEmoji = plug ? plug.emoji : '📍';
+        
+        // Générer les étoiles
+        let starsHTML = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        
+        // Formater la date
+        const date = new Date(review.date);
+        const dateStr = date.toLocaleDateString('fr-FR', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        return `
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-plug-info">
+                        <h3 class="review-plug-name">${plugEmoji} ${plugName}</h3>
+                        <div class="review-rating">${starsHTML}</div>
+                    </div>
+                    <div class="review-date">${dateStr}</div>
+                </div>
+                <div class="review-author">Par <strong>${review.username}</strong></div>
+                <div class="review-comment">${review.comment}</div>
+            </div>
+        `;
+    }).join('');
+    
+    avisPage.innerHTML = `
+        <div class="page-content">
+            <h2>⭐ Avis</h2>
+            <div class="reviews-container">
+                ${reviewsHTML}
+            </div>
+        </div>
+    `;
+}
+
 // Thème Telegram
 if (tg.setBackgroundColor) tg.setBackgroundColor('#000000');
 if (tg.setHeaderColor) tg.setHeaderColor('#1a1a1a');
 
 // Démarrage
 document.addEventListener('DOMContentLoaded', loadConfig);
-
