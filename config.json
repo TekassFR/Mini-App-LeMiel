@@ -132,6 +132,17 @@
         "active": true
       },
       {
+        "id": 14,
+        "name": "Terps Club 67",
+        "departments": ["67", "68"],
+        "description": "leader sur Strasbourg/Mulhouse 👑",
+        "telegram": "https://t.me/+e9NnFBAF97VmYjNk",
+        "emoji": "👑",
+        "image": "https://i.ibb.co/MDKn1D6s/6a99d9f3-d11d-4a7d-b4c1-0200fdc006fa.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 6,
         "name": "CALIWEED 67",
         "departments": ["67", "68"],
