@@ -10,6 +10,9 @@ let currentPlugId = null;
 let currentDepartmentFilter = 'all';
 let adminConfig = {};
 
+// URL de l'API (à modifier selon votre déploiement)
+const API_URL = 'http://localhost:5000/api';
+
 // Constantes localStorage
 const STORAGE_KEY_REVIEWS = 'lemiel_reviews';
 const STORAGE_KEY_PLUGS = 'lemiel_plugs';
@@ -161,32 +164,24 @@ function logAdminAction(action, details, beforeData = null, afterData = null) {
     }
 }
 
-// Charger les reviews depuis localStorage
-function loadReviewsFromStorage() {
+// Charger les reviews depuis l'API
+async function loadReviewsFromStorage() {
     try {
-        const stored = localStorage.getItem(STORAGE_KEY_REVIEWS);
-        if (stored) {
-            reviewsConfig = JSON.parse(stored);
-            console.log('Reviews chargées depuis le stockage local');
+        const response = await fetch(`${API_URL}/reviews`);
+        if (response.ok) {
+            reviewsConfig = await response.json();
+            console.log('Reviews chargées depuis l\'API');
         } else {
-            // Sinon, utiliser la config par défaut
-            reviewsConfig = appConfig.reviews || { pending: [], approved: [] };
+            console.error('Erreur chargement reviews depuis l\'API');
+            reviewsConfig = { pending: [], approved: [] };
         }
     } catch (error) {
-        console.error('Erreur chargement reviews:', error);
-        reviewsConfig = appConfig.reviews || { pending: [], approved: [] };
+        console.error('Erreur connexion API:', error);
+        reviewsConfig = { pending: [], approved: [] };
     }
 }
 
-// Sauvegarder les reviews dans localStorage
-function saveReviewsToStorage() {
-    try {
-        localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(reviewsConfig));
-        console.log('Reviews sauvegardées');
-    } catch (error) {
-        console.error('Erreur sauvegarde reviews:', error);
-    }
-}
+// Fonction de sauvegarde supprimée - maintenant géré par l'API
 
 function initializeApp() {
     displayPlugsGrid('all');
@@ -734,25 +729,38 @@ function submitReview() {
     const user = tg.initDataUnsafe?.user;
     const username = user?.username || user?.first_name || 'Anonyme';
     
-    const review = {
-        id: Date.now(),
+    const reviewData = {
         plugId: currentReviewPlugId,
         username: username,
         rating: selectedRating,
-        comment: comment,
-        date: new Date().toISOString(),
-        status: 'pending'
+        comment: comment
     };
     
-    // Ajouter aux avis en attente
-    if (!reviewsConfig.pending) reviewsConfig.pending = [];
-    reviewsConfig.pending.push(review);
-    
-    // Sauvegarder
-    saveReviewsToStorage();
-    
-    alert('✅ Votre avis a été envoyé! Il sera publié après validation par un administrateur.');
-    closeReviewModal();
+    // Envoyer l'avis à l'API
+    submitReviewToAPI(reviewData);
+}
+
+// Envoyer un avis à l'API
+async function submitReviewToAPI(reviewData) {
+    try {
+        const response = await fetch(`${API_URL}/reviews`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewData)
+        });
+        
+        if (response.ok) {
+            alert('✅ Votre avis a été envoyé! Il sera publié après validation par un administrateur.');
+            closeReviewModal();
+        } else {
+            alert('❌ Erreur lors de l\'envoi de l\'avis. Veuillez réessayer.');
+        }
+    } catch (error) {
+        console.error('Erreur envoi avis:', error);
+        alert('❌ Erreur de connexion. Veuillez vérifier votre connexion et réessayer.');
+    }
 }
 
 function findPlugById(plugId) {
@@ -763,8 +771,12 @@ function findPlugById(plugId) {
     return null;
 }
 
-function loadAdminReviews() {
+async function loadAdminReviews() {
     const content = document.getElementById('admin-content');
+    content.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px;">Chargement des avis...</p>';
+    
+    // Charger les avis depuis l'API
+    await loadReviewsFromStorage();
     
     const pendingReviews = reviewsConfig.pending || [];
     const approvedReviews = reviewsConfig.approved || [];
@@ -838,77 +850,99 @@ function loadAdminReviews() {
     content.innerHTML = html;
 }
 
-function approveReview(reviewId) {
-    const reviewIndex = reviewsConfig.pending.findIndex(r => r.id === reviewId);
-    if (reviewIndex === -1) return;
-    
-    const review = reviewsConfig.pending[reviewIndex];
-    review.status = 'approved';
-    
-    // Déplacer vers approuvés
-    reviewsConfig.pending.splice(reviewIndex, 1);
-    if (!reviewsConfig.approved) reviewsConfig.approved = [];
-    reviewsConfig.approved.push(review);
-    
-    // Logger l'action
-    const plug = findPlugById(review.plugId);
-    const plugName = plug ? plug.name : `Plug #${review.plugId}`;
-    logAdminAction('approbation_avis', `Approbation de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, null, review);
-    
-    // Sauvegarder
-    saveReviewsToStorage();
-    
-    // Recalculer la note du plug
-    updatePlugRating(review.plugId);
-    
-    alert('✅ Avis approuvé!');
-    loadAdminReviews();
+async function approveReview(reviewId) {
+    try {
+        const response = await fetch(`${API_URL}/reviews/${reviewId}/approve`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            
+            // Logger l'action
+            const plug = findPlugById(data.review.plugId);
+            const plugName = plug ? plug.name : `Plug #${data.review.plugId}`;
+            logAdminAction('approbation_avis', `Approbation de l'avis de @${data.review.username} pour "${plugName}" (${data.review.rating}★)`, null, data.review);
+            
+            // Recalculer la note du plug
+            updatePlugRating(data.review.plugId);
+            
+            alert('✅ Avis approuvé!');
+            loadAdminReviews();
+        } else {
+            alert('❌ Erreur lors de l\'approbation de l\'avis.');
+        }
+    } catch (error) {
+        console.error('Erreur approbation avis:', error);
+        alert('❌ Erreur de connexion.');
+    }
 }
 
-function rejectReview(reviewId) {
+async function rejectReview(reviewId) {
     if (!confirm('Êtes-vous sûr de vouloir rejeter cet avis?')) return;
     
+    // Trouver l'avis pour le log avant de le supprimer
     const review = reviewsConfig.pending.find(r => r.id === reviewId);
     if (!review) return;
     
-    const plug = findPlugById(review.plugId);
-    const plugName = plug ? plug.name : `Plug #${review.plugId}`;
-    
-    reviewsConfig.pending = reviewsConfig.pending.filter(r => r.id !== reviewId);
-    
-    // Logger l'action
-    logAdminAction('rejet_avis', `Rejet de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
-    
-    // Sauvegarder
-    saveReviewsToStorage();
-    
-    alert('✅ Avis rejeté!');
-    loadAdminReviews();
+    try {
+        const response = await fetch(`${API_URL}/reviews/${reviewId}/reject`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            const plug = findPlugById(review.plugId);
+            const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+            
+            // Logger l'action
+            logAdminAction('rejet_avis', `Rejet de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
+            
+            alert('✅ Avis rejeté!');
+            loadAdminReviews();
+        } else {
+            alert('❌ Erreur lors du rejet de l\'avis.');
+        }
+    } catch (error) {
+        console.error('Erreur rejet avis:', error);
+        alert('❌ Erreur de connexion.');
+    }
 }
 
-function deleteReview(reviewId) {
+
+async function deleteReview(reviewId) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cet avis?')) return;
     
+    // Trouver l'avis pour le log avant de le supprimer
     const review = reviewsConfig.approved.find(r => r.id === reviewId);
     if (!review) return;
     
-    const plug = findPlugById(review.plugId);
-    const plugName = plug ? plug.name : `Plug #${review.plugId}`;
-    
-    reviewsConfig.approved = reviewsConfig.approved.filter(r => r.id !== reviewId);
-    
-    // Logger l'action
-    logAdminAction('suppression_avis', `Suppression de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
-    
-    // Sauvegarder
-    saveReviewsToStorage();
-    
-    if (review) {
-        updatePlugRating(review.plugId);
+    try {
+        const response = await fetch(`${API_URL}/reviews/${reviewId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            const plug = findPlugById(review.plugId);
+            const plugName = plug ? plug.name : `Plug #${review.plugId}`;
+            
+            // Logger l'action
+            logAdminAction('suppression_avis', `Suppression de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
+            
+            // Recalculer la note du plug
+            updatePlugRating(review.plugId);
+            
+            alert('✅ Avis supprimé!');
+            loadAdminReviews();
+        } else {
+            alert('❌ Erreur lors de la suppression de l\'avis.');
+        }
+    } catch (error) {
+        console.error('Erreur suppression avis:', error);
+        alert('❌ Erreur de connexion.');
     }
-    
-    alert('✅ Avis supprimé!');
-    loadAdminReviews();
 }
 
 // Fonction pour afficher les logs admin
