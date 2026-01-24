@@ -767,6 +767,12 @@ main {
     border: 1px solid rgba(80, 80, 80, 0.3);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     letter-spacing: 0.5px;
+    display: inline-block;
+    width: auto;
+    min-width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Panel Admin - Design Moderne Premium */
