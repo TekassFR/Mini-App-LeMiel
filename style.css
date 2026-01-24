@@ -912,14 +912,15 @@ main {
 
 .admin-tabs {
     display: flex;
-    gap: 6px;
-    padding: 12px 10px;
+    gap: 8px;
+    padding: 14px 12px;
     background: linear-gradient(135deg, rgba(15, 15, 15, 0.6), rgba(10, 10, 10, 0.8));
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     border-bottom: 1px solid rgba(100, 100, 100, 0.2);
+    align-items: center;
 }
 
 .admin-tabs::-webkit-scrollbar {
@@ -928,9 +929,10 @@ main {
 
 .admin-tab-btn {
     flex: 0 0 auto;
-    min-width: 55px;
-    max-width: 60px;
-    padding: 8px 4px;
+    min-width: 58px;
+    max-width: 62px;
+    height: 60px;
+    padding: 6px 4px;
     background: linear-gradient(145deg, rgba(40, 40, 40, 0.5), rgba(30, 30, 30, 0.7));
     backdrop-filter: blur(10px);
     border: 1px solid rgba(80, 80, 80, 0.3);
@@ -943,13 +945,13 @@ main {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: 0px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 3px;
     line-height: 1.1;
     text-align: center;
 }
