@@ -275,64 +275,83 @@ header {
 
 
 
-/* Sélecteur de départements stylisé */
+/* Sélecteur de départements stylisé - Design Moderne Premium */
 .department-selector {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
-    padding: 15px 0;
+    padding: 20px 0;
 }
 
 .department-select {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(10, 10, 10, 0.8) 100%);
-    color: #f8fafc;
-    border: 2px solid rgba(60, 60, 60, 0.6);
-    padding: 14px 24px;
-    border-radius: 15px;
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.85), rgba(10, 10, 10, 0.9));
+    backdrop-filter: blur(20px) saturate(120%);
+    color: #ffffff;
+    border: 1px solid rgba(100, 100, 100, 0.3);
+    padding: 16px 28px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
-    min-width: 280px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    min-width: 320px;
     max-width: 90%;
     box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.4),
-        0 2px 10px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(60, 60, 60, 0.2);
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f8fafc' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%23ffffff' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 40px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-position: right 16px center;
+    padding-right: 48px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.department-select::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    pointer-events: none;
 }
 
 .department-select:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px) scale(1.02);
     box-shadow: 
-        0 8px 30px rgba(0, 0, 0, 0.4),
-        0 4px 15px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(60, 60, 60, 0.3);
-    background-color: rgba(40, 40, 40, 0.8);
-    border-color: rgba(60, 60, 60, 0.8);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffffff' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+        0 16px 48px rgba(0, 0, 0, 0.6),
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(140, 140, 140, 0.4);
+    border-color: rgba(140, 140, 140, 0.5);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%23ffffff' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 .department-select:focus {
     outline: none;
     box-shadow: 
-        0 8px 30px rgba(0, 0, 0, 0.5),
-        0 4px 15px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(100, 100, 100, 0.3),
-        0 0 0 2px rgba(60, 60, 60, 0.6);
-    border-color: rgba(100, 100, 100, 0.8);
+        0 16px 48px rgba(0, 0, 0, 0.6),
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+        0 0 0 2px rgba(160, 160, 160, 0.6);
+    border-color: rgba(160, 160, 160, 0.7);
+    transform: translateY(-2px) scale(1.01);
 }
 
 .department-select option {
     background: #1a1a1a;
-    color: #f8fafc;
-    padding: 10px;
+    color: #ffffff;
+    padding: 12px;
+    font-weight: 600;
 }
 
 .department-select option:hover {
@@ -750,26 +769,39 @@ main {
     letter-spacing: 0.5px;
 }
 
-/* Panel Admin */
+/* Panel Admin - Design Moderne Premium */
 .admin-btn {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: linear-gradient(145deg, #f44336, #d32f2f);
-    border: 1px solid rgba(244, 67, 54, 0.6);
+    top: 16px;
+    right: 16px;
+    background: linear-gradient(145deg, rgba(244, 67, 54, 0.9), rgba(211, 47, 47, 0.95));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 100, 100, 0.4);
     color: white;
-    padding: 10px 18px;
-    border-radius: 8px;
+    padding: 12px 22px;
+    border-radius: 16px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 
+        0 6px 24px rgba(244, 67, 54, 0.4),
+        0 3px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.5px;
 }
 
 .admin-btn:hover {
-    background: linear-gradient(145deg, #ff6b6b, #e53935);
-    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+    background: linear-gradient(145deg, rgba(255, 107, 107, 0.95), rgba(229, 57, 53, 1));
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 12px 36px rgba(244, 67, 54, 0.5),
+        0 6px 18px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 0 1px rgba(255, 120, 120, 0.5);
+    border-color: rgba(255, 120, 120, 0.6);
 }
 
 .admin-panel {
@@ -933,39 +965,93 @@ main {
 
 .admin-btn-primary {
     width: 100%;
-    padding: 12px;
-    background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    padding: 14px;
+    background: linear-gradient(145deg, rgba(74, 74, 74, 0.9), rgba(42, 42, 42, 0.95));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(120, 120, 120, 0.3);
+    border-radius: 14px;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+    font-size: 15px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-top: 12px;
+    box-shadow: 
+        0 6px 24px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.admin-btn-primary:hover::before {
+    left: 100%;
 }
 
 .admin-btn-primary:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(145deg, #5a5a5a, #3a3a3a);
-    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px) scale(1.02);
+    background: linear-gradient(145deg, rgba(90, 90, 90, 0.95), rgba(58, 58, 58, 1));
+    box-shadow: 
+        0 12px 36px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 0 0 1px rgba(140, 140, 140, 0.4);
+    border-color: rgba(140, 140, 140, 0.5);
 }
 
 .admin-btn-danger {
-    padding: 8px 16px;
-    background: linear-gradient(145deg, #f44336, #d32f2f);
-    border: none;
-    border-radius: 6px;
+    padding: 10px 20px;
+    background: linear-gradient(145deg, rgba(244, 67, 54, 0.9), rgba(211, 47, 47, 0.95));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 12px;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    font-size: 12px;
-    transition: all 0.3s ease;
+    font-size: 13px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 
+        0 4px 16px rgba(244, 67, 54, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-btn-danger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.admin-btn-danger:hover::before {
+    left: 100%;
 }
 
 .admin-btn-danger:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 8px 24px rgba(244, 67, 54, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 0 1px rgba(255, 100, 100, 0.5);
+    border-color: rgba(255, 120, 120, 0.5);
 }
 
 .admin-item {
@@ -2002,23 +2088,51 @@ body {
 }
 
 .back-btn {
-    background: linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(20, 20, 20, 0.9));
-    border: 1px solid rgba(60, 60, 60, 0.6);
+    background: linear-gradient(145deg, rgba(40, 40, 40, 0.85), rgba(20, 20, 20, 0.9));
+    backdrop-filter: blur(15px) saturate(120%);
+    border: 1px solid rgba(100, 100, 100, 0.3);
     color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 10px;
+    padding: 12px 24px;
+    border-radius: 16px;
     cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 
+        0 6px 24px rgba(0, 0, 0, 0.5),
+        0 3px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.back-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.back-btn:hover::before {
+    left: 100%;
 }
 
 .back-btn:hover {
-    background: linear-gradient(135deg, rgba(60, 60, 60, 0.8), rgba(40, 40, 40, 0.9));
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(145deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.95));
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 
+        0 12px 36px rgba(0, 0, 0, 0.6),
+        0 6px 18px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 0 0 1px rgba(120, 120, 120, 0.4);
+    border-color: rgba(120, 120, 120, 0.5);
 }
 
 .product-detail-header {
