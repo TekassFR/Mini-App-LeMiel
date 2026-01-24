@@ -153,11 +153,26 @@
                 <button class="admin-close-btn" onclick="closeAdminPanel()">✕</button>
             </div>
             <div class="admin-tabs">
-                <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')">📍 Plugs</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('depts')">🗺️ Départements</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('admins')">👤 Admins</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('reviews')">⭐ Avis</button>
-                <button class="admin-tab-btn" onclick="switchAdminTab('logs')">📊 Logs</button>
+                <button class="admin-tab-btn active" onclick="switchAdminTab('plugs')">
+                    <span style="font-size: 18px;">📍</span>
+                    <span>Plugs</span>
+                </button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('depts')">
+                    <span style="font-size: 18px;">🗺️</span>
+                    <span>Depts</span>
+                </button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('admins')">
+                    <span style="font-size: 18px;">👤</span>
+                    <span>Admins</span>
+                </button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('reviews')">
+                    <span style="font-size: 18px;">⭐</span>
+                    <span>Avis</span>
+                </button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('logs')">
+                    <span style="font-size: 18px;">📊</span>
+                    <span>Logs</span>
+                </button>
             </div>
             <div id="admin-content"></div>
         </div>
