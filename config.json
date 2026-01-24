@@ -6,7 +6,7 @@
     "version": "2.0"
   },
   "admins": {
-    "whitelist": ["lamentale57", "pausesvl", "Bastos54444", "lafaucheuse"]
+    "whitelist": ["lamentale57", "pausesvl", "Bastos54444"]
   },
   "departments": {
     "FR": {
@@ -132,17 +132,6 @@
         "active": true
       },
       {
-        "id": 14,
-        "name": "Terps Club 67",
-        "departments": ["67", "68"],
-        "description": "leader sur Strasbourg/Mulhouse 👑",
-        "telegram": "https://t.me/+e9NnFBAF97VmYjNk",
-        "emoji": "👑",
-        "image": "https://i.ibb.co/MDKn1D6s/6a99d9f3-d11d-4a7d-b4c1-0200fdc006fa.jpg",
-        "rating": 5.0,
-        "active": true
-      },
-      {
         "id": 6,
         "name": "CALIWEED 67",
         "departments": ["67", "68"],
@@ -154,21 +143,10 @@
         "active": true
       },
       {
-        "id": 11,
-        "name": "TOPQALITYIDRY67",
-        "departments": ["67", "68"],
-        "description": "la qualité sur Strasbourg/Mhulouse c'est nous 🔥",
-        "telegram": "https://t.me/+F-O_Lg-37RllMDRk",
-        "emoji": "🔥",
-        "image": "https://i.ibb.co/Lz70NXfK/4c1d1521-d26e-424b-ba12-961443aace3d.jpg",
-        "rating": 5.0,
-        "active": true
-      },
-      {
         "id": 8,
         "name": "SmockyClub 67",
         "departments": ["67", "68"],
-        "description": "toujours imité jamais égaler 🚀",
+        "description": "la référence de Strasbourg/Mulhouse 🏰",
         "telegram": "https://t.me/+DR382U-lSdIzMzQ8",
         "emoji": "🏰",
         "image": "https://i.ibb.co/Y4j3rLFg/5aedf512-9352-46c6-a65d-acc71ab22b7a.jpg",
@@ -196,19 +174,6 @@
         "telegram": "https://t.me/+0tSDrL3Zs0E5ZTc0",
         "emoji": "🏘️",
         "image": "https://i.ibb.co/pjxXG5gj/40f4bb24-5399-4a2f-8b92-c3089544488b.jpg",
-        "rating": 5.0,
-        "active": true
-      }
-    ],
-    "51": [
-      {
-        "id": 13,
-        "name": "Drugs Paradise",
-        "departments": ["51", "10"],
-        "description": "fait par des passionnés 🔥",
-        "telegram": "https://t.me/+OyiO9rjBNqg4NDg0",
-        "emoji": "🎭",
-        "image": "https://i.ibb.co/dxgSMLk/8ef8601b-40c7-4659-b747-bb3545017e53.jpg",
         "rating": 5.0,
         "active": true
       }
