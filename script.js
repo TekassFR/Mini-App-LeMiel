@@ -219,11 +219,12 @@ function displayPlugsGrid(department = 'all') {
     
     let plugsToDisplay = [];
     
+    const source = (plugsData && Object.keys(plugsData).length > 0) ? plugsData : (appConfig.plugs || {});
     if (department === 'all') {
-        // Utiliser plugsData pour rassembler tous les plugs, dédupliqués, puis trier par id croissant
+        // Utiliser plugsData ou appConfig.plugs pour rassembler tous les plugs, dédupliqués, puis trier par id croissant
         const seenIds = new Set();
         let allPlugs = [];
-        Object.values(plugsData).forEach(deptPlugs => {
+        Object.values(source).forEach(deptPlugs => {
             deptPlugs?.forEach(plug => {
                 if (!seenIds.has(plug.id)) {
                     seenIds.add(plug.id);
@@ -233,7 +234,7 @@ function displayPlugsGrid(department = 'all') {
         });
         plugsToDisplay = allPlugs.sort((a, b) => a.id - b.id);
     } else {
-        plugsToDisplay = (plugsData[department] || []).slice().sort((a, b) => a.id - b.id);
+        plugsToDisplay = (source[department] || []).slice().sort((a, b) => a.id - b.id);
     }
     
     if (plugsToDisplay.length === 0) {
