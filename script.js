@@ -11,7 +11,7 @@ let currentDepartmentFilter = 'all';
 let adminConfig = {};
 
 // URL de l'API (à modifier selon votre déploiement)
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'http://VOTRE-IP-VPS:5000/api';  // ⚠️ Remplacer VOTRE-IP-VPS par l'IP réelle
 
 // Constantes localStorage
 const STORAGE_KEY_REVIEWS = 'lemiel_reviews';
@@ -46,14 +46,13 @@ async function loadConfig() {
         if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
         appConfig = await response.json();
         
-        // Charger les plugs et départements depuis localStorage ou config
-        loadPlugsFromStorage();
-        loadDepartmentsFromStorage();
+        // Charger les plugs, départements et admins depuis l'API
+        await loadPlugsFromAPI();
+        await loadDepartmentsFromAPI();
+        await loadAdminsFromAPI();
         
-        adminConfig = appConfig.admins || {};
-        
-        // Charger les reviews depuis le localStorage ou depuis la config
-        loadReviewsFromStorage();
+        // Charger les reviews depuis l'API
+        await loadReviewsFromStorage();
         
         console.log('Configuration chargée');
         initializeApp();
@@ -62,52 +61,56 @@ async function loadConfig() {
     }
 }
 
-// Charger les plugs depuis localStorage
-function loadPlugsFromStorage() {
+// Charger les plugs depuis l'API
+async function loadPlugsFromAPI() {
     try {
-        const stored = localStorage.getItem(STORAGE_KEY_PLUGS);
-        if (stored) {
-            plugsData = JSON.parse(stored);
-            console.log('Plugs chargés depuis le stockage local');
+        const response = await fetch(`${API_URL}/plugs`);
+        if (response.ok) {
+            plugsData = await response.json();
+            console.log('Plugs chargés depuis l\'API');
         } else {
-            plugsData = appConfig.plugs;
+            console.error('Erreur chargement plugs depuis l\'API');
+            plugsData = {};
         }
     } catch (error) {
-        console.error('Erreur chargement plugs:', error);
-        plugsData = appConfig.plugs;
+        console.error('Erreur connexion API plugs:', error);
+        plugsData = {};
     }
 }
 
-// Charger les départements depuis localStorage
-function loadDepartmentsFromStorage() {
+// Charger les départements depuis l'API
+async function loadDepartmentsFromAPI() {
     try {
-        const stored = localStorage.getItem(STORAGE_KEY_DEPARTMENTS);
-        if (stored) {
-            appConfig.departments = JSON.parse(stored);
-            console.log('Départements chargés depuis le stockage local');
+        const response = await fetch(`${API_URL}/departments`);
+        if (response.ok) {
+            appConfig.departments = await response.json();
+            console.log('Départements chargés depuis l\'API');
+        } else {
+            console.error('Erreur chargement départements depuis l\'API');
+            appConfig.departments = {};
         }
     } catch (error) {
-        console.error('Erreur chargement départements:', error);
+        console.error('Erreur connexion API départements:', error);
+        appConfig.departments = {};
     }
 }
 
-// Sauvegarder les plugs dans localStorage
-function savePlugsToStorage() {
-    try {
-        localStorage.setItem(STORAGE_KEY_PLUGS, JSON.stringify(plugsData));
-        console.log('Plugs sauvegardés');
-    } catch (error) {
-        console.error('Erreur sauvegarde plugs:', error);
-    }
-}
+// Fonctions de sauvegarde supprimées - maintenant géré par l'API
 
-// Sauvegarder les départements dans localStorage
-function saveDepartmentsToStorage() {
+// Charger les admins depuis l'API
+async function loadAdminsFromAPI() {
     try {
-        localStorage.setItem(STORAGE_KEY_DEPARTMENTS, JSON.stringify(appConfig.departments));
-        console.log('Départements sauvegardés');
+        const response = await fetch(`${API_URL}/admins`);
+        if (response.ok) {
+            adminConfig = await response.json();
+            console.log('Admins chargés depuis l\'API');
+        } else {
+            console.error('Erreur chargement admins depuis l\'API');
+            adminConfig = {whitelist: []};
+        }
     } catch (error) {
-        console.error('Erreur sauvegarde départements:', error);
+        console.error('Erreur connexion API admins:', error);
+        adminConfig = {whitelist: []};
     }
 }
 
@@ -217,16 +220,19 @@ function displayPlugsGrid(department = 'all') {
     let plugsToDisplay = [];
     
     if (department === 'all') {
-        // Tous les plugs, dédupliqués
+        // Respecter l'ordre des départements et plugs du config.json
         const seenIds = new Set();
-        Object.values(plugsData).forEach(deptPlugs => {
-            deptPlugs?.forEach(plug => {
-                if (!seenIds.has(plug.id)) {
-                    seenIds.add(plug.id);
-                    plugsToDisplay.push(plug);
-                }
+        if (appConfig && appConfig.plugs) {
+            Object.keys(appConfig.plugs).forEach(deptKey => {
+                const deptPlugs = appConfig.plugs[deptKey];
+                deptPlugs?.forEach(plug => {
+                    if (!seenIds.has(plug.id)) {
+                        seenIds.add(plug.id);
+                        plugsToDisplay.push(plug);
+                    }
+                });
             });
-        });
+        }
     } else {
         plugsToDisplay = plugsData[department] || [];
     }
@@ -418,7 +424,52 @@ function displayExistingPlugs() {
     plugsList.innerHTML = html || '<p style="color: #888;">Aucun plug</p>';
 }
 
-function addNewPlug() {
+// Sauvegarder un plug via API
+async function savePlugToAPI(plug, department) {
+    try {
+        const response = await fetch(`${API_URL}/plugs`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...plug,
+                department: department
+            })
+        });
+        
+        if (!response.ok) {
+            console.error('Erreur sauvegarde plug via API');
+        }
+    } catch (error) {
+        console.error('Erreur connexion API plugs:', error);
+    }
+}
+
+// Sauvegarder un département via API
+async function saveDepartmentToAPI(code, name, emoji) {
+    try {
+        const response = await fetch(`${API_URL}/departments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: code,
+                name: name,
+                emoji: emoji
+            })
+        });
+        
+        if (!response.ok) {
+            console.error('Erreur sauvegarde département via API');
+        }
+    } catch (error) {
+        console.error('Erreur connexion API départements:', error);
+    }
+}
+
+async function addNewPlug() {
     const name = document.getElementById('newPlugName')?.value.trim();
     const emoji = document.getElementById('newPlugEmoji')?.value.trim() || '📍';
     const image = document.getElementById('newPlugImage')?.value.trim() || 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png';
@@ -458,8 +509,8 @@ function addNewPlug() {
     // Logger l'action
     logAdminAction('ajout_plug', `Ajout du plug "${name}" (ID: ${newPlug.id}) dans les départements: ${departments.join(', ')}`, null, newPlug);
     
-    // Sauvegarder
-    savePlugsToStorage();
+    // Sauvegarder via API
+    await savePlugToAPI(newPlug, departments[0]);
     
     alert('✅ Plug ajouté avec succès!');
     document.getElementById('newPlugName').value = '';
@@ -467,30 +518,38 @@ function addNewPlug() {
     document.getElementById('newPlugDepts').value = '';
     document.getElementById('newPlugDesc').value = '';
     document.getElementById('newPlugTg').value = '';
+    await loadPlugsFromAPI();
     displayExistingPlugs();
     displayPlugsGrid(currentDepartmentFilter);
 }
 
-function deletePlugAdmin(plugId) {
+async function deletePlugAdmin(plugId) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce plug?')) return;
     
     // Récupérer les infos du plug avant suppression
     const plugToDelete = findPlugById(plugId);
     const plugName = plugToDelete ? plugToDelete.name : `Plug #${plugId}`;
     
-    Object.keys(plugsData).forEach(dept => {
-        plugsData[dept] = plugsData[dept].filter(p => p.id !== plugId);
-    });
-    
-    // Logger l'action
-    logAdminAction('suppression_plug', `Suppression du plug "${plugName}" (ID: ${plugId})`, plugToDelete, null);
-    
-    // Sauvegarder
-    savePlugsToStorage();
-    
-    alert('✅ Plug supprimé!');
-    displayExistingPlugs();
-    displayPlugsGrid(currentDepartmentFilter);
+    try {
+        const response = await fetch(`${API_URL}/plugs/${plugId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            // Logger l'action
+            logAdminAction('suppression_plug', `Suppression du plug "${plugName}" (ID: ${plugId})`, plugToDelete, null);
+            
+            alert('✅ Plug supprimé!');
+            await loadPlugsFromAPI();
+            displayExistingPlugs();
+            displayPlugsGrid(currentDepartmentFilter);
+        } else {
+            alert('❌ Erreur lors de la suppression du plug.');
+        }
+    } catch (error) {
+        console.error('Erreur suppression plug:', error);
+        alert('❌ Erreur de connexion.');
+    }
 }
 
 function loadAdminDepts() {
@@ -542,7 +601,7 @@ function displayExistingDepts() {
     deptsList.innerHTML = html || '<p style="color: #888;">Aucun département</p>';
 }
 
-function addNewDept() {
+async function addNewDept() {
     const num = document.getElementById('newDeptNum')?.value.trim();
     const name = document.getElementById('newDeptName')?.value.trim();
     const emoji = document.getElementById('newDeptEmoji')?.value.trim() || '📍';
@@ -563,32 +622,42 @@ function addNewDept() {
     // Logger l'action
     logAdminAction('ajout_departement', `Ajout du département ${emoji} ${name} (${num})`, null, { num, name, emoji });
     
-    // Sauvegarder
-    saveDepartmentsToStorage();
+    // Sauvegarder via API
+    await saveDepartmentToAPI(num, name, emoji);
     
     alert('✅ Département ajouté!');
     document.getElementById('newDeptNum').value = '';
     document.getElementById('newDeptName').value = '';
     document.getElementById('newDeptEmoji').value = '';
+    await loadDepartmentsFromAPI();
     displayExistingDepts();
 }
 
-function deleteDeptAdmin(num) {
+async function deleteDeptAdmin(num) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce département?')) return;
     
     const deptToDelete = appConfig.departments[num];
     const deptName = deptToDelete ? `${deptToDelete.emoji} ${deptToDelete.name}` : `Département ${num}`;
     
-    delete appConfig.departments[num];
-    
-    // Logger l'action
-    logAdminAction('suppression_departement', `Suppression du département ${deptName} (${num})`, deptToDelete, null);
-    
-    // Sauvegarder
-    saveDepartmentsToStorage();
-    
-    alert('✅ Département supprimé!');
-    displayExistingDepts();
+    try {
+        const response = await fetch(`${API_URL}/departments/${num}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            // Logger l'action
+            logAdminAction('suppression_departement', `Suppression du département ${deptName} (${num})`, deptToDelete, null);
+            
+            alert('✅ Département supprimé!');
+            await loadDepartmentsFromAPI();
+            displayExistingDepts();
+        } else {
+            alert('❌ Erreur lors de la suppression du département.');
+        }
+    } catch (error) {
+        console.error('Erreur suppression département:', error);
+        alert('❌ Erreur de connexion.');
+    }
 }
 
 function loadAdminAdmins() {
