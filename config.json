@@ -121,7 +121,7 @@
     ],
     "67": [
       {
-        "id": 7,
+        "id": 9,
         "name": "Griselda Farm'z 67",
         "departments": ["67", "68"],
         "description": "leader en Alsace 👑",
@@ -143,10 +143,10 @@
         "active": true
       },
       {
-        "id": 9,
+        "id": 7,
         "name": "SmockyClub 67",
         "departments": ["67", "68"],
-        "description": "l’art du goût et de grande envergure 🏰",
+        "description": "la référence de Strasbourg/Mulhouse 🏰",
         "telegram": "https://t.me/+DR382U-lSdIzMzQ8",
         "emoji": "🏰",
         "image": "https://i.ibb.co/Y4j3rLFg/5aedf512-9352-46c6-a65d-acc71ab22b7a.jpg",
