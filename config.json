@@ -176,6 +176,18 @@
         "image": "https://i.ibb.co/pjxXG5gj/40f4bb24-5399-4a2f-8b92-c3089544488b.jpg",
         "rating": 5.0,
         "active": true
+      },
+      "51": [
+      {
+        "id": 11,
+        "name": "Drugs Paradise",
+        "departments": ["51"],
+        "description": "le paradis du pilon c'est ici 📦",
+        "telegram": "https://t.me/+OyiO9rjBNqg4NDg0",
+        "emoji": "👑",
+        "image": "https://i.ibb.co/27DLLJrW/8ef8601b-40c7-4659-b747-bb3545017e53.jpg",
+        "rating": 5.0,
+        "active": true
       }
     ]
   },
