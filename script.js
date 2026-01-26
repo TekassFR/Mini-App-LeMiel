@@ -220,21 +220,22 @@ function displayPlugsGrid(department = 'all') {
     let plugsToDisplay = [];
     
     if (department === 'all') {
-        // Respecter l'ordre des départements et plugs du config.json
+        // Rassembler tous les plugs, dédupliqués, puis trier par id croissant
         const seenIds = new Set();
+        let allPlugs = [];
         if (appConfig && appConfig.plugs) {
-            Object.keys(appConfig.plugs).forEach(deptKey => {
-                const deptPlugs = appConfig.plugs[deptKey];
+            Object.values(appConfig.plugs).forEach(deptPlugs => {
                 deptPlugs?.forEach(plug => {
                     if (!seenIds.has(plug.id)) {
                         seenIds.add(plug.id);
-                        plugsToDisplay.push(plug);
+                        allPlugs.push(plug);
                     }
                 });
             });
         }
+        plugsToDisplay = allPlugs.sort((a, b) => a.id - b.id);
     } else {
-        plugsToDisplay = plugsData[department] || [];
+        plugsToDisplay = (plugsData[department] || []).slice().sort((a, b) => a.id - b.id);
     }
     
     if (plugsToDisplay.length === 0) {
