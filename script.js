@@ -220,19 +220,17 @@ function displayPlugsGrid(department = 'all') {
     let plugsToDisplay = [];
     
     if (department === 'all') {
-        // Rassembler tous les plugs, dédupliqués, puis trier par id croissant
+        // Utiliser plugsData pour rassembler tous les plugs, dédupliqués, puis trier par id croissant
         const seenIds = new Set();
         let allPlugs = [];
-        if (appConfig && appConfig.plugs) {
-            Object.values(appConfig.plugs).forEach(deptPlugs => {
-                deptPlugs?.forEach(plug => {
-                    if (!seenIds.has(plug.id)) {
-                        seenIds.add(plug.id);
-                        allPlugs.push(plug);
-                    }
-                });
+        Object.values(plugsData).forEach(deptPlugs => {
+            deptPlugs?.forEach(plug => {
+                if (!seenIds.has(plug.id)) {
+                    seenIds.add(plug.id);
+                    allPlugs.push(plug);
+                }
             });
-        }
+        });
         plugsToDisplay = allPlugs.sort((a, b) => a.id - b.id);
     } else {
         plugsToDisplay = (plugsData[department] || []).slice().sort((a, b) => a.id - b.id);
