@@ -235,7 +235,11 @@ function displayPlugsGrid(department = 'all') {
         }
         plugsToDisplay = allPlugs.sort((a, b) => a.id - b.id);
     } else {
-        plugsToDisplay = (plugsData[department] || []).slice().sort((a, b) => a.id - b.id);
+        // Fallback sur appConfig.plugs si plugsData est vide ou inexistant
+        let deptPlugs = (plugsData[department] && plugsData[department].length > 0)
+            ? plugsData[department]
+            : (appConfig.plugs && appConfig.plugs[department] ? appConfig.plugs[department] : []);
+        plugsToDisplay = deptPlugs.slice().sort((a, b) => a.id - b.id);
     }
     
     if (plugsToDisplay.length === 0) {
