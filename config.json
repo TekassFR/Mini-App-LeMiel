@@ -108,6 +108,17 @@
         "active": true
       },
       {
+        "id": 6,
+        "name": "Peaky Blinders 54",
+        "departments": ["54", "57", "88"],
+        "description": "Toujours avec des produits de qualité et un rapport qualité/prix jamais égalé. 🕵🏻",
+        "telegram": "https://t.me/+1ucagzAd9_YxZDE0",
+        "emoji": "🕵🏻",
+        "image": "https://i.ibb.co/Dfsm75LP/77bee4f4-a4f6-44a8-a927-303a9e5fb4dd.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 14,
         "name": "Rapido 54",
         "departments": ["54"],
@@ -119,7 +130,7 @@
         "active": true
       },
       {
-        "id": 6,
+        "id": 15,
         "name": "Oswald Cobblepot",
         "departments": ["54", "57"],
         "description": "service discret et rapide 🦇",
