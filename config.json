@@ -108,6 +108,17 @@
         "active": true
       },
       {
+        "id": 14,
+        "name": "Rapido 54",
+        "departments": ["54"],
+        "description": "la rapidité dans le 54 c'est ici ⏱️",
+        "telegram": "https://t.me/rapido54nancy",
+        "emoji": "⏱️",
+        "image": "https://i.ibb.co/6RzFyGzP/5aa9bff5-7f07-433d-b5ef-95bd7ee02bf0.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 6,
         "name": "Oswald Cobblepot",
         "departments": ["54", "57"],
