@@ -176,6 +176,17 @@
         "active": true
       },
       {
+        "id": 17,
+        "name": "FOX",
+        "departments": ["67", "68"],
+        "description": "new plug pour régaler Stras/Mulhouse 🚀",
+        "telegram": "https://t.me/+DKiwVuccI0w2NWY8",
+        "emoji": "🚀",
+        "image": "https://i.ibb.co/99tB20LB/cfeff359-5695-4f46-869e-ce7a53a251d1.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 7,
         "name": "SmockyClub 67",
         "departments": ["67", "68"],
