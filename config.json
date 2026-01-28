@@ -108,6 +108,17 @@
         "active": true
       },
       {
+        "id": 16,
+        "name": "Ghost Dogg",
+        "departments": ["54"],
+        "description": "que du farm haute qualité, gros poumons only 🚀",
+        "telegram": "https://t.me/+9j9oUF7PZX8yNDY0",
+        "emoji": "💎",
+        "image": "https://i.ibb.co/Ngnhvphb/c995649a-7df1-4676-a1bd-dd9ef4a6f939.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 6,
         "name": "Peaky Blinders 54",
         "departments": ["54", "57", "88"],
