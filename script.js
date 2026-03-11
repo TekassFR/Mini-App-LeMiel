@@ -29,7 +29,7 @@ function escapeHTML(str = '') {
         .replace(/'/g, '&#39;');
 }
 
-const ALLOWED_LINK_HOSTS = ['t.me', 'telegram.me', 'ptdl159.org', 'dympt.org', 'tutuduanyu.org', 'duanym138.org', 'callup.luffa.im'];
+const ALLOWED_LINK_HOSTS = ['t.me', 'telegram.me', 'ptdl159.org', 'dympt.org', 'tutuduanyu.org', 'duanym138.org', 'callup.luffa.im', 'snapchat.com'];
 function isAllowedUrl(url) {
     try {
         const parsed = new URL(url);
