@@ -45,15 +45,15 @@ async function loadConfig() {
         const response = await fetch('./config.json');
         if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
         appConfig = await response.json();
-        
+
         // Charger les plugs, départements et admins depuis l'API
         await loadPlugsFromAPI();
         await loadDepartmentsFromAPI();
         await loadAdminsFromAPI();
-        
+
         // Charger les reviews depuis l'API
         await loadReviewsFromStorage();
-        
+
         console.log('Configuration chargée');
         initializeApp();
     } catch (error) {
@@ -106,11 +106,11 @@ async function loadAdminsFromAPI() {
             console.log('Admins chargés depuis l\'API');
         } else {
             console.error('Erreur chargement admins depuis l\'API');
-            adminConfig = {whitelist: []};
+            adminConfig = { whitelist: [] };
         }
     } catch (error) {
         console.error('Erreur connexion API admins:', error);
-        adminConfig = {whitelist: []};
+        adminConfig = { whitelist: [] };
     }
 }
 
@@ -141,7 +141,7 @@ function logAdminAction(action, details, beforeData = null, afterData = null) {
     try {
         const user = tg.initDataUnsafe?.user;
         const username = user?.username || user?.first_name || 'Admin inconnu';
-        
+
         const log = {
             id: Date.now(),
             timestamp: new Date().toISOString(),
@@ -151,15 +151,15 @@ function logAdminAction(action, details, beforeData = null, afterData = null) {
             before: beforeData,
             after: afterData
         };
-        
+
         const logs = loadLogsFromStorage();
         logs.unshift(log); // Ajouter au début (plus récent en premier)
-        
+
         // Limiter à 200 logs maximum
         if (logs.length > 200) {
             logs.splice(200);
         }
-        
+
         saveLogsToStorage(logs);
         console.log('Log enregistré:', action);
     } catch (error) {
@@ -207,8 +207,8 @@ function displayUserInfo() {
 function setupCategoryButtons() {
     const departmentSelect = document.getElementById('department-select');
     if (!departmentSelect) return;
-    
-    departmentSelect.addEventListener('change', function() {
+
+    departmentSelect.addEventListener('change', function () {
         currentDepartmentFilter = this.value;
         displayPlugsGrid(this.value);
     });
@@ -216,9 +216,9 @@ function setupCategoryButtons() {
 
 function displayPlugsGrid(department = 'all') {
     const grid = document.getElementById('menu-grid');
-    
+
     let plugsToDisplay = [];
-    
+
     if (department === 'all') {
         // Rassembler tous les plugs, dédupliqués, puis trier par id croissant
         const seenIds = new Set();
@@ -241,19 +241,19 @@ function displayPlugsGrid(department = 'all') {
             : (appConfig.plugs && appConfig.plugs[department] ? appConfig.plugs[department] : []);
         plugsToDisplay = deptPlugs.slice().sort((a, b) => a.id - b.id);
     }
-    
+
     if (plugsToDisplay.length === 0) {
         grid.innerHTML = '<div style="padding: 60px 20px; text-align: center; color: #666; font-size: 16px;">Aucun plug pour le moment 🤷‍♂️</div>';
         return;
     }
-    
+
     grid.innerHTML = plugsToDisplay.map(plug => {
         const departments = plug.departments || [plug.department];
         const deptBadges = departments.map(dept => {
             const deptInfo = appConfig.departments[dept];
             return deptInfo ? `<span style="color: #ffffff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px;">${escapeHTML(dept)}</span>` : '';
         }).join(' ');
-        
+
         // Générer les étoiles
         const fullStars = Math.floor(plug.rating);
         const hasHalfStar = plug.rating % 1 >= 0.5;
@@ -261,7 +261,7 @@ function displayPlugsGrid(department = 'all') {
         let starsHTML = '⭐'.repeat(fullStars);
         if (hasHalfStar) starsHTML += '✨';
         starsHTML += '☆'.repeat(emptyStars);
-        
+
         return `
             <div class="plug-card">
                 <div class="plug-dept-badge">${deptBadges}</div>
@@ -279,7 +279,7 @@ function displayPlugsGrid(department = 'all') {
 
 function openTelegramProfile(telegramUrl) {
     if (!telegramUrl) return;
-    
+
     try {
         // Filtrer les liens non autorisés
         if (!isAllowedUrl(telegramUrl)) {
@@ -340,7 +340,7 @@ function switchAdminTab(tab) {
         btn.classList.remove('active');
     });
     event.target.classList.add('active');
-    
+
     const content = document.getElementById('admin-content');
     if (tab === 'plugs') {
         loadAdminPlugs();
@@ -403,7 +403,7 @@ function loadAdminPlugs() {
 function displayExistingPlugs() {
     const plugsList = document.getElementById('plugs-list');
     const allPlugs = new Map();
-    
+
     Object.values(plugsData).forEach(deptPlugs => {
         deptPlugs?.forEach(plug => {
             if (!allPlugs.has(plug.id)) {
@@ -411,7 +411,7 @@ function displayExistingPlugs() {
             }
         });
     });
-    
+
     let html = '';
     allPlugs.forEach(plug => {
         const depts = (plug.departments || [plug.department]).join(', ');
@@ -425,7 +425,7 @@ function displayExistingPlugs() {
             </div>
         `;
     });
-    
+
     plugsList.innerHTML = html || '<p style="color: #888;">Aucun plug</p>';
 }
 
@@ -442,7 +442,7 @@ async function savePlugToAPI(plug, department) {
                 department: department
             })
         });
-        
+
         if (!response.ok) {
             console.error('Erreur sauvegarde plug via API');
         }
@@ -465,7 +465,7 @@ async function saveDepartmentToAPI(code, name, emoji) {
                 emoji: emoji
             })
         });
-        
+
         if (!response.ok) {
             console.error('Erreur sauvegarde département via API');
         }
@@ -482,18 +482,18 @@ async function addNewPlug() {
     const desc = document.getElementById('newPlugDesc')?.value.trim();
     const tg = document.getElementById('newPlugTg')?.value.trim();
     const rating = parseFloat(document.getElementById('newPlugRating')?.value) || 4.5;
-    
+
     if (!name || !depts || !desc || !tg) {
         alert('⚠️ Veuillez remplir tous les champs');
         return;
     }
-    
+
     const departments = depts.split(',').map(d => d.trim());
     let maxId = 0;
     Object.values(plugsData).forEach(deptPlugs => {
         deptPlugs?.forEach(p => { if (p.id > maxId) maxId = p.id; });
     });
-    
+
     const newPlug = {
         id: maxId + 1,
         name,
@@ -505,18 +505,18 @@ async function addNewPlug() {
         rating,
         active: true
     };
-    
+
     departments.forEach(dept => {
         if (!plugsData[dept]) plugsData[dept] = [];
         plugsData[dept].push(newPlug);
     });
-    
+
     // Logger l'action
     logAdminAction('ajout_plug', `Ajout du plug "${name}" (ID: ${newPlug.id}) dans les départements: ${departments.join(', ')}`, null, newPlug);
-    
+
     // Sauvegarder via API
     await savePlugToAPI(newPlug, departments[0]);
-    
+
     alert('✅ Plug ajouté avec succès!');
     document.getElementById('newPlugName').value = '';
     document.getElementById('newPlugImage').value = 'https://i.ibb.co/mCTpqd9y/88f76eb4-a1ad-42ae-a853-2af312179d86-removebg-preview.png';
@@ -530,20 +530,20 @@ async function addNewPlug() {
 
 async function deletePlugAdmin(plugId) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce plug?')) return;
-    
+
     // Récupérer les infos du plug avant suppression
     const plugToDelete = findPlugById(plugId);
     const plugName = plugToDelete ? plugToDelete.name : `Plug #${plugId}`;
-    
+
     try {
         const response = await fetch(`${API_URL}/plugs/${plugId}`, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             // Logger l'action
             logAdminAction('suppression_plug', `Suppression du plug "${plugName}" (ID: ${plugId})`, plugToDelete, null);
-            
+
             alert('✅ Plug supprimé!');
             await loadPlugsFromAPI();
             displayExistingPlugs();
@@ -589,7 +589,7 @@ function loadAdminDepts() {
 function displayExistingDepts() {
     const deptsList = document.getElementById('depts-list');
     let html = '';
-    
+
     Object.entries(appConfig.departments || {}).forEach(([num, dept]) => {
         const plugCount = (plugsData[num] || []).length;
         html += `
@@ -602,7 +602,7 @@ function displayExistingDepts() {
             </div>
         `;
     });
-    
+
     deptsList.innerHTML = html || '<p style="color: #888;">Aucun département</p>';
 }
 
@@ -610,26 +610,26 @@ async function addNewDept() {
     const num = document.getElementById('newDeptNum')?.value.trim();
     const name = document.getElementById('newDeptName')?.value.trim();
     const emoji = document.getElementById('newDeptEmoji')?.value.trim() || '📍';
-    
+
     if (!num || !name) {
         alert('⚠️ Veuillez remplir tous les champs');
         return;
     }
-    
+
     if (appConfig.departments[num]) {
         alert('⚠️ Ce département existe déjà');
         return;
     }
-    
+
     appConfig.departments[num] = { name, emoji };
     if (!plugsData[num]) plugsData[num] = [];
-    
+
     // Logger l'action
     logAdminAction('ajout_departement', `Ajout du département ${emoji} ${name} (${num})`, null, { num, name, emoji });
-    
+
     // Sauvegarder via API
     await saveDepartmentToAPI(num, name, emoji);
-    
+
     alert('✅ Département ajouté!');
     document.getElementById('newDeptNum').value = '';
     document.getElementById('newDeptName').value = '';
@@ -640,19 +640,19 @@ async function addNewDept() {
 
 async function deleteDeptAdmin(num) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce département?')) return;
-    
+
     const deptToDelete = appConfig.departments[num];
     const deptName = deptToDelete ? `${deptToDelete.emoji} ${deptToDelete.name}` : `Département ${num}`;
-    
+
     try {
         const response = await fetch(`${API_URL}/departments/${num}`, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             // Logger l'action
             logAdminAction('suppression_departement', `Suppression du département ${deptName} (${num})`, deptToDelete, null);
-            
+
             alert('✅ Département supprimé!');
             await loadDepartmentsFromAPI();
             displayExistingDepts();
@@ -690,12 +690,12 @@ function displayExistingAdmins() {
     const adminsList = document.getElementById('admins-list');
     const currentUser = tg.initDataUnsafe?.user?.username || '';
     let html = '';
-    
+
     if (!adminConfig.whitelist || adminConfig.whitelist.length === 0) {
         adminsList.innerHTML = '<p style="color: #888;">Aucun administrateur</p>';
         return;
     }
-    
+
     adminConfig.whitelist.forEach(username => {
         const isCurrent = username.toLowerCase() === currentUser.toLowerCase();
         html += `
@@ -708,29 +708,29 @@ function displayExistingAdmins() {
             </div>
         `;
     });
-    
+
     adminsList.innerHTML = html;
 }
 
 function addNewAdmin() {
     const username = document.getElementById('newAdminUsername')?.value.trim();
-    
+
     if (!username) {
         alert('⚠️ Veuillez entrer un username');
         return;
     }
-    
+
     if (!adminConfig.whitelist) {
         adminConfig.whitelist = [];
     }
-    
+
     if (adminConfig.whitelist.map(u => u.toLowerCase()).includes(username.toLowerCase())) {
         alert('⚠️ Cet utilisateur est déjà administrateur');
         return;
     }
-    
+
     adminConfig.whitelist.push(username);
-    
+
     alert('✅ Administrateur ajouté!');
     document.getElementById('newAdminUsername').value = '';
     displayExistingAdmins();
@@ -738,9 +738,9 @@ function addNewAdmin() {
 
 function deleteAdminUser(username) {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer @${username} comme administrateur?`)) return;
-    
+
     adminConfig.whitelist = adminConfig.whitelist.filter(u => u.toLowerCase() !== username.toLowerCase());
-    
+
     alert('✅ Administrateur supprimé!');
     displayExistingAdmins();
 }
@@ -754,17 +754,17 @@ let reviewsConfig = { pending: [], approved: [] };
 function openReviewModal(plugId) {
     const plug = findPlugById(plugId);
     if (!plug) return;
-    
+
     currentReviewPlugId = plugId;
     selectedRating = 0;
     document.getElementById('review-comment').value = '';
-    
+
     // Reset étoiles
     document.querySelectorAll('.star-rating').forEach(star => {
         star.textContent = '☆';
         star.style.color = 'rgba(255,255,255,0.3)';
     });
-    
+
     document.getElementById('review-modal').style.display = 'flex';
 }
 
@@ -776,7 +776,7 @@ function closeReviewModal() {
 
 function selectRating(rating) {
     selectedRating = rating;
-    
+
     document.querySelectorAll('.star-rating').forEach((star, index) => {
         if (index < rating) {
             star.textContent = '★';
@@ -793,23 +793,23 @@ function submitReview() {
         alert('⚠️ Veuillez sélectionner une note');
         return;
     }
-    
+
     const comment = document.getElementById('review-comment').value.trim();
     if (!comment) {
         alert('⚠️ Veuillez écrire un commentaire');
         return;
     }
-    
+
     const user = tg.initDataUnsafe?.user;
     const username = user?.username || user?.first_name || 'Anonyme';
-    
+
     const reviewData = {
         plugId: currentReviewPlugId,
         username: username,
         rating: selectedRating,
         comment: comment
     };
-    
+
     // Envoyer l'avis à l'API
     submitReviewToAPI(reviewData);
 }
@@ -824,7 +824,7 @@ async function submitReviewToAPI(reviewData) {
             },
             body: JSON.stringify(reviewData)
         });
-        
+
         if (response.ok) {
             alert('✅ Votre avis a été envoyé! Il sera publié après validation par un administrateur.');
             closeReviewModal();
@@ -848,19 +848,19 @@ function findPlugById(plugId) {
 async function loadAdminReviews() {
     const content = document.getElementById('admin-content');
     content.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px;">Chargement des avis...</p>';
-    
+
     // Charger les avis depuis l'API
     await loadReviewsFromStorage();
-    
+
     const pendingReviews = reviewsConfig.pending || [];
     const approvedReviews = reviewsConfig.approved || [];
-    
+
     let html = `
         <div style="margin-bottom: 30px;">
             <h3 style="color: #fff; margin-bottom: 15px;">⏳ Avis en Attente (${pendingReviews.length})</h3>
             <div style="max-height: 300px; overflow-y: auto;">
     `;
-    
+
     if (pendingReviews.length === 0) {
         html += '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Aucun avis en attente</p>';
     } else {
@@ -868,7 +868,7 @@ async function loadAdminReviews() {
             const plug = findPlugById(review.plugId);
             const plugName = plug ? plug.name : `Plug #${review.plugId}`;
             const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-            
+
             html += `
                 <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
@@ -887,7 +887,7 @@ async function loadAdminReviews() {
             `;
         });
     }
-    
+
     html += `
             </div>
         </div>
@@ -895,7 +895,7 @@ async function loadAdminReviews() {
             <h3 style="color: #fff; margin-bottom: 15px;">✅ Avis Approuvés (${approvedReviews.length})</h3>
             <div style="max-height: 300px; overflow-y: auto;">
     `;
-    
+
     if (approvedReviews.length === 0) {
         html += '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Aucun avis approuvé</p>';
     } else {
@@ -903,7 +903,7 @@ async function loadAdminReviews() {
             const plug = findPlugById(review.plugId);
             const plugName = plug ? plug.name : `Plug #${review.plugId}`;
             const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-            
+
             html += `
                 <div style="background: rgba(76, 175, 80, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(76, 175, 80, 0.3);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
@@ -919,7 +919,7 @@ async function loadAdminReviews() {
             `;
         });
     }
-    
+
     html += '</div></div>';
     content.innerHTML = html;
 }
@@ -932,18 +932,18 @@ async function approveReview(reviewId) {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         if (response.ok) {
             const data = await response.json();
-            
+
             // Logger l'action
             const plug = findPlugById(data.review.plugId);
             const plugName = plug ? plug.name : `Plug #${data.review.plugId}`;
             logAdminAction('approbation_avis', `Approbation de l'avis de @${data.review.username} pour "${plugName}" (${data.review.rating}★)`, null, data.review);
-            
+
             // Recalculer la note du plug
             updatePlugRating(data.review.plugId);
-            
+
             alert('✅ Avis approuvé!');
             loadAdminReviews();
         } else {
@@ -957,23 +957,23 @@ async function approveReview(reviewId) {
 
 async function rejectReview(reviewId) {
     if (!confirm('Êtes-vous sûr de vouloir rejeter cet avis?')) return;
-    
+
     // Trouver l'avis pour le log avant de le supprimer
     const review = reviewsConfig.pending.find(r => r.id === reviewId);
     if (!review) return;
-    
+
     try {
         const response = await fetch(`${API_URL}/reviews/${reviewId}/reject`, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             const plug = findPlugById(review.plugId);
             const plugName = plug ? plug.name : `Plug #${review.plugId}`;
-            
+
             // Logger l'action
             logAdminAction('rejet_avis', `Rejet de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
-            
+
             alert('✅ Avis rejeté!');
             loadAdminReviews();
         } else {
@@ -988,26 +988,26 @@ async function rejectReview(reviewId) {
 
 async function deleteReview(reviewId) {
     if (!confirm('Êtes-vous sûr de vouloir supprimer cet avis?')) return;
-    
+
     // Trouver l'avis pour le log avant de le supprimer
     const review = reviewsConfig.approved.find(r => r.id === reviewId);
     if (!review) return;
-    
+
     try {
         const response = await fetch(`${API_URL}/reviews/${reviewId}`, {
             method: 'DELETE'
         });
-        
+
         if (response.ok) {
             const plug = findPlugById(review.plugId);
             const plugName = plug ? plug.name : `Plug #${review.plugId}`;
-            
+
             // Logger l'action
             logAdminAction('suppression_avis', `Suppression de l'avis de @${review.username} pour "${plugName}" (${review.rating}★)`, review, null);
-            
+
             // Recalculer la note du plug
             updatePlugRating(review.plugId);
-            
+
             alert('✅ Avis supprimé!');
             loadAdminReviews();
         } else {
@@ -1023,7 +1023,7 @@ async function deleteReview(reviewId) {
 function loadAdminLogs() {
     const content = document.getElementById('admin-content');
     const logs = loadLogsFromStorage();
-    
+
     let html = `
         <div style="margin-bottom: 20px;">
             <h3 style="color: #fff; margin-bottom: 10px;">📈 Historique des Actions Admin</h3>
@@ -1040,7 +1040,7 @@ function loadAdminLogs() {
         
         <div id="logs-container" style="max-height: 550px; overflow-y: auto;">
     `;
-    
+
     if (logs.length === 0) {
         html += '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">Aucune action enregistrée</p>';
     } else {
@@ -1048,10 +1048,10 @@ function loadAdminLogs() {
             const date = new Date(log.timestamp);
             const dateStr = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            
+
             let actionColor = 'rgba(255,255,255,0.1)';
             let actionIcon = '❓';
-            
+
             if (log.action.includes('ajout')) {
                 actionColor = 'rgba(76, 175, 80, 0.15)';
                 actionIcon = '➕';
@@ -1068,7 +1068,7 @@ function loadAdminLogs() {
                 actionColor = 'rgba(33, 150, 243, 0.15)';
                 actionIcon = '✏️';
             }
-            
+
             html += `
                 <div class="log-item" data-action="${log.action}" style="background: ${actionColor}; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid rgba(255,255,255,0.3);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
@@ -1091,7 +1091,7 @@ function loadAdminLogs() {
             `;
         });
     }
-    
+
     html += '</div>';
     content.innerHTML = html;
 }
@@ -1100,7 +1100,7 @@ function loadAdminLogs() {
 function filterLogs(type) {
     const logs = loadLogsFromStorage();
     const container = document.getElementById('logs-container');
-    
+
     let filteredLogs = logs;
     if (type === 'ajout_plug') {
         filteredLogs = logs.filter(log => log.action.includes('plug'));
@@ -1109,7 +1109,7 @@ function filterLogs(type) {
     } else if (type === 'avis') {
         filteredLogs = logs.filter(log => log.action.includes('avis'));
     }
-    
+
     let html = '';
     if (filteredLogs.length === 0) {
         html = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">Aucune action de ce type</p>';
@@ -1118,10 +1118,10 @@ function filterLogs(type) {
             const date = new Date(log.timestamp);
             const dateStr = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            
+
             let actionColor = 'rgba(255,255,255,0.1)';
             let actionIcon = '❓';
-            
+
             if (log.action.includes('ajout')) {
                 actionColor = 'rgba(76, 175, 80, 0.15)';
                 actionIcon = '➕';
@@ -1135,7 +1135,7 @@ function filterLogs(type) {
                 actionColor = 'rgba(255, 152, 0, 0.15)';
                 actionIcon = '⛔';
             }
-            
+
             html += `
                 <div style="background: ${actionColor}; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid rgba(255,255,255,0.3);">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
@@ -1158,14 +1158,14 @@ function filterLogs(type) {
             `;
         });
     }
-    
+
     container.innerHTML = html;
 }
 
 // Effacer tous les logs
 function clearAllLogs() {
     if (!confirm('⚠️ Êtes-vous sûr de vouloir effacer tout l\'historique des logs? Cette action est irréversible!')) return;
-    
+
     localStorage.removeItem(STORAGE_KEY_LOGS);
     alert('🗑️ Tous les logs ont été effacés!');
     loadAdminLogs();
@@ -1174,12 +1174,12 @@ function clearAllLogs() {
 function updatePlugRating(plugId) {
     // Calculer la moyenne des avis approuvés pour ce plug
     const plugReviews = reviewsConfig.approved.filter(r => r.plugId === plugId);
-    
+
     if (plugReviews.length === 0) return;
-    
+
     const avgRating = plugReviews.reduce((sum, r) => sum + r.rating, 0) / plugReviews.length;
     const roundedRating = Math.round(avgRating * 10) / 10; // Arrondi à 1 décimale
-    
+
     // Mettre à jour la note du plug
     for (const dept in plugsData) {
         const plug = plugsData[dept]?.find(p => p.id === plugId);
@@ -1188,7 +1188,7 @@ function updatePlugRating(plugId) {
             break;
         }
     }
-    
+
     // Rafraîchir l'affichage
     displayPlugsGrid(currentDepartmentFilter);
 }
@@ -1210,30 +1210,30 @@ function switchPage(page) {
         }
         return;
     }
-    
+
     // Masquer toutes les pages
     document.getElementById('plugs-page').style.display = 'none';
     document.getElementById('avis-page').style.display = 'none';
     document.getElementById('infos-page').style.display = 'none';
     document.getElementById('canal-page').style.display = 'none';
-    
+
     // Afficher la page sélectionnée
     const pageId = page + '-page';
     const selectedPage = document.getElementById(pageId);
     if (selectedPage) {
         selectedPage.style.display = 'block';
     }
-    
+
     // Charger les avis si c'est la page "avis"
     if (page === 'avis') {
         displayReviews();
     }
-    
+
     // Charger les infos si c'est la page "infos"
     if (page === 'infos') {
         displayInfos();
     }
-    
+
     // Mettre à jour les onglets actifs
     document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
@@ -1244,7 +1244,7 @@ function switchPage(page) {
 // Fonction pour afficher les infos
 function displayInfos() {
     const infosPage = document.getElementById('infos-page');
-    
+
     infosPage.innerHTML = `
         <div class="page-content">
             <h2>ℹ️ Infos</h2>
@@ -1263,18 +1263,18 @@ function displayInfos() {
                 </div>
                 
                 <div class="info-card">
-                    <h3>� Nos réseaux sociaux</h3>
+                    <h3> Nos réseaux sociaux</h3>
                     <p>Notre Instagram disponible :</p>
-                    <a href="https://www.instagram.com/appge_grandestfdlest?igsh=Y255Y2pocWRseWM4&utm_source=qr" class="info-link" onclick="event.preventDefault(); window.open('https://www.instagram.com/appge_grandestfdlest?igsh=Y255Y2pocWRseWM4&utm_source=qr', '_blank')">
-                        📷 @appge_grandestfdlest
+                    <a href="https://www.instagram.com/420.grandest?igsh=Y255Y2pocWRseWM4&utm_source=qr" class="info-link" onclick="event.preventDefault(); window.open('https://www.instagram.com/420.grandest?igsh=Y255Y2pocWRseWM4&utm_source=qr', '_blank')">
+                        📷 @420.grandest
                     </a>
                 </div>
                 
                 <div class="info-card">
                     <h3>�🚀 Rejoindre le réseau</h3>
                     <p>Pour être affiché sur notre MiniApp, faut voir avec:</p>
-                    <a href="https://t.me/sousouwsofficiel" class="info-link" onclick="openTelegramLink(event, 'https://t.me/sousouwsofficiel')">
-                        👤 @sousouwsofficiel
+                    <a href="https://t.me/ssvvs54" class="info-link" onclick="openTelegramLink(event, 'https://t.me/ssvvs54')">
+                        👤 @ssvvs54
                     </a>
                 </div>
             </div>
@@ -1300,10 +1300,10 @@ function openTelegramLink(event, url) {
 // Fonction pour afficher les avis
 function displayReviews() {
     const avisPage = document.getElementById('avis-page');
-    
+
     // Récupérer tous les avis approuvés
     const approvedReviews = reviewsConfig.approved || [];
-    
+
     if (approvedReviews.length === 0) {
         avisPage.innerHTML = `
             <div class="page-content">
@@ -1316,26 +1316,26 @@ function displayReviews() {
         `;
         return;
     }
-    
+
     // Générer le HTML des avis
     const reviewsHTML = approvedReviews.map(review => {
         const plug = findPlugById(review.plugId);
         const plugName = plug ? plug.name : 'Plug inconnu';
         const plugEmoji = plug ? plug.emoji : '📍';
-        
+
         // Générer les étoiles
         let starsHTML = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-        
+
         // Formater la date
         const date = new Date(review.date);
-        const dateStr = date.toLocaleDateString('fr-FR', { 
-            year: 'numeric', 
-            month: 'long', 
+        const dateStr = date.toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
         });
-        
+
         return `
             <div class="review-card">
                 <div class="review-header">
@@ -1350,7 +1350,7 @@ function displayReviews() {
             </div>
         `;
     }).join('');
-    
+
     avisPage.innerHTML = `
         <div class="page-content">
             <h2>⭐ Avis</h2>
