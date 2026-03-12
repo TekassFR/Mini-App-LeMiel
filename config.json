@@ -241,6 +241,20 @@
         "active": true
       },
       {
+        "id": 20,
+        "name": "Casa Aurora Club",
+        "departments": [
+          "68",
+          "67"
+        ],
+        "description": "Casa Aurora Club nouveau Plug sur Mulhouse/Alsace 🏘️",
+        "telegram": "https://t.me/+LaC8dpdawVw2NjU8",
+        "emoji": "🏘️",
+        "image": "https://i.ibb.co/PvGgdhKZ/casafarm.jpg",
+        "rating": 5.0,
+        "active": true
+      },
+      {
         "id": 10,
         "name": "TERPS CLUB 67",
         "departments": [
@@ -271,21 +285,7 @@
         "active": true
       },
       {
-        "id": 13,
-        "name": "Casa Aurora Club",
-        "departments": [
-          "68",
-          "67"
-        ],
-        "description": "Casa Aurora Club nouveau Plug sur Mulhouse/Alsace 🏘️",
-        "telegram": "https://t.me/+LaC8dpdawVw2NjU8",
-        "emoji": "🏘️",
-        "image": "https://i.ibb.co/PvGgdhKZ/casafarm.jpg",
-        "rating": 5.0,
-        "active": true
-      },
-      {
-        "id": 16,
+        "id": 19,
         "name": "Original 68",
         "departments": [
           "68"
@@ -294,20 +294,6 @@
         "telegram": "https://snapchat.com/t/rRSWFVAA",
         "emoji": "🏘️",
         "image": "https://i.ibb.co/F44bxHCs/original.jpg",
-        "rating": 5.0,
-        "active": true
-      },
-      {
-        "id": 17,
-        "name": "7evenTerps",
-        "departments": [
-          "68",
-          "67"
-        ],
-        "description": "7evenTerps le Plug qui ne faut pas louper 👑",
-        "telegram": "https://t.me/+FGsoadwdtrAzYjVk",
-        "emoji": "🏘️",
-        "image": "https://i.ibb.co/LD4stSsm/7even.jpg",
         "rating": 5.0,
         "active": true
       },
